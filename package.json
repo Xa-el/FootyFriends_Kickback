@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/supabase-js": "^2.42.0"
+		"@supabase/supabase-js": "^2.42.0",
+		"firebase": "^10.10.0"
 	}
 }
