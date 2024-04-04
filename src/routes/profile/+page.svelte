@@ -62,4 +62,10 @@
   <button type="submit">Update Profile</button>
 </form>
 
+<h2>User Profile</h2>
+<div class="user-profile">
+  <div><strong>Display Name:</strong> {displayName}</div>
+  <div><strong>Bio:</strong> {bio}</div>
+</div>
+
 <p>Visit <a href="/">Home</a></p>
