@@ -1,5 +1,4 @@
 <script lang="ts">
-	// login/+page.svelte
 	import { session } from '$lib/session';
 	import { auth } from '$lib/firebase';
 	import {
@@ -55,6 +54,7 @@
 			});
 	}
 </script>
+
 <div class="login-form">
 	<h1>Login</h1>
 	<form on:submit={loginWithMail}>

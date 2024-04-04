@@ -35,14 +35,31 @@
 		}
 	});
 
+	export function logout() {
+		signOut(auth)
+			.then(() => {
+				goto('/login');
+				loggedIn = false;
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
+	}
 </script>
-<!-- +layout.svelte -->
 
 {#if loading}
 	<div>Loading...</div>
 {:else}
 	<div>
 		Logged in: {loggedIn}
+
+		<div>
+			{#if loggedIn}
+				<button on:click={logout}>Logout</button>
+			{:else}
+				<a href="/login"> Login</a>
+			{/if}
+		</div>
 		<slot />
 	</div>
 {/if}

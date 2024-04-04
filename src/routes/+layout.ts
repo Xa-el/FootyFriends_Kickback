@@ -1,5 +1,4 @@
-/** @type {import('../../../.svelte-kit/types/src/routes').LayoutLoad} */
-
+/** @type {import('./$types').LayoutLoad} */
 
 import { initializeFirebase, auth } from '$lib/firebase';
 import { browser } from '$app/environment';

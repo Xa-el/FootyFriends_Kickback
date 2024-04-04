@@ -1,14 +1,14 @@
-// Import the functions you need from the SDKs you need
-import { browser } from '$app/environment';
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import type {FirebaseApp} from "firebase/app";
-import type { Firestore } from "firebase/firestore";
-import type { Auth } from "firebase/auth";
+import type { FirebaseApp } from 'firebase/app';
+import type { Firestore } from 'firebase/firestore';
+import type { Auth } from 'firebase/auth';
+import { browser } from '$app/environment';
 
 export let db: Firestore;
 export let app: FirebaseApp;
 export let auth: Auth;
+
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

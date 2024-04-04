@@ -1,5 +1,4 @@
 <script lang="ts">
-	// register/+page.svelte
 	import { auth } from '$lib/firebase';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import { goto } from '$app/navigation';
@@ -28,7 +27,6 @@
 	}
 </script>
 
-<!-- register/+page.svelte -->
 <div class="register-form">
 	<form on:submit={handleRegister}>
 		<h2>Register</h2>
