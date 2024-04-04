@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {db} from "$lib/firebase"
+
 </script>
 
 <h1>Welcome to Home page</h1>
