@@ -9,4 +9,7 @@
 <p>Visit <a href="/register">Register</a></p>
 <p>Visit <a href="/login">Login</a></p>
 <p>Visit <a href="/layout">Layout</a></p>
+<p>Visit <a href="/profile">Profile</a></p>
+<p>Visit <a href="/posts">Posts</a></p>
+
 
