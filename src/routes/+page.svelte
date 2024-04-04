@@ -5,4 +5,8 @@
 
 <h1>Welcome to Home page</h1>
 
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<p>Visit <a href="/welcome">Welcome</a></p>
+<p>Visit <a href="/register">Register</a></p>
+<p>Visit <a href="/login">Login</a></p>
+<p>Visit <a href="/layout">Layout</a></p>
+
