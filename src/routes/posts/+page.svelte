@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DocumentSnapshot, doc, getDoc } from "firebase/firestore";
+  import { doc, getDoc } from "firebase/firestore";
   import { onMount } from 'svelte';
   import { session } from '$lib/session';
 	import { db } from '$lib/firebase';
