@@ -5,6 +5,8 @@
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';
 
+  let displayBio = ''
+  let userSeenName = ''
   let bio = '';
   let displayName = '';
   let userId;
@@ -26,16 +28,19 @@
   // Update user profile information
   async function updateProfile() {
     // Adjusted document reference
+    bio = displayBio;
+    displayName = userSeenName;
     const userProfileRef = doc(db, "users", userId, "userProfile", "profileInfo"); // Adjusted path
     try {
       // Using setDoc with merge true to create or update
       await setDoc(userProfileRef, {
-        bio,
+        bio : bio,
         display_name: displayName,
-      }, { merge: true });
+      }, { merge: false });
 
       console.log("Profile updated successfully");
-      goto('/'); // Redirect or show a success message
+      displayBio = '';
+      userSeenName = '';
     } catch (error) {
       console.error("Error updating profile: ", error);
     }
@@ -57,12 +62,15 @@
 
 <form on:submit|preventDefault={updateProfile}>
   <h2>Edit Profile</h2>
-  <input bind:value={displayName} type="text" placeholder="Display Name" />
-  <textarea bind:value={bio} placeholder="Bio"></textarea>
+  <input bind:value={userSeenName} type="text" placeholder="Display Name" />
+  <textarea bind:value={displayBio} placeholder="Bio"></textarea>
   <button type="submit">Update Profile</button>
 </form>
 
 <h2>User Profile</h2>
+<p>Current Display Name: {displayName}</p>
+<p>Current Bio: {bio}</p>
+
 
 
 <p>Visit <a href="/">Home</a></p>
