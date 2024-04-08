@@ -11,7 +11,7 @@
     console.log("Fetching profile for userId:", $page.params.userId);
     const userId = $page.params.userId; // Access the dynamic segment
     
-    const docRef = doc(db, "users", userId, "userProfile", "profileInfo");
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
