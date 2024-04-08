@@ -23,6 +23,6 @@
 <p>Visit <a href="/login">Login</a></p>
 <p>Visit <a href="/layout">Layout</a></p>
 <p>Visit <a href="/profile">Edit Profile</a></p>
-<p>Visit <a href="{`/profile/${userId}`}" target="_blank">Post Profile Data</a></p>
+<p>Visit <a href="{`/profile/${userId}`}" target="_blank">Your Profile Data</a></p>
 <p>Visit <a href="/posts">Posts</a></p>
 <p>Visit <a href="/search">Search</a></p>
