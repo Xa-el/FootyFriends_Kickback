@@ -1,6 +1,7 @@
 <script lang="ts">
     import { doc, collection, query, where, getDocs } from 'firebase/firestore';
     import { db } from '$lib/firebase'; // Adjust path as necessary
+    import { goto} from '$app/navigation';
     let displayNameSearch = '';
     let searchResult = '';
 
@@ -30,6 +31,7 @@
 
 			if(displayNameSearch == displayName) {
 				searchResult = doc.id; 
+                    goto(`/profile/${searchResult}`);
 			}
 	})
 
