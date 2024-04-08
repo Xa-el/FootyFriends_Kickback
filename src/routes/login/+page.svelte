@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session } from '$lib/session';
-	import { auth } from '$lib/firebase';
+	import { auth, db } from '$lib/firebase';
 	import {
 		GoogleAuthProvider,
 		signInWithPopup,
@@ -8,6 +8,7 @@
 		type UserCredential
 	} from 'firebase/auth';
 	import { goto } from '$app/navigation';
+	import { doc, getDoc } from 'firebase/firestore';
 
 	let email: string = '';
 	let password: string = '';
@@ -21,7 +22,6 @@
 					user: {
 						displayName: user?.displayName,
 						email: user?.email,
-						photoURL: user?.photoURL,
 						uid: user?.uid
 					}
 				});
@@ -36,13 +36,12 @@
 		const provider = new GoogleAuthProvider();
 		await signInWithPopup(auth, provider)
 			.then((result) => {
-				const { displayName, email, photoURL, uid } = result?.user;
+				const { displayName, email, uid } = result?.user;
 				session.set({
 					loggedIn: true,
 					user: {
 						displayName,
 						email,
-						photoURL,
 						uid
 					}
 				});

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { auth, db } from '$lib/firebase';
+  import { db } from '$lib/firebase';
   import { doc, getDoc, setDoc } from 'firebase/firestore'; // Note: Using setDoc now
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';

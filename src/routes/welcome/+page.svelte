@@ -1,12 +1,12 @@
 <script lang="ts">
-     import type { Person } from './$types';
+     import type { User } from '$lib/session';
 
-     export let data: Person;
+
+     let user : User;
 </script>
 
 <svelte:head>
-     <title>My name is {data.name}</title>
-     <meta name="description" content={data.name} />
+     <title>My name is {user.displayName}</title>
 </svelte:head>
 
-<h1>Welcome, {data.name}!</h1>
+<h1>Welcome, {user.displayName}!</h1>
