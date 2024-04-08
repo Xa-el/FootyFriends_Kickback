@@ -14,7 +14,7 @@
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
     // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
-    const docRef = doc(db, "users", userId, "userProfile", "profileInfo"); // Adjusted path
+    const docRef = doc(db, "users", userId); // Adjusted path
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -30,13 +30,13 @@
     // Adjusted document reference
     bio = displayBio;
     displayName = userSeenName;
-    const userProfileRef = doc(db, "users", userId, "userProfile", "profileInfo"); // Adjusted path
+    const userProfileRef = doc(db, "users", userId); // Adjusted path
     try {
       // Using setDoc with merge true to create or update
       await setDoc(userProfileRef, {
         bio : bio,
         display_name: displayName,
-      }, { merge: false });
+      }, { merge: true });
 
       console.log("Profile updated successfully");
       displayBio = '';
