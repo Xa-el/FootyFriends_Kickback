@@ -3,6 +3,34 @@
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import { goto } from '$app/navigation';
 	import { session } from '$lib/session';
+	import {
+		GoogleAuthProvider,
+		signInWithPopup,
+		signInWithEmailAndPassword,
+		type UserCredential
+	} from 'firebase/auth';
+	async function loginWithGoogle() {
+		const provider = new GoogleAuthProvider();
+		await signInWithPopup(auth, provider)
+			.then((result) => {
+				const { displayName, email, uid } = result?.user;
+				session.set({
+					loggedIn: true,
+					user: {
+						displayName,
+						email,
+						uid
+					}
+				});
+
+				goto('/');
+			})
+			.catch((error) => {
+				return error;
+			});
+	}
+
+
 
 	let email: string = '';
 	let password: string = '';
@@ -25,6 +53,10 @@
 				throw new Error(error);
 			});
 	}
+
+
+
+
 </script>
 
 <div class="register-form">
@@ -34,4 +66,5 @@
 		<input bind:value={password} type="password" placeholder="Password" />
 		<button type="submit">Register</button>
 	</form>
+     <button on:click={loginWithGoogle}>Register with Google</button>
 </div>
