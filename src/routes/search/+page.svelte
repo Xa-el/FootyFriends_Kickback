@@ -5,17 +5,6 @@
     let displayNameSearch = '';
     let searchResult = '';
 
-
-
-    async function getUsers() {
-	    const usersCol = collection(db, 'users');
-	    const querySnapshot = await getDocs(usersCol);
-	    querySnapshot.forEach((doc) => {
-			    console.log(doc.id, ' => ', doc.data());
-			    // Here you can access each document's data and perform further operations
-			    });
-    }
-
  
     async function searchByDisplayName() {
      
@@ -24,16 +13,16 @@
       const querySnapshot = await getDocs(usersCol);
   
       if (!querySnapshot.empty) {
-	querySnapshot.forEach((doc) => {
-			const userData = doc.data();
-			const userId = doc.id;
-			const displayName = userData.display_name;
+	        querySnapshot.forEach((doc) => {
+              const userData = doc.data();
+              const userId = doc.id;
+              const displayName = userData.display_name;
 
-			if(displayNameSearch == displayName) {
-				searchResult = doc.id; 
-                    goto(`/profile/${searchResult}`);
-			}
-	})
+              if(displayNameSearch == displayName) {
+                searchResult = doc.id;
+                            goto(`/profile/${searchResult}`);
+              }
+          })
 
 
       } else {

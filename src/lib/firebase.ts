@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import type { Firestore } from 'firebase/firestore';
 import type { Auth } from 'firebase/auth';
 import { browser } from '$app/environment';
-
+// Teaching Xael Backend
 export let db: Firestore;
 export let app: FirebaseApp;
 export let auth: Auth;
