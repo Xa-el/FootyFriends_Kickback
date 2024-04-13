@@ -1,6 +1,6 @@
 # FootyFriends
 
-Developed by Lazzy, Kaleb, and Anton
+Developed by Xael, Kaleb, and Anton
 
 ## Developing
 
