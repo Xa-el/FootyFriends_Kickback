@@ -31,6 +31,7 @@
     bio = displayBio;
     displayName = userSeenName;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
+    //console.log("user prof ref: " + userProfileRef);
     try {
       // Using setDoc with merge true to create or update
       await setDoc(userProfileRef, {

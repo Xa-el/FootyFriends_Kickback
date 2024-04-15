@@ -14,7 +14,7 @@
     // Fetch user profile information
   const fetchUserProfile = async (userId) => {
     // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
-    const docRef = doc(db, "users", userId, "userProfile", "profileInfo"); // Adjusted path
+    const docRef = doc(db, "users", userId); // Adjusted path
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -35,7 +35,7 @@
         goto('/login');
       }
     });
-    const docRef = doc(db, "users", userId, "userProfile", "profileInfo");
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -45,14 +45,14 @@
       console.log("No such document!");
     }
 
-    const docTestRef = doc(db, "users", "4uWhCwLaqYMclKELqnKmc3z5Wnt1" , "userProfile", "profileInfo");
-    const testSnap = await getDoc(docTestRef);
-    if (testSnap.exists()) {
-      console.log("Test Snap Document data:", testSnap.data());
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
+    // const docTestRef = doc(db, "users", "4uWhCwLaqYMclKELqnKmc3z5Wnt1" , "userProfile", "profileInfo");
+    // const testSnap = await getDoc(docTestRef);
+    // if (testSnap.exists()) {
+    //   console.log("Test Snap Document data:", testSnap.data());
+    // } else {
+    //   // docSnap.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
 
   });
 </script>

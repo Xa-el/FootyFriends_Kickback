@@ -54,6 +54,10 @@
 	}
 </script>
 
+<div class="login width: 200px height: 100px background: red">
+     <p>hi</p>
+</div>
+
 <div class="login-form">
 	<h1>Login</h1>
 	<form on:submit={loginWithMail}>
