@@ -114,7 +114,7 @@
 <div class="flex items-center justify-center full-height">
     <div class="p-4 bg-forest-green neonLine">
       <div class="centy">
-        <h1 class="text-neon-green text-center">Login</h1>
+        <h1 class="text-neon-green text-center font-extrabold text-4xl">Login</h1>
         <form on:submit={loginWithMail}>
             <input class="m-2 inputButton"bind:value={email} type="text" placeholder="Email" />
             <br>
