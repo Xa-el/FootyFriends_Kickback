@@ -123,7 +123,7 @@
 </style>
 
 <div class="flex items-center justify-center full-height">
-    <div class="p-4 bg-forest-green neonLine">
+    <div class="p-4 bg-side-green neonLine">
       <div class="centy">
         <h1 class="text-neon-green text-center font-extrabold text-4xl">Log Into KICKBACK</h1>
         <form on:submit={loginWithMail}>

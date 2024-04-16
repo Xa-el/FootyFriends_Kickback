@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
       'dark-green': '#002615',
-      'forest-green': '#013A21',
+      'forest-green': '#6A863D',
       'side-green': '#013A21',
       'neon-green': '#C3F53C',
       },
