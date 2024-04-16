@@ -74,6 +74,12 @@
         background: #002615;
         color: white;
         border: none;
+        width: 375px; /* Sets the width of the button */
+        height: 50px; /* Sets the height of the button */
+        font-size: 18px; /* Adjust this based on your preference */
+         padding: 0 15px; /* Horizontal padding, vertical padding is not necessary due to height setting */
+        text-align: left;
+        line-height: 50px; /* This helps center the text vertically */
     }
     .centy{
         display: flex;
@@ -93,7 +99,10 @@
     .loginButt{
         border: none;
         border-radius: 5px;
+        width: 230px;
+        height: 50px;
         background: #002615;
+        font-size: 30px;
     }
 
     .newActions{
@@ -107,28 +116,32 @@
         border: none;
         background: #C3F53C;
         border-radius: 5px;
-
+        width: 230px;
+        height: 50px;
+        font-size: 20px;
     }
 </style>
 
 <div class="flex items-center justify-center full-height">
     <div class="p-4 bg-forest-green neonLine">
       <div class="centy">
-        <h1 class="text-neon-green text-center font-extrabold text-4xl">Login</h1>
+        <h1 class="text-neon-green text-center font-extrabold text-4xl">Log Into KICKBACK</h1>
         <form on:submit={loginWithMail}>
             <input class="m-2 inputButton"bind:value={email} type="text" placeholder="Email" />
             <br>
             <input class="m-2 inputButton"bind:value={password} type="password" placeholder="Password" />
             <br>
-            <button class="loginButt text-white" type="submit">Login</button>
+            <button class="loginButt text-white font-bold" type="submit">Log In</button>
         </form>
-        <p class="text-neon-green">Forgot Account?</p>
+        <p class="text-neon-green font-bold">Forgot Account?</p>
         <div>or</div>
      </div>
-          <div class="newActions">
+          <div class="newActions font-bold">
                <button class="createButton text-dark-green" on:click={loginWithGoogle}>Login with Google</button>
                <button class="createButton text-dark-green"on:click={registerAccount}>Create new Account</button>
           </div>
+    </div>
+    <div class = "textbox">
     </div>
 </div>
 
