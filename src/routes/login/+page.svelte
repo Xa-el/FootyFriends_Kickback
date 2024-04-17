@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session } from '$lib/session';
-	import { auth, db } from '$lib/firebase';
+	import { auth } from '$lib/firebase';
 	import {
 		GoogleAuthProvider,
 		signInWithPopup,
@@ -8,7 +8,6 @@
 		type UserCredential
 	} from 'firebase/auth';
 	import { goto } from '$app/navigation';
-	import { doc, getDoc } from 'firebase/firestore';
 
 	let email: string = '';
 	let password: string = '';

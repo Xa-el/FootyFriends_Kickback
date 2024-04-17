@@ -52,7 +52,7 @@
 	<div>Loading...</div>
 {:else}
 	<div>
-
-		<slot />
+		<slot>
+		</slot>
 	</div>
 {/if}

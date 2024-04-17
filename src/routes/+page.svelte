@@ -1,5 +1,35 @@
-<script>
+<script lang="ts">
     import "../app.css";
+    import { onMount } from 'svelte';
+    import { session } from '$lib/session.js';
+    import { goto } from '$app/navigation';
+    import type { LayoutData } from './$types';
+
+    let loggedIn;
+
+    session.subscribe((cur: any) => {
+        loggedIn = cur?.loggedIn;
+        console.log(loggedIn);
+    });
+
+    export let data: LayoutData;
+    onMount(async () => {
+        const user: any = await data.getAuthUser();
+
+        const loggedIn = !!user && user?.emailVerified;
+        session.update((cur: any) => {
+            return {
+                ...cur,
+                user,
+                loggedIn,
+                loading: false
+            };
+        });
+
+        if (!loggedIn) {
+            goto('/login');
+        } else {goto('/');}
+    });
 </script>
 
 <div class='bg-side-green w-1/5 h-screen border-forest-green border-r-4'>
