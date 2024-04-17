@@ -16,16 +16,6 @@
     onMount(async () => {
         const user: any = await data.getAuthUser();
 
-        const loggedIn = !!user && user?.emailVerified;
-        session.update((cur: any) => {
-            return {
-                ...cur,
-                user,
-                loggedIn,
-                loading: false
-            };
-        });
-
         if (!loggedIn) {
             goto('/login');
         } else {goto('/');}
