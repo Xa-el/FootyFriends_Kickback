@@ -9,6 +9,9 @@
 		signInWithEmailAndPassword,
 		type UserCredential
 	} from 'firebase/auth';
+
+     let errorMessage: string = '';
+
 	async function loginWithGoogle() {
 		const provider = new GoogleAuthProvider();
 		await signInWithPopup(auth, provider)
@@ -30,7 +33,9 @@
 			});
 	}
 
-
+     function goToLogin(){
+          goto('/login');
+     }
 
 	let email: string = '';
 	let password: string = '';
@@ -50,6 +55,8 @@
 				goto('/');
 			})
 			.catch((error) => {
+                    errorMessage = "User with that email already exists"; 
+                    console.log("User with that email already exists");
 				throw new Error(error);
 			});
 	}
@@ -57,14 +64,98 @@
 
 
 
+
 </script>
 
-<div class="register-form">
-	<form on:submit={handleRegister}>
-		<h2>Register</h2>
-		<input bind:value={email} type="text" placeholder="Email" />
-		<input bind:value={password} type="password" placeholder="Password" />
-		<button type="submit">Register</button>
-	</form>
-     <button on:click={loginWithGoogle}>Register with Google</button>
+
+<style>
+    .full-height {
+        height: 100vh; /* This ensures the parent div takes the full height */
+    }
+    .neonLine{
+        outline: 1px solid #6A863D; /* Sets width, style, and color */
+        border-radius: 10px;
+        width: 650px; /* Sets the width of the main container */
+        height: 450px; /* Sets the height of the main container */        
+    }
+    .inputButton{
+        outline: 2px solid #6A863D;
+        border-radius: 5px;
+        background: #002615;
+        color: white;
+        border: none;
+        width: 375px; /* Sets the width of the button */
+        height: 50px; /* Sets the height of the button */
+        font-size: 18px; /* Adjust this based on your preference */
+         padding: 0 15px; /* Horizontal padding, vertical padding is not necessary due to height setting */
+        text-align: left;
+        line-height: 50px; /* This helps center the text vertically */
+    }
+    .centy{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .loginButt{
+        border: none;
+        border-radius: 5px;
+        width: 230px;
+        height: 50px;
+        background: #002615;
+        font-size: 30px;
+    }
+
+    .newActions{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .createButton{
+        border: none;
+        background: #C3F53C;
+        border-radius: 5px;
+        width: 230px;
+        height: 50px;
+        font-size: 20px;
+    }
+</style>
+
+<div class="flex items-center justify-center full-height">
+    <div class="p-4 bg-side-green neonLine">
+      <div class="centy">
+        <h1 class="text-neon-green text-center font-extrabold text-4xl">Register On KICKBACK</h1>
+        <form on:submit={handleRegister}>
+            <input class="m-2 inputButton"bind:value={email} type="text" placeholder="Email" />
+            <br>
+            <input class="m-2 inputButton"bind:value={password} type="password" placeholder="Password" />
+            <br>
+            <button class="loginButt text-white font-bold" type="submit">Register</button>
+            {#if errorMessage}
+               <p>User with that email already exists</p>
+            {/if}
+        </form>
+        <p class="text-neon-green font-bold">Forgot Account?</p>
+        <div>or</div>
+     </div>
+          <div class="newActions font-bold">
+               <button class="createButton text-dark-green" on:click={loginWithGoogle}>Register with Google</button>
+               <button class="createButton text-dark-green" on:click={goToLogin}>Already a user? Login!</button>
+          </div>
+    </div>
+    <div class = "textbox">
+    </div>
 </div>
+
+
