@@ -9,6 +9,14 @@ export default {
       'side-green': '#013A21',
       'neon-green': '#C3F53C',
       },
+
+      size: {
+        '3/10': '30%',
+      },
+
+      width: {
+        '17/20': '85%',
+      },
     },
   },
   plugins: [],
