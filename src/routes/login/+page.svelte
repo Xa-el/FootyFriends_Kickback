@@ -156,7 +156,11 @@
             <button class="loginButt text-white font-bold" type="submit">Log In</button>
         </form>
         <p class="text-neon-green font-bold">Forgot Account?</p>
-        <div>or</div>
+        <div>
+          <div class="orLine"></div>
+          or
+          <div class="onLine"></div>
+        </div>
      </div>
           <div class="newActions font-bold">
                <button class="createButton text-dark-green" on:click={loginWithGoogle}>Login with Google</button>
