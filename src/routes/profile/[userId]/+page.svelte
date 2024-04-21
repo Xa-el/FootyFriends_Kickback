@@ -7,7 +7,8 @@
   export let bio = '';
   export let displayName = '';
 
-  onMount(async () => {
+
+	onMount(async () => {
     console.log("Fetching profile for userId:", $page.params.userId);
     const userId = $page.params.userId; // Access the dynamic segment
     

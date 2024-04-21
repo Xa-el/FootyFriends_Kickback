@@ -3,22 +3,38 @@
     import { onMount } from 'svelte';
     import { session } from '$lib/session.js';
     import { goto } from '$app/navigation';
-    import type { LayoutData } from './$types';
+    import { doc, getDoc } from 'firebase/firestore';
+    import { db } from '$lib/firebase';
 
-    let loggedIn : boolean;
+    let displayName = '';
+    let userId;
 
-    session.subscribe((cur: any) => {
-        loggedIn = cur?.loggedIn;
+    const fetchUserProfile = async (userId) => {
+        // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
+        const docRef = doc(db, "users", userId); // Adjusted path
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            displayName = docSnap.data().display_name;
+        } else {
+            console.log("No such document!");
+        }
+    };
+
+    onMount(() => {
+        session.subscribe(($session) => {
+            if ($session.user) {
+                userId = $session.user.uid;
+                fetchUserProfile(userId);
+            } else {
+                // User is not logged in, redirect or handle accordingly
+                goto('/login');
+            }
+        });
     });
 
-    export let data: LayoutData;
-    onMount(async () => {
-        const user: any = await data.getAuthUser();
 
-        if (!loggedIn) {
-            goto('/login');
-        } else {goto('/');}
-    });
+
 </script>
 
 <div class='bg-side-green w-1/6 h-screen border-forest-green border-r-4'>
@@ -39,7 +55,7 @@
                 
                 <div>
                     <!-- Username -->
-                    <h2 class="text-white text-center md:text-base lg:text-lg xl:text-2xl font-semibold">GojoSatoru</h2>
+                    <h2 class="text-white text-center md:text-base lg:text-lg xl:text-2xl font-semibold">{displayName}</h2>
                     <!-- Location -->
                     <p class="text-neon-green font-bold text-lg text-center">Gainesville, FL</p>
                 </div>
