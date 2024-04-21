@@ -156,10 +156,11 @@
             <button class="loginButt text-white font-bold" type="submit">Log In</button>
         </form>
         <p class="text-neon-green font-bold">Forgot Account?</p>
-        <div>
-          <div class="orLine"></div>
-          or
-          <div class="onLine"></div>
+        <div class="flex justify-center">
+            <!-- <div class="border-b-2 border-black w-17/20 mt-4"></div> -->
+            <!-- that just doesnt owrk for some reason ^^ -->
+            or
+            <!-- <div class="border-b-2 border-black w-17/20 mt-4"></div> -->
         </div>
      </div>
           <div class="newActions font-bold">
