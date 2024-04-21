@@ -25,7 +25,7 @@
           }
         });
 
-        goto('/');
+        goto('/register/info');
       })
       .catch((error) => {
         return error;
@@ -54,7 +54,7 @@
             loading: false
           };
         });
-        goto('/');
+        goto('/register/info');
       })
       .catch((error) => {
         errorMessage = "User with that email already exists";
