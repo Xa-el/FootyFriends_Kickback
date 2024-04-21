@@ -54,19 +54,19 @@
             <div class="flex flex-row space-x-9 items-center">
                 <!-- league -->
                 <div class="flex flex-col items-center">
-                    <img src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.png" alt="PFP" class="w-10 h-10 mt-4 object-cover">
+                    <img src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.png" alt="league" class="w-10 h-10 mt-4 object-cover">
                     <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">League</p>
                 </div>
             
                 <!-- club -->
                 <div class="flex flex-col items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png" alt="PFP" class="w-10 h-10 mt-4 object-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png" alt="club" class="w-10 h-10 mt-4 object-cover">
                     <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">Club</p>
                 </div>
             
                 <!-- GOAT -->
                 <div class="flex flex-col items-center">
-                    <img src="https://b.fssta.com/uploads/application/soccer/headshots/66617.png" alt="PFP" class="w-10 h-10 mt-4 object-cover">
+                    <img src="https://b.fssta.com/uploads/application/soccer/headshots/66617.png" alt="goat" class="w-10 h-10 mt-4 object-cover">
                     <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">GOAT</p>
                 </div>
             </div>
@@ -131,7 +131,7 @@
                 <!--Game 1-->
                 <div class="flex">
                     <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png" alt="PFP" class="w-14 h-14 object-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png" alt="home1" class="w-14 h-14 object-cover">
                 </div>
 
                 <div class="flex flex-col items-center justify-center">
@@ -142,7 +142,7 @@
 
                 <div class="flex">
                     <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="PFP" class="w-14 h-14 object-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14 object-cover">
                 </div>
 
             </div>
@@ -151,7 +151,7 @@
                 <!--Game 2-->
                 <div class="flex">
                     <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Inter_Miami_CF_logo.svg/1200px-Inter_Miami_CF_logo.svg.png" alt="PFP" class="w-14 h-14">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Inter_Miami_CF_logo.svg/1200px-Inter_Miami_CF_logo.svg.png" alt="home1" class="w-14 h-14">
                 </div>
 
                 <div class="flex flex-col items-center justify-center">
@@ -162,7 +162,7 @@
 
                 <div class="flex">
                     <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b5/St._Louis_City_SC_logo.svg/1200px-St._Louis_City_SC_logo.svg.png" alt="PFP" class="w-14 h-14">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b5/St._Louis_City_SC_logo.svg/1200px-St._Louis_City_SC_logo.svg.png" alt="away1" class="w-14 h-14">
                 </div>
 
             </div>
@@ -171,7 +171,7 @@
                 <!--Game 3-->
                 <div class="flex">
                     <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/1200px-Tottenham_Hotspur.svg.png" alt="PFP" class="w-14 h-14">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/1200px-Tottenham_Hotspur.svg.png" alt="home1" class="w-14 h-14">
                 </div>
 
                 <div class="flex flex-col items-center justify-center">
@@ -182,7 +182,7 @@
 
                 <div class="flex">
                     <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="PFP" class="w-14 h-14">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14">
                 </div>
 
             </div>
