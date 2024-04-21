@@ -119,9 +119,32 @@
         height: 50px;
         font-size: 20px;
     }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        align-items: center;
+        color: #C3F53C; /* Neon green text */
+        background: #013A21;
+    }
+    .header .logo {
+        cursor: pointer;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
 </style>
 
-<div class="flex items-center justify-center full-height">
+<div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
+     <div class="flex flex-row">
+          <div class="logo flex flex-row" on:click={() => goto('/')}>
+               <img src="/logo.png" alt="KICKBACK Logo" />
+               <h1 class="ml-2 font-bold">KICKBACK</h1>
+          </div>
+     </div>
+</div>
+
+<div class="flex items-center justify-center overflow-hidden h-[calc(100vh-60px)]">
     <div class="p-4 bg-side-green neonLine">
       <div class="centy">
         <h1 class="text-neon-green text-center font-extrabold text-4xl">Log Into KICKBACK</h1>
