@@ -4,7 +4,7 @@
   import { doc, getDoc, setDoc } from 'firebase/firestore'; // Note: Using setDoc now
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';
-  import { writable } from 'svelte/store';
+  import { writable, derived } from 'svelte/store';
 
   let displayBio = ''
   let userSeenName = ''
@@ -87,18 +87,29 @@
   });
 
   let cities = ['Gainesville, FL', 'Miami, FL', 'Orlando, FL', 'Tampa, FL', 'Jacksonville, FL'];
+  let showDropdown = writable(false);
   let search = writable('');
-  let filteredCities = [];
 
-  search.subscribe(value => {
-    if (value.length > 0) {
-      filteredCities = cities.filter(city => city.toLowerCase().includes(value.toLowerCase()));
+  let filteredCities = derived(search, $search => {
+    showDropdown.set($search.length > 0);
+    if ($search.length > 0) {
+      return cities.filter(city => city.toLowerCase().includes($search.toLowerCase()));
     } else {
-      filteredCities = [];
+      return [];
     }
   });
 
+  function selectCity(city) {
+    search.set(city);
+    showDropdown.set(false);
+  }
 
+  function checkHideDropdown(event) {
+    // Only hide dropdown if the event related target is not a dropdown item
+    if (!event.relatedTarget || !event.relatedTarget.classList.contains('dropdown-item')) {
+      showDropdown.set(false);
+    }
+  }
 </script>
 
 <style>
@@ -194,25 +205,26 @@
      font-weight: bold;
   }
 
-  .dropdown-content {
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
 
-  .dropdown-item {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
+     .dropdown-content {
+       position: absolute;
+       background-color: #f9f9f9;
+       min-width: 160px;
+       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+       z-index: 1;
+       display: none; /* Initial state set to none, controlled by Svelte */
+     }
 
-  .dropdown-item:hover {
-    background-color: #f1f1f1;
-  }
+     .dropdown-item {
+       padding: 12px 16px;
+       text-decoration: none;
+       display: block;
+       cursor: pointer;
+     }
 
+     .dropdown-item:hover {
+       background-color: #f1f1f1;
+     }
 </style>
 
 <div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
@@ -250,16 +262,27 @@
 
           <div class="flex flex-row items-center">
             <p class="font-bold text-neon-green">City:</p>
-            <input class="m-2 inputButton" type="text" placeholder="Type to search..." bind:value={$search} />
-            <div class="dropdown-content rounded-md border-2 border-neon-green">
-              {#each filteredCities as city}
-                <div on:click={() => $search = city} class="dropdown-item">
-                  {city}
-                </div>
-              {/each}
-            </div>
-          </div>
 
+          <input
+            class="m-2 inputButton"
+            type="text"
+            placeholder="Type to search..."
+            bind:value={$search}
+            on:focus={() => showDropdown.set(true)}
+            on:blur={checkHideDropdown}
+          />
+
+          <div class="dropdown-content" style:display={$showDropdown ? 'block' : 'none'}>
+            {#each $filteredCities as city}
+              <div
+                on:click={() => selectCity(city)}
+                class="dropdown-item rounded-md border-2 border-neon-green bg-dark-green"
+                tabindex="0"               >
+                {city}
+              </div>
+            {/each}
+          </div>
+          </div>
           <button class="createButton text-3xl text-dark-green font-bold" type="submit" on:click={goToHome}>Done</button>
         </form>
         <!-- <p class=" mt-2.5 text-neon-green font-bold">Forgot Account?</p> -->
@@ -271,17 +294,4 @@
     </div>
   </div>
 </div>
-
-
-
-<!-- <form on:submit|preventDefault={updateProfile}>
-  <h2>Edit Profile</h2>
-  <input bind:value={userSeenName} type="text" placeholder="Display Name" />
-  <textarea bind:value={displayBio} placeholder="Bio"></textarea>
-  <button type="submit">Update Profile</button>
-</form>
-
-<h2>User Profile</h2>
-<p>Current Display Name: {displayName}</p>
-<p>Current Bio: {bio}</p> -->
 
