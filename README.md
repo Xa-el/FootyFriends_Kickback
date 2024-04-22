@@ -14,6 +14,7 @@ FootyFriends offers a variety of features tailored for soccer fans:
 
 FootyFriends is built with modern web technologies to ensure a fast and responsive user experience:
 - **[Svelte](https://svelte.dev/)**: Innovative next up new money framework for building reactive user interfaces.
+- **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapidly building custom designs.
 - **[SvelteKit](https://kit.svelte.dev/)**: A framework for building applications with Svelte, optimized for better performance.
 - **[Firebase](https://firebase.google.com/)**: Backend platform used for authentication, database, and hosting services.
 
