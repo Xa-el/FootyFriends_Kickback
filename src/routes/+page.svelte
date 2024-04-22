@@ -29,6 +29,12 @@
             } else {
                 // User is not logged in, redirect or handle accordingly
                 goto('/login');
+                const reloadAfterRedirect = () => {
+                    window.location.reload();
+                };
+
+                // Wait for the page to redirect, then reload
+                setTimeout(reloadAfterRedirect, 1000);
             }
         });
     });

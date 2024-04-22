@@ -32,6 +32,13 @@
     console.log("function called");
     //this function is being called, its the directory. idk yet figure out later so I dont waste writes
     goto('/');
+
+    const reloadAfterRedirect = () => {
+      window.location.reload();
+    };
+
+    // Wait for the page to redirect, then reload
+    setTimeout(reloadAfterRedirect, 1000);
   }
 
   // Update user profile information
