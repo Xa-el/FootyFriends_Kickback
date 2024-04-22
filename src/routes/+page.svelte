@@ -8,6 +8,7 @@
 
     let displayName = '';
     let userId;
+    let pfpURL = '';
 
     const fetchUserProfile = async (userId) => {
         // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
@@ -16,6 +17,8 @@
 
         if (docSnap.exists()) {
             displayName = docSnap.data().display_name;
+            pfpURL = docSnap.data().pfpURL;
+            console.log("Display Name: " + displayName + "PFP URL: " + pfpURL);
         } else {
             console.log("No such document!");
         }
@@ -57,7 +60,7 @@
             <!-- pfp + name + loc -->
             <div class="flex flex-col items-center">
                 <!-- Profile Picture -->
-                <img src="https://cdn.pfps.gg/pfps/9795-gojo.png" alt={"PFP"} class="size-3/10 rounded-full mt-4">
+                <img src={pfpURL} alt={"PFP"} class="size-3/10 rounded-full mt-4">
                 
                 <div>
                     <!-- Username -->

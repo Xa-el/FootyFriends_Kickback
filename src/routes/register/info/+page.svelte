@@ -10,6 +10,8 @@
   let bio = '';
   let displayName = '';
   let userId;
+  let pfpURL = '';
+  let pfp = '';
 
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
@@ -20,6 +22,7 @@
     if (docSnap.exists()) {
       bio = docSnap.data().bio;
       displayName = docSnap.data().display_name;
+      pfpURL = docSnap.data().pfpURL;
     } else {
       console.log("No such document!");
     }
@@ -46,6 +49,7 @@
     // Adjusted document reference
     bio = displayBio;
     displayName = userSeenName;
+    pfpURL = pfpURL;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
     //console.log("user prof ref: " + userProfileRef);
     try {
@@ -53,6 +57,7 @@
       await setDoc(userProfileRef, {
         bio : bio,
         display_name: displayName,
+        pfpURL : pfpURL,
       }, { merge: true });
 
       console.log("Profile updated successfully");
@@ -60,6 +65,7 @@
       //could below this cause an error
       displayBio = '';
       userSeenName = '';
+      pfpURL = '';
     } catch (error) {
       console.error("Error updating profile: ", error);
     }
@@ -198,6 +204,11 @@
           <div class="flex flex-row items-center">
                <p class="font-bold text-neon-green">Bio:</p>
                <input class="m-2 inputButton" bind:value={displayBio} placeholder="Bio" />
+          </div>
+          <br>
+          <div class="flex flex-row items-center">
+               <p class="font-bold text-neon-green">PFP Image URL:</p>
+               <input class="m-2 inputButton" bind:value={pfpURL} placeholder="Image URL" />
           </div>
           <br>
           <!-- ADD CITY DROP DOWN RIGHT BELOW THIS, TO DO LATER. BUT ALSO FIGURE OUT FIREBASE STUFF-->
