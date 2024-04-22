@@ -45,13 +45,13 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your computer to use
    ```
 This will open up a local server instance and launch the project in your default web browser.
 
-### Founders
+## Founders
 
 FootyFriends was brought to life by a group of 3 FootyFriends who love soccer:
 - **Xael (Vini Jr.)**, **Kaleb (Haaland)**, and **Anton (Jude Bellingham**
 Their combined efforts in design, development, and implementation have made FootyFriends a welcoming community for soccer fans with 1 trillion dollars.
 
-#### Acknowledgements
+## Acknowledgements
 Special thanks to Nick, Ryder, Alex, Beabadoobee, Midmantherss, and everyone who was along for the journey from grid to mid.
 
 
