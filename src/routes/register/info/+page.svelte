@@ -33,6 +33,8 @@
   let password: string = '';
 
   function goToHome(){
+
+
     console.log("function called");
     //this function is being called, its the directory. idk yet figure out later so I dont waste writes
     goto('/');
@@ -47,6 +49,13 @@
 
   // Update user profile information
   async function updateProfile() {
+
+    // Check if any of the required fields are empty
+    if (!userSeenName || !displayBio || !pfpURL || !$search) {
+      console.log("Please fill in all required fields.");
+      return; // Exit the function if any field is empty
+    }
+
     // Adjusted document reference
     bio = displayBio;
     displayName = userSeenName;
@@ -67,9 +76,14 @@
       displayBio = '';
       userSeenName = '';
       pfpURL = '';
+          goToHome();
+
+
     } catch (error) {
       console.error("Error updating profile: ", error);
     }
+
+
 
   }
 
@@ -229,7 +243,7 @@
 
 <div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
      <div class="flex flex-row">
-          <div class="logo flex flex-row" on:click={goToHome}>
+          <div class="logo flex flex-row" >
                <img src="/logo.png" alt="KICKBACK Logo" />
                <h1 class="ml-2 font-bold">KICKBACK</h1>
           </div>
@@ -283,7 +297,7 @@
             {/each}
           </div>
           </div>
-          <button class="createButton text-3xl text-dark-green font-bold" type="submit" on:click={goToHome}>Done</button>
+          <button class="createButton text-3xl text-dark-green font-bold" type="submit" >Done</button>
         </form>
         <!-- <p class=" mt-2.5 text-neon-green font-bold">Forgot Account?</p> -->
       </div>
