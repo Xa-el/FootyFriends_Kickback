@@ -251,7 +251,7 @@
           <div class="flex flex-row items-center">
             <p class="font-bold text-neon-green">City:</p>
             <input class="m-2 inputButton" type="text" placeholder="Type to search..." bind:value={$search} />
-            <div class="dropdown-content">
+            <div class="dropdown-content rounded-md border-2 border-neon-green">
               {#each filteredCities as city}
                 <div on:click={() => $search = city} class="dropdown-item">
                   {city}
