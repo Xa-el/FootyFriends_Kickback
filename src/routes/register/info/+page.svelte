@@ -229,7 +229,7 @@
 
 <div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
      <div class="flex flex-row">
-          <div class="logo flex flex-row" on:click={() => goto('/')}>
+          <div class="logo flex flex-row" on:click={goToHome}>
                <img src="/logo.png" alt="KICKBACK Logo" />
                <h1 class="ml-2 font-bold">KICKBACK</h1>
           </div>
@@ -277,7 +277,7 @@
               <div
                 on:click={() => selectCity(city)}
                 class="dropdown-item rounded-md border-2 border-neon-green bg-dark-green"
-                tabindex="0"               >
+                tabindex="0">
                 {city}
               </div>
             {/each}
