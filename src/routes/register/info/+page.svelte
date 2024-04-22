@@ -9,10 +9,11 @@
   let displayBio = ''
   let userSeenName = ''
   let bio = '';
+  let city = '';
   let displayName = '';
   let userId;
   let pfpURL = '';
-  let pfp = '';
+  let userCity = '';
 
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
@@ -24,13 +25,13 @@
       bio = docSnap.data().bio;
       displayName = docSnap.data().display_name;
       pfpURL = docSnap.data().pfpURL;
+      userCity = docSnap.data().city;
     } else {
       console.log("No such document!");
     }
   };
 
-  let email: string = '';
-  let password: string = '';
+
 
   function goToHome(){
     console.log("function called");
@@ -51,6 +52,7 @@
     bio = displayBio;
     displayName = userSeenName;
     pfpURL = pfpURL;
+    city = userCity;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
     //console.log("user prof ref: " + userProfileRef);
     try {
@@ -59,6 +61,7 @@
         bio : bio,
         display_name: displayName,
         pfpURL : pfpURL,
+        City : userCity
       }, { merge: true });
 
       console.log("Profile updated successfully");
@@ -101,6 +104,7 @@
 
   function selectCity(city) {
     search.set(city);
+    userCity = city;
     showDropdown.set(false);
   }
 
@@ -263,7 +267,7 @@
           <div class="flex flex-row items-center">
             <p class="font-bold text-neon-green">City:</p>
 
-          <input
+            <input
             class="m-2 inputButton"
             type="text"
             placeholder="Type to search..."

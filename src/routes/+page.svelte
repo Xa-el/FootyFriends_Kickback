@@ -8,6 +8,7 @@
 
     let displayName = '';
     let userId;
+    let userCity = '';
     let pfpURL = '';
 
     const fetchUserProfile = async (userId) => {
@@ -18,6 +19,7 @@
         if (docSnap.exists()) {
             displayName = docSnap.data().display_name;
             pfpURL = docSnap.data().pfpURL;
+            userCity = docSnap.data().City;
             console.log("Display Name: " + displayName + "PFP URL: " + pfpURL);
         } else {
             console.log("No such document!");
@@ -66,7 +68,7 @@
                     <!-- Username -->
                     <h2 class="text-white text-center md:text-base lg:text-lg xl:text-2xl font-semibold">{displayName}</h2>
                     <!-- Location -->
-                    <p class="text-neon-green font-bold text-lg text-center">Gainesville, FL</p>
+                    <p class="text-neon-green font-bold text-lg text-center">{userCity}</p>
                 </div>
             </div>
         </div>
