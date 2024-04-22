@@ -4,6 +4,7 @@
   import { doc, getDoc, setDoc } from 'firebase/firestore'; // Note: Using setDoc now
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';
+  import { writable } from 'svelte/store';
 
   let displayBio = ''
   let userSeenName = ''
@@ -84,6 +85,20 @@
       }
     });
   });
+
+  let cities = ['Gainesville, FL', 'Miami, FL', 'Orlando, FL', 'Tampa, FL', 'Jacksonville, FL'];
+  let search = writable('');
+  let filteredCities = [];
+
+  search.subscribe(value => {
+    if (value.length > 0) {
+      filteredCities = cities.filter(city => city.toLowerCase().includes(value.toLowerCase()));
+    } else {
+      filteredCities = [];
+    }
+  });
+
+
 </script>
 
 <style>
@@ -178,6 +193,26 @@
      font-size: 24px;
      font-weight: bold;
   }
+
+  .dropdown-content {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-item {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+
 </style>
 
 <div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
@@ -212,11 +247,18 @@
           </div>
           <br>
           <!-- ADD CITY DROP DOWN RIGHT BELOW THIS, TO DO LATER. BUT ALSO FIGURE OUT FIREBASE STUFF-->
-          <!-- <div class="flex flex-row items-center">
-               <p class="font-bold text-neon-green">City:</p>
-               <input class="m-2 inputButton" bind:value={filler} type="text" placeholder="City" />    
+
+          <div class="flex flex-row items-center">
+            <p class="font-bold text-neon-green">City:</p>
+            <input class="m-2 inputButton" type="text" placeholder="Type to search..." bind:value={$search} />
+            <div class="dropdown-content">
+              {#each filteredCities as city}
+                <div on:click={() => $search = city} class="dropdown-item">
+                  {city}
+                </div>
+              {/each}
+            </div>
           </div>
-          <br> -->
 
           <button class="createButton text-3xl text-dark-green font-bold" type="submit" on:click={goToHome}>Done</button>
         </form>
