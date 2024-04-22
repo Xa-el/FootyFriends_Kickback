@@ -48,7 +48,7 @@ This will open up a local server instance and launch the project in your default
 ## Founders
 
 FootyFriends was brought to life by a group of 3 FootyFriends who love soccer:
-- **Xael (Vini Jr.)**, **Kaleb (Haaland)**, and **Anton (Jude Bellingham**
+- **Xael (Vini Jr.)**, **Kaleb (Haaland)**, and **Anton (Jude Bellingham)**
 Their combined efforts in design, development, and implementation have made FootyFriends a welcoming community for soccer fans with 1 trillion dollars.
 
 ## Acknowledgements
