@@ -26,6 +26,15 @@ To get a local copy up and running follow these simple steps:
 
 Ensure you have [Node.js](https://nodejs.org/) installed on your computer to use `npm`.
 
+Also make sure you have a .env file that has firebase dependencies into the root direcgtory.
+VITE_FIREBASE_API_KEY=***
+VITE_FIREBASE_AUTH_DOMAIN=***
+VITE_FIREBASE_PROJECT_ID=***
+VITE_FIREBASE_STORAGE_BUCKET=***
+VITE_FIREBASE_MESSAGING_SENDER_ID=***
+VITE_FIREBASE_APP_ID=***
+VITE_FIREBASE_MEASUREMENT_ID=***
+
 ### Installation
 
 1. Clone the repo:
@@ -53,7 +62,7 @@ FootyFriends was brought to life by a group of 3 FootyFriends who love soccer:
 Their combined efforts in design, development, and implementation have made FootyFriends a welcoming community for soccer fans with 1 trillion dollars.
 
 ## Acknowledgements
-Special thanks to Nick, Ryder, Alex, Midbamidbee, Peakpantherss, and everyone who was along for the journey from grid to mid.
+Special thanks to Nick, Ryder, Alex, Peakbadoobee, Midmantherss, and everyone who was along for the journey from grid to mid.
 
 
 
