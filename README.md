@@ -53,7 +53,7 @@ FootyFriends was brought to life by a group of 3 FootyFriends who love soccer:
 Their combined efforts in design, development, and implementation have made FootyFriends a welcoming community for soccer fans with 1 trillion dollars.
 
 ## Acknowledgements
-Special thanks to Nick, Ryder, Alex, Beabadoobee, Midmantherss, and everyone who was along for the journey from grid to mid.
+Special thanks to Nick, Ryder, Alex, Midbamidbee, Peakpantherss, and everyone who was along for the journey from grid to mid.
 
 
 
