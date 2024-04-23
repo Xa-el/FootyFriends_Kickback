@@ -2,8 +2,13 @@
 	import { onMount } from 'svelte';
 	import { session } from '$lib/session.js';
 	import { goto } from '$app/navigation';
-	import { doc, getDoc, collection, getDocs, setDoc, query, orderBy } from 'firebase/firestore';
+	import { doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
+	import { writable}  from 'svelte/store';
+	import Post from '../../components/Post.svelte';
+
+	const posts = writable([]);
+
 	function generateRandomString(length: number): string {
 		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		let result = '';
@@ -15,30 +20,18 @@
 		return result;
 	}
 
-	function getCurrentTimeInEST(): string {
-		const options: Intl.DateTimeFormatOptions = {
-			hour: 'numeric',
-			minute: 'numeric',
-			second: 'numeric',
-			timeZone: 'America/New_York', // EST timezone
-			hour12: false // 24-hour format
-		};
-
-		return new Date().toLocaleString('en-US', options);
-	}
-
 	const randomPostId = generateRandomString(26);
 
 
 
 
 
-	let displayName = '';
+	 let displayName = '';
 	let userId;
 	let userCity = '';
-	let title = '';
-	let likesPost = 0;
-	let postCaption = 'From code 3';
+	// let title = '';
+	// let likesPost = 0;
+	// let postCaption = 'From code 3';
 
 
 	const fetchUserProfile = async (userId) => {
@@ -55,28 +48,27 @@
 		}
 	};
 
-	async function createPost() {
-		// Adjusted document referenc
-
-		const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
-		//console.log("user prof ref: " + userProfileRef);
-		try {
-			// Using setDoc with merge true to create or update
-			await setDoc(cityPostRef, {
-				display_name: displayName,
-				likes : likesPost,
-				u_id : userId,
-				time : Date.now(),
-				title : title,
-				caption : postCaption,
-			}, { merge: true });
-
-			console.log("Post created successfully");
-		} catch (error) {
-			console.error("Error updating profile: ", error);
-		}
-
-	}
+	// async function createPost() {
+	//
+	// 	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
+	// 	//console.log("user prof ref: " + userProfileRef);
+	// 	try {
+	// 		// Using setDoc with merge true to create or update
+	// 		await setDoc(cityPostRef, {
+	// 			display_name: displayName,
+	// 			likes : likesPost,
+	// 			u_id : userId,
+	// 			time : Date.now(),
+	// 			title : title,
+	// 			caption : postCaption,
+	// 		}, { merge: true });
+	//
+	// 		console.log("Post created successfully");
+	// 	} catch (error) {
+	// 		console.error("Error updating profile: ", error);
+	// 	}
+	//
+	// }
 
 	onMount(async () => {
 		session.subscribe(async ($session) => {
@@ -87,9 +79,9 @@
 				if (userCity) { // Check if userCity is available
 					const cityDocRef = collection(db, userCity, "feed", "posts");
 					const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Create a query with sorting by "time" in descending order
-// Reference to the "posts" collection within the user's city document
 					const querySnapshot = await getDocs(sortedQuery);
-					
+					const loadedPosts = [];
+
 					querySnapshot.forEach((doc) => {
 						const postData = doc.data();
 						console.log("Post ID:", doc.id);
@@ -99,7 +91,19 @@
 						console.log("Likes:", postData.likes);
 						console.log("Time:", postData.time);
 						console.log("User ID:", postData.u_id);
+
+						loadedPosts.push({
+							id: doc.id,
+							title: postData.title,
+							caption: postData.caption,
+							displayName: postData.display_name,
+							likes: postData.likes,
+							time: postData.time,
+							userId: postData.u_id
+						});
+
 					});
+					posts.set(loadedPosts);
 				} else {
 					console.log("No such city document!");
 				}
@@ -114,10 +118,23 @@
 			}
 		});
 	});
-
 </script>
 
-<button class="createButton" on:click={createPost}>Create Post</button>
+<style>
+    .post-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+</style>
+
+<div class="post-container">
+	{#each $posts as post}
+		<Post {post} />
+	{/each}
+</div>
+
+<!--<button class="createButton" on:click={createPost}>Create Post</button>-->
 
 
 
