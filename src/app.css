@@ -8,3 +8,18 @@ body{
      /*color: white; */
      background-color: #002615;
 }
+
+::-webkit-scrollbar {
+     width: 10px;
+ }
+ 
+ ::-webkit-scrollbar-track {
+     /* Customize the scrollbar track */
+     background-color: #002615;
+ }
+ 
+ ::-webkit-scrollbar-thumb {
+     /* Customize the scrollbar thumb */
+     background-color: #C3F53C;
+     border-radius: 10px;
+ }
