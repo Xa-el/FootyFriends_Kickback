@@ -46,9 +46,6 @@
             }
         });
     });
-
-
-
 </script>
 
 <div class='bg-side-green w-1/6 h-screen border-forest-green border-r-4'>
