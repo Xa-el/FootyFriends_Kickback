@@ -32,7 +32,7 @@
 		});
 
 		if (loggedIn) {
-			goto('/');
+			// goto('/');
 		}
 	});
 

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { session } from '$lib/session.js';
 	import { goto } from '$app/navigation';
-	import { doc, getDoc, query, collection, getDocs, setDoc } from 'firebase/firestore';
+	import { doc, getDoc, collection, getDocs, setDoc, query, orderBy } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	function generateRandomString(length: number): string {
 		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -30,7 +30,6 @@
 	const randomPostId = generateRandomString(26);
 
 
-	let randomizer = 99999999999999;
 
 
 
@@ -39,8 +38,7 @@
 	let userCity = '';
 	let title = '';
 	let likesPost = 0;
-	let city = '';
-	let postCaption = 'From code';
+	let postCaption = 'From code 3';
 
 
 	const fetchUserProfile = async (userId) => {
@@ -59,12 +57,8 @@
 
 	async function createPost() {
 		// Adjusted document referenc
-		city = userCity;
-		const cityDocRef = collection(db, userCity, "feed", "posts"); // Reference to the "posts" collection within the user's city document
-		const querySnapshot = await getDocs(cityDocRef);
-		randomizer = randomizer-querySnapshot.size;
 
-		const cityPostRef = doc(db, userCity, "feed", "posts", randomizer+randomPostId); // Adjusted path
+		const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
 		//console.log("user prof ref: " + userProfileRef);
 		try {
 			// Using setDoc with merge true to create or update
@@ -72,7 +66,7 @@
 				display_name: displayName,
 				likes : likesPost,
 				u_id : userId,
-				time : getCurrentTimeInEST(),
+				time : Date.now(),
 				title : title,
 				caption : postCaption,
 			}, { merge: true });
@@ -91,9 +85,11 @@
 				userCity = await fetchUserProfile(userId); // Fetch user profile and get the user's city
 				console.log("User city: " + userCity);
 				if (userCity) { // Check if userCity is available
-					const cityDocRef = collection(db, userCity, "feed", "posts"); // Reference to the "posts" collection within the user's city document
-					const querySnapshot = await getDocs(cityDocRef);
-
+					const cityDocRef = collection(db, userCity, "feed", "posts");
+					const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Create a query with sorting by "time" in descending order
+// Reference to the "posts" collection within the user's city document
+					const querySnapshot = await getDocs(sortedQuery);
+					
 					querySnapshot.forEach((doc) => {
 						const postData = doc.data();
 						console.log("Post ID:", doc.id);
