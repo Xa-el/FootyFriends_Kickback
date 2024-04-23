@@ -33,6 +33,9 @@
                 fetchUserProfile(userId);
             } else {
                 // User is not logged in, redirect or handle accordingly
+                pfpURL = 'https://cdn.pfps.gg/pfps/9795-gojo.png'; // Default image source
+                displayName = 'Guest';
+                userCity = 'Unknown';
                 goto('/login');
                 const reloadAfterRedirect = () => {
                     window.location.reload();
