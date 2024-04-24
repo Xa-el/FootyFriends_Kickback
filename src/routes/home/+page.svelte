@@ -30,6 +30,7 @@
 
     let displayName = '';
     let userId;
+    let profile_url = '';
     let userCity = '';
     let title = '';
     let likesPost = 0;
@@ -42,7 +43,8 @@
 
         if (docSnap.exists()) {
             displayName = docSnap.data().display_name;
-            userCity = docSnap.data().City;
+            userCity = docSnap.data().City
+            profile_url = docSnap.data().pfpURL;
             return userCity; // Return user city for further use
         } else {
             console.log("No such document!");
@@ -51,6 +53,7 @@
     };
 
     async function createPost() {
+        console.log("post called");
     	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
     	//console.log("user prof ref: " + userProfileRef);
     	try {
@@ -62,6 +65,7 @@
     			time : Date.now(),
     			title : title,
     			caption : postCaption,
+            pfpURL : profile_url,
     		}, { merge: true });
 
     		console.log("Post created successfully");
@@ -94,6 +98,7 @@
                         console.log("Likes:", postData.likes);
                         console.log("Time:", postData.time);
                         console.log("User ID:", postData.u_id);
+                        console.log("Profile URL:", postData.pfpURL);
 
                         loadedPosts.push({
                             id: doc.id,
@@ -102,7 +107,8 @@
                             displayName: postData.display_name,
                             likes: postData.likes,
                             time: postData.time,
-                            userId: postData.u_id
+                            userId: postData.u_id,
+                            profile_url: postData.pfpURL
                         });
 
                     });
@@ -121,6 +127,8 @@
             }
         });
     });
+
+
 </script>
 
 <style>
@@ -129,26 +137,28 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
     }
-
-    .post-box {
-        border: 1px solid #ccc;
-
+    textarea {
+        resize: none;
+    }
+    .input-container {
+        display: flex;
+        align-items: flex-start; /* Align items at the start */
+    }
+    .submit-button {
+        margin-left: 10px; /* Adjust margin as needed */
     }
 </style>
 
 
-
-<div class="w-2/3 h-screen bg-blue-600 flex flex-col items-center">
-    <h1 class="text-white">Hello, this is our scrollable page</h1>
-    <div class="post-box  text-neon-green">
-        <h2>Create a New Post</h2>
-        <input type="text" placeholder="Title" bind:value={title}>
-        <textarea placeholder="Post Caption" bind:value={postCaption}></textarea>
-        <button on:click={createPost}>Create Post</button>
+<div class="w-2/3 h-screen bg-forest-green-600 flex flex-col h-2/3 items-center">
+    <div class="input-container mt-5 mb-5 w-2/3">
+        <textarea id="postInput" class="text-neon-green flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
+        <button class="submit-button text-neon-green " on:click={createPost}>Submit</button>
     </div>
 </div>
 
-<div class="w-2/3 h-screen bg-red-500 flex flex-col">
+
+<div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
     <div class="post-container flex-grow flex flex-col items-center">
         {#each $posts as post}
             <Post {post} />

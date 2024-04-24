@@ -5,9 +5,8 @@
 </script>
 
 <div class="post text-neon-green">
-	<h3>{post.title}</h3>
+	<h1>{post.displayName}</h1>
 	<p>{post.caption}</p>
-	<p>By: {post.displayName}</p>
 	<p>Likes: {post.likes}</p>
 	<p>Time: {new Date(post.time).toLocaleString()}</p>
 </div>
