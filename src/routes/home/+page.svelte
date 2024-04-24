@@ -122,13 +122,28 @@
         });
     });
 </script>
+
+<style>
+    .post-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+</style>
+
+
+
 <div class="w-2/3 h-screen bg-blue-600 flex flex-col items-end">
     <h1 class="text-white">Hello, this is our scrollable page</h1>
 </div>
 
 <div class="w-2/3 h-screen bg-red-500">
     <h1 class="text-white">This is the second page, we like feet, super smelly!</h1>
-
+    <div class="post-container">
+        {#each $posts as post}
+            <Post {post} />
+        {/each}
+    </div>
 </div>
 
 <div class="bg-side-green flex flex-col w-1/6 fixed right-0 top-0 h-screen border-forest-green border-l-4">
