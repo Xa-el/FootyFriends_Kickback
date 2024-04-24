@@ -22,7 +22,9 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             //this gets the data in json form I think
             const data = await response.json();
             const last10plmatches = data.matches.slice(-10); //basically array length - 10 is how to think about this
+            console.log("prems");
             console.log(last10plmatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
