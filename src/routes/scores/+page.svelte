@@ -6,6 +6,7 @@ const laLigaUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.foot
 const farmersUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/FL1/matches?status=FINISHED');
 const blUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/BL1/matches?status=FINISHED');
 const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/CL/matches?status=FINISHED');
+const livePLUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/PL/matches?status=LIVE');
 
 
 
@@ -40,6 +41,7 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const franceResponse = await fetch(farmersUrl, options);
             const germanyResponse = await fetch(blUrl, options);
             const CLResponse = await fetch(clUrl, options);
+            const livePLResponse = await fetch(livePLUrl, options);
 
             //this gets the data in json form I think
             const italyData = await italyResponse.json();
@@ -47,13 +49,13 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const franceData = await franceResponse.json();
             const germanyData = await germanyResponse.json();
             const CLData = await CLResponse.json();
-
-
+            const livePLData = await livePLResponse.json();
 
 
             const italyMatches = italyData.matches.slice(-10); //basically array length - 10 is how to think about this
             console.log("italy");
             console.log(italyMatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
@@ -61,6 +63,7 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const spainMatches = spainData.matches.slice(-10); 
             console.log("spain");
             console.log(spainMatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
@@ -68,6 +71,7 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const franceMatches = franceData.matches.slice(-10); 
             console.log("france");
             console.log(franceMatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
@@ -75,6 +79,7 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const germanyMatches = germanyData.matches.slice(-10);          
             console.log("germany");
             console.log(germanyMatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
@@ -82,12 +87,19 @@ const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football
             const CLMatches = CLData.matches.slice(-10); //basically array length - 10 is how to think about this
             console.log("Champions League");
             console.log(CLMatches.map(match => ({
+                date: match.utcDate,  
                 homeTeam: match.homeTeam.name,
                 awayTeam: match.awayTeam.name,
                 score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
             })));
-
-
+            const livePLMatches = livePLData.matches.slice(-10); //basically array length - 10 is how to think about this
+            console.log("Prems Live");
+            console.log(livePLMatches.map(match => ({
+                date: match.utcDate,  
+                homeTeam: match.homeTeam.name,
+                awayTeam: match.awayTeam.name,
+                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
+            })));
 
         } catch (error) {
             console.error('Failed to fetch data:', error);
