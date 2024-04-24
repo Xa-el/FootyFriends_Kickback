@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import { session } from '$lib/session.js';
     import { goto } from '$app/navigation';
-    import { doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
+    import { setDoc, doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
     import { db } from '$lib/firebase';
     import { writable}  from 'svelte/store';
     import Post from '../../components/Post.svelte';
@@ -31,9 +31,9 @@
     let displayName = '';
     let userId;
     let userCity = '';
-    // let title = '';
-    // let likesPost = 0;
-    // let postCaption = 'From code 3';
+    let title = '';
+    let likesPost = 0;
+    let postCaption = '';
 
     /* Need to find a way to just import this from the layout */
     const fetchUserProfile = async (userId) => {
@@ -50,27 +50,27 @@
         }
     };
 
-    // async function createPost() {
-    //
-    // 	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
-    // 	//console.log("user prof ref: " + userProfileRef);
-    // 	try {
-    // 		// Using setDoc with merge true to create or update
-    // 		await setDoc(cityPostRef, {
-    // 			display_name: displayName,
-    // 			likes : likesPost,
-    // 			u_id : userId,
-    // 			time : Date.now(),
-    // 			title : title,
-    // 			caption : postCaption,
-    // 		}, { merge: true });
-    //
-    // 		console.log("Post created successfully");
-    // 	} catch (error) {
-    // 		console.error("Error updating profile: ", error);
-    // 	}
-    //
-    // }
+    async function createPost() {
+    	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
+    	//console.log("user prof ref: " + userProfileRef);
+    	try {
+    		// Using setDoc with merge true to create or update
+    		await setDoc(cityPostRef, {
+    			display_name: displayName,
+    			likes : likesPost,
+    			u_id : userId,
+    			time : Date.now(),
+    			title : title,
+    			caption : postCaption,
+    		}, { merge: true });
+
+    		console.log("Post created successfully");
+        window.location.reload();
+    	} catch (error) {
+    		console.error("Error updating profile: ", error);
+    	}
+
+    }
 
     /* Not sure if we can just add some of this into the layout, need to talk about this */
     onMount(async () => {
@@ -133,8 +133,14 @@
 
 
 
-<div class="w-2/3 h-screen bg-blue-600 flex flex-col items-end">
+<div class="w-2/3 h-screen bg-blue-600 flex flex-col items-center">
     <h1 class="text-white">Hello, this is our scrollable page</h1>
+    <div class="post-box  ">
+        <h2>Create a New Post</h2>
+        <input type="text" placeholder="Title" bind:value={title}>
+        <textarea placeholder="Post Caption" bind:value={postCaption}></textarea>
+        <button on:click={createPost}>Create Post</button>
+    </div>
 </div>
 
 <div class="w-2/3 h-screen bg-red-500">
