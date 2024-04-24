@@ -1,10 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { db } from '$lib/firebase';
-  import { doc, getDoc, setDoc } from 'firebase/firestore'; // Note: Using setDoc now
+  import { doc, getDoc, setDoc, collection, query, where, getDocs } from 'firebase/firestore'; // Note: Using setDoc now
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';
   import { writable, derived } from 'svelte/store';
+
 
   let displayBio = ''
   let userSeenName = ''
@@ -14,6 +15,8 @@
   let userId: any = ''; // Should change later to a specific type
   let pfpURL = '';
   let userCity = '';
+  let showError: boolean = false;
+  let usernameError = '';
 
   // Fetch user profile information
   const fetchUserProfile = async (userId: any) => {
@@ -48,6 +51,14 @@
     setTimeout(reloadAfterRedirect, 1000);
   }
 
+
+  async function isDisplayNameUnique(displayName: string) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("display_name", "==", displayName));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty; // returns true if no documents match
+  }
+
   // Update user profile information
   async function updateProfile() {
 
@@ -56,10 +67,16 @@
       console.log("Please fill in all required fields.");
       return; // Exit the function if any field is empty
     }
-
     // Adjusted document reference
     bio = displayBio;
     displayName = userSeenName;
+    const isUnique = await isDisplayNameUnique(displayName);
+    if(!isUnique){
+      showError = true;
+      console.log("Not Unique Username");
+      usernameError = displayName + " is taken! Please pick a different name"
+      return;
+    }
     pfpURL = pfpURL;
     city = userCity;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
@@ -128,6 +145,9 @@
       showDropdown.set(false);
     }
   }
+  function closeErrorMessage() {
+    showError = false;
+  }
 </script>
 
 <style>
@@ -162,6 +182,7 @@
     justify-content: space-between;
     width: 100%;
   }
+
   form{
     display: flex;
     flex-direction: column;
@@ -212,7 +233,17 @@
      font-size: 24px;
      font-weight: bold;
   }
+
+  .neonLine-Error{
+    outline: 1px solid #6A863D; /* Sets width, style, and color */
+    border-radius: 10px;
+    width: 650px; /* Sets the width of the main container */
+    height: 100px; /* Sets the height of the main container */
+  }
+
 </style>
+
+
 <div class="flex h-screen w-screen flex-col">
   <div class="header border-b-2 border-forest-green flex justify-between items-center w-full h-15">
       <div class="flex flex-row">
@@ -222,6 +253,18 @@
             </div>
       </div>
   </div>
+
+    {#if showError}
+      <div class="p-4 bg-side-green neonLine-Error mb-8">
+        <div class="relative">
+          <button class="close-button" on:click={closeErrorMessage}>X</button>
+        </div>
+        <div class="centy">
+          <h1 class="text-neon-green text-center font-extrabold text-2xl">ERROR</h1>
+          <p class="text-white text-center font-bold">{usernameError}</p>
+        </div>
+      </div>
+    {/if}
 
 
   <div class="flex items-center justify-center overflow-hidden grow">
