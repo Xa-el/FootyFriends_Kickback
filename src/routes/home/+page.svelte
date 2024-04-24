@@ -125,9 +125,14 @@
 
 <style>
     .post-container {
-        display: grid;
+        /*display: grid;*/
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
+    }
+
+    .post-box {
+        border: 1px solid #ccc;
+
     }
 </style>
 
@@ -135,7 +140,7 @@
 
 <div class="w-2/3 h-screen bg-blue-600 flex flex-col items-center">
     <h1 class="text-white">Hello, this is our scrollable page</h1>
-    <div class="post-box  ">
+    <div class="post-box  text-neon-green">
         <h2>Create a New Post</h2>
         <input type="text" placeholder="Title" bind:value={title}>
         <textarea placeholder="Post Caption" bind:value={postCaption}></textarea>
@@ -143,9 +148,8 @@
     </div>
 </div>
 
-<div class="w-2/3 h-screen bg-red-500">
-    <h1 class="text-white">This is the second page, we like feet, super smelly!</h1>
-    <div class="post-container">
+<div class="w-2/3 h-screen bg-red-500 flex flex-col">
+    <div class="post-container flex-grow flex flex-col items-center">
         {#each $posts as post}
             <Post {post} />
         {/each}

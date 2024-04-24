@@ -17,5 +17,6 @@
         border: 1px solid #ccc;
         padding: 20px;
         border-radius: 8px;
+        width: 85%;
     }
 </style>

@@ -15,7 +15,6 @@
         // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
         const docRef = doc(db, "users", userId); // Adjusted path
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
             displayName = docSnap.data().display_name;
             pfpURL = docSnap.data().pfpURL;
