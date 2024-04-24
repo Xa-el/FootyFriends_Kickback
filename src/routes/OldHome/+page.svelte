@@ -1,28 +1,30 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { session } from '$lib/session';
+const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
+const url = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED');
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-Auth-Token': apiKey
+        }
+    };
 
-	let userId;
+    async function getRecentMatches() {
+        try {
+            const response = await fetch(url, options);
+            console.log("in try");
+            const data = await response.json();
+            console.log(data.matches.map(match => ({
+                homeTeam: match.homeTeam.name,
+                awayTeam: match.awayTeam.name,
+                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
+            })));
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
+    }
 
-	onMount(async () => {
-		session.subscribe(($session) => {
-			if ($session.user) {
-				userId = $session.user.uid;
-			}
-		});
-	});
+    getRecentMatches();
 </script>
 
-<h1>Welcome to Home page</h1>
+<h1>Welcome to Bum Page</h1>
 
-
-
-
-<p>Visit <a href="/welcome">Welcome</a></p>
-<p>Visit <a href="/register">Register</a></p>
-<p>Visit <a href="/login">Login</a></p>
-<p>Visit <a href="/layout">Layout</a></p>
-<p>Visit <a href="/profile">Edit Profile</a></p>
-<p>Visit <a href="{`/profile/${userId}`}" target="_blank">Your Profile Data</a></p>
-<p>Visit <a href="/posts">Posts</a></p>
-<p>Visit <a href="/search">Search</a></p>
