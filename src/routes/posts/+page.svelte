@@ -56,9 +56,9 @@
 
   });
 </script>
-
-<h1>Hello</h1>
+<h1 class="text-4xl">Hello</h1>
 <h2>Display Name: {displayName}</h2>
 <h3>Bio: {bio}</h3>
 <p>Visit <a href="/">Home</a></p>
+
 

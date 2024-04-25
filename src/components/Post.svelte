@@ -4,8 +4,8 @@
 	console.log("Post received:", post); // Log the received post
 </script>
 
-<div class="post text-neon-green">
-	<h1>{post.displayName}</h1>
+<div class="post text-white">
+	<h1 class="text-3xl">{post.displayName}</h1>
 	<p>{post.caption}</p>
 	<p>Likes: {post.likes}</p>
 	<p>Time: {new Date(post.time).toLocaleString()}</p>

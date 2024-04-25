@@ -65,7 +65,7 @@
     			time : Date.now(),
     			title : title,
     			caption : postCaption,
-                pfpURL : profile_url,
+            pfpURL : profile_url,
     		}, { merge: true });
 
     		console.log("Post created successfully");
@@ -151,11 +151,16 @@
 
 
 <div class="w-2/3 bg-forest-green-600 flex flex-col h-2/3 items-center">
-    <div class="input-container mt-5 mb-5 w-2/3">
-        <img src={profile_url} alt={"PFP"} class="size-3/10 rounded-full mt-4 border-neon-green">
-
-        <textarea id="postInput" class="text-neon-green flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
-        <button class="submit-button text-neon-green " on:click={createPost}>Submit</button>
+    <div class="input-container h-full mt-5 mb-5 w-2/3 border-b-2 border-b-forest-green ">
+        <div class="mr-[-75px]">
+            <img src={profile_url} alt={"PFP"} class="size-1/3 mb-5 rounded-full border-neon-green">
+        </div>
+        <div class="flex items-center w-5/6 text-2xl">
+            <textarea id="postInput" class="text-neon-green py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
+        </div>
+        <div class="text-center justify-center py-2">
+            <button class="submit-button text-neon-green bg-forest-green p-1 rounded" on:click={createPost}>Submit</button>
+        </div>
     </div>
 </div>
 
