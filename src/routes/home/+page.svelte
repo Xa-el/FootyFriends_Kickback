@@ -153,7 +153,7 @@
 <div class="w-2/3 bg-forest-green-600 flex flex-col h-2/3 items-center">
     <div class="input-container h-full mt-5 mb-5 w-2/3 border-b-2 border-b-forest-green ">
         <div class="mr-[-75px]">
-            <img src={profile_url} alt={"PFP"} class="size-1/3 mb-5 rounded-full border-neon-green">
+            <img src={profile_url} alt={"PFP"} class="size-1/3 mb-5 rounded-full border-neon-green border-4">
         </div>
         <div class="flex items-center w-5/6 text-2xl">
             <textarea id="postInput" class="text-neon-green py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
