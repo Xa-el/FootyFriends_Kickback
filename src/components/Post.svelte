@@ -6,7 +6,7 @@
 
 <div class="post text-white">
      <div class="flex items-center">
-          <img src={post.profile_url} class="mr-[10px] w-16 h-16 rounded-full border-neon-green border-4">
+          <img src={post.profile_url} class="radi mr-[10px] w-16 h-16 rounded-full border-neon-green border-4">
           <div>
           <h1 class="text-3xl">{post.displayName}</h1>
           <p>{post.caption}</p>
@@ -22,5 +22,8 @@
         padding: 20px;
         border-radius: 8px;
         width: 85%;
+    }
+    .radi{
+        border-width: 3px;
     }
 </style>
