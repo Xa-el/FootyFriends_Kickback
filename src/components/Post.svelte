@@ -8,12 +8,14 @@
      <div class="flex items-center">
           <img src={post.profile_url} class="radi mr-[10px] w-16 h-16 rounded-full border-neon-green border-4">
           <div>
-          <h1 class="text-3xl">{post.displayName}</h1>
+          <div class="flex items-baseline">
+               <h1 class="text-3xl">{post.displayName}</h1>
+               <p style="color: #9F9F9F;">{new Date(post.time).toLocaleString()}</p>
+          </div>
           <p>{post.caption}</p>
           </div>
      </div>
 	<p>Likes: {post.likes}</p>
-	<p>Time: {new Date(post.time).toLocaleString()}</p>
 </div>
 
 <style>
