@@ -1,19 +1,20 @@
 <script lang="ts">
 const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
-const plUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED');
-const italyUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/SA/matches?status=FINISHED');
-const laLigaUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/PD/matches?status=FINISHED');
-const farmersUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/FL1/matches?status=FINISHED');
-const blUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/BL1/matches?status=FINISHED');
-const clUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/CL/matches?status=FINISHED');
-const livePLUrl = 'https://corsproxy.io/?' + encodeURIComponent('http://api.football-data.org/v2/competitions/PL/matches?status=LIVE');
+const plUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const italyUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/SA/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const laLigaUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PD/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const farmersUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/FL1/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const blUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/BL1/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const clUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/CL/matches?status=FINISHED&ts=${Date.now()}`)}`;
+const livePLUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=LIVE&ts=${Date.now()}`)}`;
 
 
 
     const options = {
         method: 'GET',
         headers: {
-            'X-Auth-Token': apiKey
+            'X-Auth-Token': apiKey,
+            'Cache-Control': 'no-cache'  // Instructs to bypass the cache
         }
     };
 
