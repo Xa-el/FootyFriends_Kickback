@@ -54,6 +54,10 @@
 
     async function createPost() {
         console.log("post called");
+        if(postCaption == ""){
+            console.log("No caption inputed");
+            return;
+        }
     	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
     	//console.log("user prof ref: " + userProfileRef);
     	try {
@@ -128,6 +132,14 @@
         });
     });
 
+  let isKicked = false;
+
+  function kickBall() {
+    isKicked = true;
+    setTimeout(() => {
+      isKicked = false; // reset after animation
+    }, 1000); // match the duration of your CSS animation
+  }
 
 </script>
 
@@ -147,11 +159,35 @@
     .submit-button {
         margin-left: 10px; /* Adjust margin as needed */
     }
+     .ball {
+         width: 50px;
+         height: 50px;
+         background-img: "https://images.vexels.com/media/users/3/249281/isolated/preview/1a2227c7a0b9a7e3ff05aac25d83c8c2-simple-soccer-ball-filled-stroke.png";
+         border-radius: 50%;
+         position: relative;
+         transition: transform 0.5s ease;
+     }
+
+     .foot {
+         width: 20px;
+         height: 10px;
+         background-color: grey;
+         position: absolute;
+         left: -20px; /* Position the foot relative to the ball */
+         bottom: 10px;
+         transform: rotate(-45deg);
+         transform-origin: top right;
+     }
+
+     .kick {
+         transform: translateX(300px) translateY(-100px);
+         transition: transform 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+     }    
 </style>
 
 
 <div class="w-2/3 bg-forest-green-600 flex flex-col h-2/3 items-center">
-    <div class="input-container h-full mt-5 mb-5 w-2/3 border-b-2 border-b-forest-green ">
+    <div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green ">
         <div class="mr-2">
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="w-16 h-16 mb-5 rounded-full border-neon-green">
         </div>
@@ -159,7 +195,10 @@
             <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
         </div>
         <div class="text-center justify-center py-2">
-            <button class="submit-button text-neon-green bg-forest-green p-1 rounded" on:click={createPost}>Submit</button>
+            <div class="ball" class:kick={isKicked} on:click={kickBall}>
+              <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232897640476180562/soccer2.png?ex=662b20e7&is=6629cf67&hm=cf356b5334643f31b4733fd22a03d830c86456d3a3a212ef46b571654b4a1b9b&" alt="Soccer Ball" style="width: 100%; height: auto;" on:click={createPost}>
+              <!-- <div class="foot"></div> -->
+            </div>
         </div>
     </div>
 </div>
