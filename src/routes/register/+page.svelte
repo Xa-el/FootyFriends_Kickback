@@ -57,7 +57,7 @@
         goto('/register/info');
       })
       .catch((error) => {
-        errorMessage = "User with that email already exists";
+        errorMessage = "User with that email already exists or password is less than 6 characters";
         showError = true;
       });
   }
