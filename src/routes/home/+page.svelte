@@ -3,13 +3,15 @@
     import { onMount } from 'svelte';
     import { session } from '$lib/session.js';
     import { goto } from '$app/navigation';
-    import { setDoc, doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
+    import { setDoc, doc, getDoc, collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore';
     import { db } from '$lib/firebase';
-    import { writable}  from 'svelte/store';
+    import { writable } from 'svelte/store';
     import Post from '../../components/Post.svelte';
 
-
     const posts = writable([]);
+    const batchSize = 5; // Number of posts to fetch per batch
+
+    let lastVisiblePost = null; // Reference to the last visible post
 
     function generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -24,10 +26,6 @@
 
     const randomPostId = generateRandomString(26);
 
-
-
-
-
     let displayName = '';
     let userId;
     let profile_url = '';
@@ -36,7 +34,6 @@
     let likesPost = 0;
     let postCaption = '';
 
-    /* Need to find a way to just import this from the layout */
     const fetchUserProfile = async (userId) => {
         const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
@@ -54,43 +51,68 @@
 
     async function createPost() {
         console.log("post called");
-        if(postCaption == ""){
-            console.log("No caption inputed");
+        if (postCaption == "") {
+            console.log("No caption inputted");
             return;
         }
-    	const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
-    	//console.log("user prof ref: " + userProfileRef);
-    	try {
-    		// Using setDoc with merge true to create or update
-    		await setDoc(cityPostRef, {
-    			display_name: displayName,
-    			likes : likesPost,
-    			u_id : userId,
-    			time : Date.now(),
-    			title : title,
-    			caption : postCaption,
-            pfpURL : profile_url,
-    		}, { merge: true });
+        const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
+        try {
+            // Using setDoc with merge true to create or update
+            await setDoc(cityPostRef, {
+                likes: likesPost,
+                u_id: userId,
+                time: Date.now(),
+                title: title,
+                caption: postCaption,
+            }, { merge: true });
 
-    		console.log("Post created successfully");
-        window.location.reload();
-    	} catch (error) {
-    		console.error("Error updating profile: ", error);
-    	}
-
+            console.log("Post created successfully");
+            window.location.reload();
+        } catch (error) {
+            console.error("Error updating profile: ", error);
+        }
     }
 
-
-  // Function to handle Enter key in textarea
-  function handleEnter(event) {
-    if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter key is pressed, ignoring if Shift is held (for new lines)
-      event.preventDefault(); // Prevent the default action to avoid a newline in textarea
-      kickBall();
-      createPost(); // Call the function to create the post
+    function handleEnter(event) {
+        if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter key is pressed, ignoring if Shift is held (for new lines)
+            event.preventDefault(); // Prevent the default action to avoid a newline in textarea
+            kickBall();
+            createPost(); // Call the function to create the post
+        }
     }
-  }
 
-    /* Not sure if we can just add some of this into the layout, need to talk about this */
+    async function loadMorePosts() {
+        if (lastVisiblePost) {
+            const cityDocRef = collection(db, userCity, "feed", "posts");
+            const sortedQuery = query(cityDocRef, orderBy("time", "desc"), startAfter(lastVisiblePost), limit(batchSize)); // Adjust query to start after the last visible post and limit the number of fetched posts
+            const querySnapshot = await getDocs(sortedQuery);
+            const newPosts = [];
+
+            querySnapshot.forEach((doc) => {
+                const postData = doc.data();
+                console.log("Post ID:", doc.id);
+                console.log("Title:", postData.title);
+                console.log("Caption:", postData.caption);
+                console.log("Likes:", postData.likes);
+                console.log("Time:", postData.time);
+                console.log("User ID:", postData.u_id);
+
+                newPosts.push({
+                    id: doc.id,
+                    title: postData.title,
+                    caption: postData.caption,
+                    likes: postData.likes,
+                    time: postData.time,
+                    userId: postData.u_id,
+                });
+
+                lastVisiblePost = doc;
+            });
+
+            posts.update((existingPosts) => [...existingPosts, ...newPosts]); // Append the newly fetched posts to the existing list
+        }
+    }
+
     onMount(async () => {
         session.subscribe(async ($session) => {
             if ($session.user) {
@@ -99,7 +121,7 @@
                 console.log("User city: " + userCity);
                 if (userCity) { // Check if userCity is available
                     const cityDocRef = collection(db, userCity, "feed", "posts");
-                    const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Create a query with sorting by "time" in descending order
+                    const sortedQuery = query(cityDocRef, orderBy("time", "desc"), limit(batchSize)); // Adjusted query to limit the initial fetch to batchSize
                     const querySnapshot = await getDocs(sortedQuery);
                     const loadedPosts = [];
 
@@ -108,24 +130,22 @@
                         console.log("Post ID:", doc.id);
                         console.log("Title:", postData.title);
                         console.log("Caption:", postData.caption);
-                        console.log("Display Name:", postData.display_name);
                         console.log("Likes:", postData.likes);
                         console.log("Time:", postData.time);
                         console.log("User ID:", postData.u_id);
-                        console.log("Profile URL:", postData.pfpURL);
 
                         loadedPosts.push({
                             id: doc.id,
                             title: postData.title,
                             caption: postData.caption,
-                            displayName: postData.display_name,
                             likes: postData.likes,
                             time: postData.time,
                             userId: postData.u_id,
-                            profile_url: postData.pfpURL
                         });
 
+                        lastVisiblePost = doc; // Update the reference to the last visible post
                     });
+
                     posts.set(loadedPosts);
                 } else {
                     console.log("No such city document!");
@@ -142,26 +162,25 @@
         });
     });
 
-  let isKicked = false;
-  let cleatMove = false;
+    let isKicked = false;
+    let cleatMove = false;
 
-  function cleatKick(){
-    cleatMove = !cleatMove;
-  }
+    function cleatKick() {
+        cleatMove = !cleatMove;
+    }
 
-  function kickBall() {
-    cleatMove = !cleatMove;
-    isKicked = true;
+    function kickBall() {
+        cleatMove = !cleatMove;
+        isKicked = true;
 
-    setTimeout(() => {
-      isKicked = false; // reset after animation
-      cleatMove = false;
-    }, 1000); // match the duration of the CSS animation
-  }
-
+        setTimeout(() => {
+            isKicked = false; // reset after animation
+            cleatMove = false;
+        }, 1000); // match the duration of the CSS animation
+    }
 </script>
 
-<style>
+    <style>
     .post-container {
         /*display: grid;*/
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
