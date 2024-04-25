@@ -59,6 +59,18 @@
     return querySnapshot.empty; // returns true if no documents match
   }
 
+
+  function checkImageUrl(url: string): Promise<boolean> {
+      return new Promise((resolve) => {
+          let img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = url;
+      });
+  }
+
+  let validURL = true;
+
   // Update user profile information
   async function updateProfile() {
 
@@ -71,13 +83,29 @@
     bio = displayBio;
     displayName = userSeenName;
     const isUnique = await isDisplayNameUnique(displayName);
+    const isValid = await checkImageUrl(pfpURL);
     if(!isUnique){
       showError = true;
       console.log("Not Unique Username");
-      usernameError = displayName + " is taken! Please pick a different name"
+      usernameError = displayName + " is taken! Please pick a different name. "
+         if (!isValid) {
+             console.log('The image URL is invalid.');
+             validURL = false;
+             usernameError = usernameError + " Profile URL is not valid! Please pick a different picture";
+             console.log(usernameError);
+             return;
+         }
+
       return;
     }
-    pfpURL = pfpURL;
+    // Validate image URL
+    if (!isValid) {
+        console.log('The image URL is invalid.');
+        validURL = false;
+        usernameError = usernameError + " Profile URL is not valid! Please pick a different picture";
+        console.log(usernameError);
+        return;
+    }
     city = userCity;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
     //console.log("user prof ref: " + userProfileRef);
