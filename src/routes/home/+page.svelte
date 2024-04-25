@@ -178,6 +178,21 @@
             cleatMove = false;
         }, 1000); // match the duration of the CSS animation
     }
+
+    let showLoadMoreButton = true;
+
+    // Function to determine whether to show the "Load More" button
+    function checkLoadMoreButton() {
+        const currentPosts = $posts; // Get the current list of posts
+        // Show the button if there are more posts to load
+        showLoadMoreButton = currentPosts.length % batchSize === 0 && currentPosts.length > 0;
+    }
+
+    // Function to handle the "Load More" button click
+    async function handleLoadMore() {
+        await loadMorePosts();
+        checkLoadMoreButton(); // Check again if the button should still be shown after loading more posts
+    }
 </script>
 
     <style>
@@ -247,13 +262,11 @@
 
                 <div class="w-20"></div>
             </div>
-        </button>  
-
-        
-
+        </button>
         </div>  
     </div>
 </div>
+
 
 
 <div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
@@ -262,6 +275,9 @@
             <Post {post} />
         {/each}
     </div>
+    {#if showLoadMoreButton}
+        <button on:click={handleLoadMore} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Load More</button>
+    {/if}
 </div>
 
 <div class="bg-side-green flex flex-col w-1/6 fixed right-0 top-0 h-screen border-forest-green border-l-4">
@@ -364,6 +380,7 @@
                 <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
             </div>
         </div>
-        
+
     </div>
+
 </div>
