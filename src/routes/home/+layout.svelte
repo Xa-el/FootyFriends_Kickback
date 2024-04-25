@@ -61,7 +61,7 @@
             <!-- pfp + name + loc -->
             <div class="flex flex-col items-center">
                 <!-- Profile Picture -->
-                <img src={pfpURL} alt={"PFP"} class="size-3/10 object-fill rounded-full mt-4">
+                <img src={pfpURL} alt={"PFP"} class="w-20 h-20 object-fit rounded-full mt-4">
                 
                 <div>
                     <!-- Username -->
