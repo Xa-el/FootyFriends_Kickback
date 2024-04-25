@@ -133,12 +133,20 @@
     });
 
   let isKicked = false;
+  let cleatMove = false;
+
+  function cleatKick(){
+    cleatMove = !cleatMove;
+  }
 
   function kickBall() {
+    cleatMove = !cleatMove;
     isKicked = true;
+
     setTimeout(() => {
       isKicked = false; // reset after animation
-    }, 1000); // match the duration of your CSS animation
+      cleatMove = false;
+    }, 1000); // match the duration of the CSS animation
   }
 
 </script>
@@ -169,19 +177,23 @@
      }
 
      .foot {
-         width: 20px;
-         height: 10px;
-         background-color: grey;
+         width: 50px;
+         height: 50px;
          position: absolute;
-         left: -20px; /* Position the foot relative to the ball */
-         bottom: 10px;
-         transform: rotate(-45deg);
+         left: -65px; /* Position the foot relative to the ball */
+         bottom: 1px;
+         transform: rotate(30deg);
          transform-origin: top right;
      }
 
+     .foot.kicked {
+          transform: rotate(-45deg);
+     }
+
+
      .kick {
          transform: translateX(300px) translateY(-100px);
-         transition: transform 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+         transition: transform 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
      }    
 </style>
 
@@ -196,6 +208,7 @@
         </div>
         <div class="text-center justify-center py-2">
             <div class="ball" class:kick={isKicked} on:click={kickBall}>
+              <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232911069698195477/6702498.png?ex=662b2d69&is=6629dbe9&hm=de74361ce8760fc65e5fa216d57902c7f2a3eac90336b579ccace4a83ee66532&" class="foot {cleatMove ? 'kicked' : ''}">
               <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232897640476180562/soccer2.png?ex=662b20e7&is=6629cf67&hm=cf356b5334643f31b4733fd22a03d830c86456d3a3a212ef46b571654b4a1b9b&" alt="Soccer Ball" style="width: 100%; height: auto;" on:click={createPost}>
               <!-- <div class="foot"></div> -->
             </div>
