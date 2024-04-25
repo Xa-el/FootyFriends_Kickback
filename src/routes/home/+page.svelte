@@ -156,7 +156,7 @@
             <img src={profile_url} alt={"PFP"} class="size-1/3 mb-5 rounded-full border-neon-green border-4">
         </div>
         <div class="flex items-center w-5/6 text-2xl">
-            <textarea id="postInput" class="text-neon-green py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
         </div>
         <div class="text-center justify-center py-2">
             <button class="submit-button text-neon-green bg-forest-green p-1 rounded" on:click={createPost}>Submit</button>
@@ -185,7 +185,7 @@
 
         <input class="w-4/5 placeholder:text-sm pl-2 rounded-lg" type="text" placeholder="Search">
     </div>
-    <div class=" w-full grow overflow-y-auto border-t-2 pt-3 border-neon-green">
+    <div class=" w-full grow overflow-y-auto pt-3">
         <div class="w-full h-fit flex flex-row pl-2 mb-3">
             <div class="w-16 rounded-full bg-black"></div>
             <div class="flex flex-col h-full grow pl-2">
