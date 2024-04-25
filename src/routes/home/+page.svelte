@@ -167,11 +167,11 @@
     .submit-button {
         margin-left: 10px; /* Adjust margin as needed */
     }
-     .ball {
+
+    .ball {
          width: 50px;
          height: 50px;
-         background-img: "https://images.vexels.com/media/users/3/249281/isolated/preview/1a2227c7a0b9a7e3ff05aac25d83c8c2-simple-soccer-ball-filled-stroke.png";
-         border-radius: 50%;
+         border-radius: 100%;
          position: relative;
          transition: transform 0.5s ease;
      }
@@ -180,11 +180,12 @@
          width: 50px;
          height: 50px;
          position: absolute;
-         left: -65px; /* Position the foot relative to the ball */
+         left: -65px;  /* Position the foot relative to the ball  */
          bottom: 1px;
          transform: rotate(30deg);
          transform-origin: top right;
-     }
+         transition: transform 0.15s ease;
+     } 
 
      .foot.kicked {
           transform: rotate(-45deg);
@@ -207,12 +208,21 @@
             <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
         </div>
         <div class="text-center justify-center py-2">
-            <div class="ball" class:kick={isKicked} on:click={kickBall}>
-              <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232911069698195477/6702498.png?ex=662b2d69&is=6629dbe9&hm=de74361ce8760fc65e5fa216d57902c7f2a3eac90336b579ccace4a83ee66532&" class="foot {cleatMove ? 'kicked' : ''}">
-              <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232897640476180562/soccer2.png?ex=662b20e7&is=6629cf67&hm=cf356b5334643f31b4733fd22a03d830c86456d3a3a212ef46b571654b4a1b9b&" alt="Soccer Ball" style="width: 100%; height: auto;" on:click={createPost}>
-              <!-- <div class="foot"></div> -->
+
+        <button type="button" style="transition-timing-function: ease;" on:click={kickBall} on:click={createPost}>
+            <div class="flex flex-row-reverse"> 
+                <div class="ball">
+                    <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232911069698195477/6702498.png?ex=662b2d69&is=6629dbe9&hm=de74361ce8760fc65e5fa216d57902c7f2a3eac90336b579ccace4a83ee66532&" alt="foot" class="foot {cleatMove ? 'kicked' : ''}">
+                    <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232897640476180562/soccer2.png?ex=662b20e7&is=6629cf67&hm=cf356b5334643f31b4733fd22a03d830c86456d3a3a212ef46b571654b4a1b9b&" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked}>
+                </div>  
+
+                <div class="w-20"></div>
             </div>
-        </div>
+        </button>  
+
+        
+
+        </div>  
     </div>
 </div>
 
