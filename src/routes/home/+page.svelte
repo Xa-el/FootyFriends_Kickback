@@ -80,6 +80,16 @@
 
     }
 
+
+  // Function to handle Enter key in textarea
+  function handleEnter(event) {
+    if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter key is pressed, ignoring if Shift is held (for new lines)
+      event.preventDefault(); // Prevent the default action to avoid a newline in textarea
+      kickBall();
+      createPost(); // Call the function to create the post
+    }
+  }
+
     /* Not sure if we can just add some of this into the layout, need to talk about this */
     onMount(async () => {
         session.subscribe(async ($session) => {
@@ -205,7 +215,7 @@
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="w-16 h-16 mb-5 rounded-full border-neon-green">
         </div>
         <div class="flex items-center w-5/6 text-2xl">
-            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
         </div>
         <div class="text-center justify-center py-2">
 
