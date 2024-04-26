@@ -256,8 +256,8 @@
         <button type="button" style="transition-timing-function: ease;" on:click={kickBall} on:click={createPost}>
             <div class="flex flex-row-reverse"> 
                 <div class="ball">
-                    <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232911069698195477/6702498.png?ex=662b2d69&is=6629dbe9&hm=de74361ce8760fc65e5fa216d57902c7f2a3eac90336b579ccace4a83ee66532&" alt="foot" class="foot {cleatMove ? 'kicked' : ''}">
-                    <img src="https://cdn.discordapp.com/attachments/1224952780838539346/1232897640476180562/soccer2.png?ex=662b20e7&is=6629cf67&hm=cf356b5334643f31b4733fd22a03d830c86456d3a3a212ef46b571654b4a1b9b&" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked}>
+                    <img src="https://i.ibb.co/MRRcRyr/6702498.png" alt="foot" class="foot {cleatMove ? 'kicked' : ''}">
+                    <img src="https://i.ibb.co/brsLqL9/soccer2.png" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked}>
                 </div>  
 
                 <div class="w-20"></div>
