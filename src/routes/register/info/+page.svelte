@@ -75,7 +75,12 @@
   async function updateProfile() {
 
     // Check if any of the required fields are empty
+    if(uploadCheck == true){
+       pfpURL = uploadURL;    
+       console.log("upload if statement went through, " + pfpURL + " and upload URL is: " + uploadURL);
+    }
     if (!userSeenName || !displayBio || !pfpURL || !$search) {
+      console.log("Username: " + userSeenName + " Bio: " + displayBio + " pfpURL: " + pfpURL);
       console.log("Please fill in all required fields.");
       return; // Exit the function if any field is empty
     }
@@ -83,6 +88,7 @@
     bio = displayBio;
     displayName = userSeenName;
     const isUnique = await isDisplayNameUnique(displayName);
+
     const isValid = await checkImageUrl(pfpURL);
     if(!isUnique){
       showError = true;
@@ -176,6 +182,40 @@
   function closeErrorMessage() {
     showError = false;
   }
+
+  let uploadURL = '';
+  let uploadCheck = false;
+
+  async function handleUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'l0gwscnc');
+
+    try {
+      // Direct upload to Cloudinary's API
+      const response = await fetch('https://api.cloudinary.com/v1_1/dong0qhly/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Uploaded Image URL:', data.secure_url);
+        uploadCheck = true;
+        uploadURL = data.secure_url;
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
+
 </script>
 
 <style>
@@ -312,6 +352,7 @@
             <div class="flex flex-row items-center w-full justify-between">
                 <p class="font-bold text-neon-green">PFP Image URL:</p>
                 <input class="inputButton w-3/5" bind:value={pfpURL} placeholder="Image URL" />
+                <input type="file" on:change="{handleUpload}" />
             </div>
             <br>
             <!-- ADD CITY DROP DOWN RIGHT BELOW THIS, TO DO LATER. BUT ALSO FIGURE OUT FIREBASE STUFF-->
