@@ -32,7 +32,7 @@
     let userCity = '';
     let title = '';
     let likesPost = 0;
-    let postCaption = '';
+    let postCaption = writable("");
 
     const fetchUserProfile = async (userId) => {
         const docRef = doc(db, "users", userId);
@@ -49,13 +49,16 @@
         }
     };
 
+
+    $: charCount = $postCaption.length;
     async function createPost() {
         console.log("post called");
-        if (postCaption.trim() == "") {
+        if ($postCaption.trim() == "") {
             console.log("No caption inputted");
             return;
         }
-        if(postCaption.length > 184){
+        
+        if($postCaption.length > 184){
             console.log("post too long");
             return;
         }
@@ -67,7 +70,7 @@
                 u_id: userId,
                 time: Date.now(),
                 title: title,
-                caption: postCaption,
+                caption: $postCaption,
             }, { merge: true });
 
             console.log("Post created successfully");
@@ -212,6 +215,12 @@
     .input-container {
         display: flex;
         align-items: flex-start; /* Align items at the start */
+        position: relative;
+    }
+    .char-count{
+        position: absolute;
+        right: 5px;
+        bottom: 10px;
     }
     .submit-button {
         margin-left: 10px; /* Adjust margin as needed */
@@ -252,7 +261,10 @@
     <div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green ">
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="mr-2 w-16 h-16 mb-5 rounded-full border-neon-green object-fit">
         <div class="flex items-center w-5/6 text-2xl">
-            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..."></textarea>
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={$postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..."></textarea>
+        <div class="char-count text-xs text-neon-green">
+            {charCount} / 184
+        </div>
         </div>
         <div class="text-center justify-center py-2">
 
