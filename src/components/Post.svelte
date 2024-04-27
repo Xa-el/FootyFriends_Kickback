@@ -35,8 +35,8 @@
                <h1 class="text-3xl mr-1">{displayName}</h1>
                <p style="color: #9F9F9F;">{new Date(post.time).toLocaleString()}</p>
           </div>
-          <div class="max-w-full grow pt-2 border">
-               <p class="max-w-full border border-red-500 h-full break-words">{post.caption}</p> <!-- fix this later like without the margin top it looks scuffed and there is an extra line for some reason -->
+          <div class="max-w-full grow pt-2">
+               <p class="max-w-full h-full break-words">{post.caption}</p> <!-- fix this later like without the margin top it looks scuffed and there is an extra line for some reason -->
           </div>
      </div>
 	
