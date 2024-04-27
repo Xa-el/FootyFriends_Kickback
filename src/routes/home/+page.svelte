@@ -338,23 +338,7 @@
         </div>
 
         <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <img src="https://pbs.twimg.com/media/F5TcRc3bAAAjD_d.jpg:large" class="w-16 min-w-16 h-16 rounded-full">
-            <div class="flex flex-col h-full grow pl-2">
-                <h1 class="w-full text-sm text-white">NJHanni</h1>
-                <p class="w-full text-gray-500 text-sm">Super shy super shy but wait a minute while...</p>
-            </div>
-        </div>
-
-        <div class="w-full h-fit flex flex-row pl-2 mb-3">
             <div class="w-16 rounded-full bg-black"></div>
-            <div class="flex flex-col h-full grow pl-2">
-                <h1 class="w-full text-sm text-white">John Smith</h1>
-                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
-            </div>
-        </div>
-
-        <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <div class="w-16 h-16 rounded-full bg-black"></div>
             <div class="flex flex-col h-full grow pl-2">
                 <h1 class="w-full text-sm text-white">John Smith</h1>
                 <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
