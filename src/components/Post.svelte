@@ -33,7 +33,7 @@
                <h1 class="text-3xl mr-1">{displayName}</h1>
                <p style="color: #9F9F9F;">{new Date(post.time).toLocaleString()}</p>
           </div>
-          <p>{post.caption}</p>
+          <p class="mt-[-25px]">{post.caption}</p> <!-- fix this later like without the margin top it looks scuffed and there is an extra line for some reason -->
           </div>
      </div>
 	<p>Likes: {post.likes}</p>

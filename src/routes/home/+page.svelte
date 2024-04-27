@@ -51,7 +51,7 @@
 
     async function createPost() {
         console.log("post called");
-        if (postCaption == "") {
+        if (postCaption.trim() == "") {
             console.log("No caption inputted");
             return;
         }
@@ -203,6 +203,7 @@
     }
     textarea {
         resize: none;
+
     }
     .input-container {
         display: flex;
@@ -247,7 +248,7 @@
     <div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green ">
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="mr-2 w-16 h-16 mb-5 rounded-full border-neon-green object-fit">
         <div class="flex items-center w-5/6 text-2xl">
-            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent; " placeholder="Write your post here..."></textarea>
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..." maxlength="184"></textarea>
         </div>
         <div class="text-center justify-center py-2">
 
@@ -268,7 +269,7 @@
 
 
 <div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
-    <div class="post-container flex-grow flex flex-col items-center">
+    <div class="post-container flex-grow flex flex-col items-center" style="white-space: pre-wrap;">
         {#each $posts as post}
             <Post {post} />
         {/each}
