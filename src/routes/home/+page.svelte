@@ -222,6 +222,9 @@
         right: 5px;
         bottom: 10px;
     }
+    .char-count.over{
+        color: red;
+    }
     .submit-button {
         margin-left: 10px; /* Adjust margin as needed */
     }
@@ -262,7 +265,7 @@
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="mr-2 w-16 h-16 mb-5 rounded-full border-neon-green object-fit">
         <div class="flex items-center w-5/6 text-2xl">
             <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={$postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..."></textarea>
-        <div class="char-count text-xs text-neon-green">
+        <div class="char-count text-xs text-neon-green {charCount > 184 ? 'over' : ''}">
             {charCount} / 184
         </div>
         </div>
