@@ -50,6 +50,11 @@
         }
     };
 
+     async function getCurrentTime() {
+       const response = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
+       const data = await response.json();
+       return new Date(data.utc_datetime).getTime();
+     }
 
     $: charCount = $postCaption.length;
     async function createPost() {
@@ -66,10 +71,11 @@
         const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
         try {
             // Using setDoc with merge true to create or update
+            const currentTime = await getCurrentTime();
             await setDoc(cityPostRef, {
                 likes: likesPost,
                 u_id: userId,
-                time: Date.now(),
+                time: currentTime,
                 title: title,
                 caption: $postCaption,
             }, { merge: true });
