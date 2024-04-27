@@ -55,6 +55,10 @@
             console.log("No caption inputted");
             return;
         }
+        if(postCaption.length > 184){
+            console.log("post too long");
+            return;
+        }
         const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
         try {
             // Using setDoc with merge true to create or update
@@ -248,7 +252,7 @@
     <div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green ">
             <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="mr-2 w-16 h-16 mb-5 rounded-full border-neon-green object-fit">
         <div class="flex items-center w-5/6 text-2xl">
-            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..." maxlength="184"></textarea>
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..."></textarea>
         </div>
         <div class="text-center justify-center py-2">
 
