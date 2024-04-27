@@ -7,6 +7,7 @@
     import { db } from '$lib/firebase';
     import { writable } from 'svelte/store';
     import Post from '../../components/Post.svelte';
+    import Message from '../../components/Message.svelte'; 
 
     const posts = writable([]);
     const batchSize = 5; // Number of posts to fetch per batch
@@ -310,12 +311,31 @@
 
         <input class="w-4/5 placeholder:text-sm pl-2 rounded-lg" type="text" placeholder="Search">
     </div>
-    <div class=" w-full grow overflow-y-auto pt-1">
+    <div class="w-full grow overflow-y-auto pt-1">
+        <!-- {#each $posts as post} -->
+            <Message /> <!-- <Message {post} /> -->
+        <!-- {/each} -->
         <div class="w-full h-fit flex flex-row pl-2 mb-3">
             <div class="w-16 rounded-full bg-black"></div>
             <div class="flex flex-col h-full grow pl-2">
                 <h1 class="w-full text-sm text-white">John Smith</h1>
                 <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <img src="https://i.pinimg.com/originals/56/45/36/56453693d441a300f754c6100daf0761.jpg" class="w-16 h-16 rounded-full">
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">Toji</h1>
+                <p class="w-full text-gray-500 text-sm">Bruh.</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <img src="https://pbs.twimg.com/media/F5TcRc3bAAAjD_d.jpg:large" class="w-16 min-w-16 h-16 rounded-full">
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">NJHanni</h1>
+                <p class="w-full text-gray-500 text-sm">Super shy super shy but wait a minute while...</p>
             </div>
         </div>
 
@@ -328,7 +348,7 @@
         </div>
 
         <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <div class="w-16 rounded-full bg-black"></div>
+            <div class="w-16 h-16 rounded-full bg-black"></div>
             <div class="flex flex-col h-full grow pl-2">
                 <h1 class="w-full text-sm text-white">John Smith</h1>
                 <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
@@ -336,26 +356,10 @@
         </div>
 
         <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <div class="w-16 rounded-full bg-black"></div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnL3XkrdO2lISMIpl1zPeiWvtM0achJgZz_LVJMAK7gg&s" class="w-16 h-16 rounded-full">
             <div class="flex flex-col h-full grow pl-2">
-                <h1 class="w-full text-sm text-white">John Smith</h1>
-                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
-            </div>
-        </div>
-
-        <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <div class="w-16 rounded-full bg-black"></div>
-            <div class="flex flex-col h-full grow pl-2">
-                <h1 class="w-full text-sm text-white">John Smith</h1>
-                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
-            </div>
-        </div>
-
-        <div class="w-full h-fit flex flex-row pl-2 mb-3">
-            <div class="w-16 rounded-full bg-black"></div>
-            <div class="flex flex-col h-full grow pl-2">
-                <h1 class="w-full text-sm text-white">John Smith</h1>
-                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+                <h1 class="w-full text-sm text-white">Paul</h1>
+                <p class="w-full text-gray-500 text-sm">SILENCE! My name is Paul Atreides, DUKE of Arrakis.</p>
             </div>
         </div>
 

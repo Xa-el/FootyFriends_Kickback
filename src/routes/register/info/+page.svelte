@@ -351,11 +351,12 @@
             <br>
             <div class="flex flex-row items-center w-full justify-between">
                 <p class="font-bold text-neon-green">PFP Image URL:</p>
-                <input class="inputButton w-3/5" bind:value={pfpURL} placeholder="Image URL" />
-                <input type="file" on:change="{handleUpload}" />
+                <div class="flex flex-col items-center">
+                     <input class="inputButton" bind:value={pfpURL} placeholder="Image URL" />
+                     <input class="" type="file" on:change="{handleUpload}" />
+                </div>
             </div>
             <br>
-            <!-- ADD CITY DROP DOWN RIGHT BELOW THIS, TO DO LATER. BUT ALSO FIGURE OUT FIREBASE STUFF-->
 
             <div class="flex flex-row items-center w-full justify-between">
               <p class="font-bold text-neon-green">City:</p>
