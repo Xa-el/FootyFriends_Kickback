@@ -25,27 +25,24 @@
      });
 </script>
 
-<div class="post text-white">
-     <div class="flex items-center">
-          <img src={profile_url} class="radi mr-[10px] w-16 h-16 rounded-full border-neon-green border-4">
-          <div>
-          <div class="flex items-baseline">
+<div class="text-white w-5/6 max-w-5/6 flex flex-row">
+     <div class="h-full w-fit p-3 flex flex-col justify-between items-center min-w-24">
+          <img src={profile_url} class="radi w-16 h-16 rounded-full border-neon-green">
+          <p>Likes: {post.likes}</p>
+     </div>
+     <div class="flex flex-col h-full w-full max-w-full overflow-hidden">
+          <div class="flex flex-row items-end">
                <h1 class="text-3xl mr-1">{displayName}</h1>
                <p style="color: #9F9F9F;">{new Date(post.time).toLocaleString()}</p>
           </div>
-          <p class="mt-[-25px]">{post.caption}</p> <!-- fix this later like without the margin top it looks scuffed and there is an extra line for some reason -->
+          <div class="max-w-full grow pt-2 border">
+               <p class="max-w-full border border-red-500 h-full break-words">{post.caption}</p> <!-- fix this later like without the margin top it looks scuffed and there is an extra line for some reason -->
           </div>
      </div>
-	<p>Likes: {post.likes}</p>
+	
 </div>
 
 <style>
-    .post {
-        border: 1px solid #ccc;
-        padding: 20px;
-        border-radius: 8px;
-        width: 85%;
-    }
     .radi{
         border-width: 3px;
     }
