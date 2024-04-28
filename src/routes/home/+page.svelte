@@ -50,11 +50,19 @@
         }
     };
 
-     async function getCurrentTime() {
-       const response = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
-       const data = await response.json();
-       return new Date(data.utc_datetime).getTime();
-     }
+    async function getCurrentTime() {
+        // Get the current date and time in UTC
+        const currentDate = new Date();
+
+        // Get the current date and time in Eastern Standard Time (EST)
+        const estDateTimeString = currentDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+
+        // Parse the EST date and time string to get the timestamp
+        const estDateTime = new Date(estDateTimeString);
+
+        // Return the timestamp
+        return estDateTime.getTime();
+    }
 
     $: charCount = $postCaption.length;
     async function createPost() {
@@ -178,11 +186,6 @@
 
     let isKicked = false;
     let cleatMove = false;
-
-    function cleatKick() {
-        cleatMove = !cleatMove;
-    }
-
     function kickBall() {
         cleatMove = !cleatMove;
         isKicked = true;

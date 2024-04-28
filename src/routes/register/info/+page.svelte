@@ -10,7 +10,6 @@
   let displayBio = ''
   let userSeenName = ''
   let bio = '';
-  let city = '';
   let displayName = '';
   let userId: any = ''; // Should change later to a specific type
   let pfpURL = '';
