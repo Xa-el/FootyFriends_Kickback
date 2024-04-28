@@ -53,13 +53,10 @@
     async function getCurrentTime() {
         // Get the current date and time in UTC
         const currentDate = new Date();
-
         // Get the current date and time in Eastern Standard Time (EST)
         const estDateTimeString = currentDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
-
         // Parse the EST date and time string to get the timestamp
         const estDateTime = new Date(estDateTimeString);
-
         // Return the timestamp
         return estDateTime.getTime();
     }
