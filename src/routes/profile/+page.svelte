@@ -4,12 +4,15 @@
   import { doc, getDoc, setDoc } from 'firebase/firestore'; // Note: Using setDoc now
   import { session } from '$lib/session';
   import { goto } from '$app/navigation';
+  import "../../app.css";
 
   let displayBio = ''
   let userSeenName = ''
   let bio = '';
   let displayName = '';
-  let userId;
+  let userId = '';
+  let pfpURL = '';
+  let userCity = '';
 
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
@@ -20,32 +23,12 @@
     if (docSnap.exists()) {
       bio = docSnap.data().bio;
       displayName = docSnap.data().display_name;
+      pfpURL = docSnap.data().pfpURL;
+      userCity = docSnap.data().City;
     } else {
       console.log("No such document!");
     }
   };
-
-  // Update user profile information
-  async function updateProfile() {
-    // Adjusted document reference
-    bio = displayBio;
-    displayName = userSeenName;
-    const userProfileRef = doc(db, "users", userId); // Adjusted path
-    //console.log("user prof ref: " + userProfileRef);
-    try {
-      // Using setDoc with merge true to create or update
-      await setDoc(userProfileRef, {
-        bio : bio,
-        display_name: displayName,
-      }, { merge: true });
-
-      console.log("Profile updated successfully");
-      displayBio = '';
-      userSeenName = '';
-    } catch (error) {
-      console.error("Error updating profile: ", error);
-    }
-  }
 
   // On component mount, fetch the user profile
   onMount(() => {
@@ -61,17 +44,30 @@
   });
 </script>
 
-<form on:submit|preventDefault={updateProfile}>
-  <h2>Edit Profile</h2>
-  <input bind:value={userSeenName} type="text" placeholder="Display Name" />
-  <textarea bind:value={displayBio} placeholder="Bio"></textarea>
-  <button type="submit">Update Profile</button>
-</form>
+<div class="w-5/6 h-full ml-80 fixed">
+  <h2 class="text-neon-green font-bold text-3xl mt-5 ">Profile</h2>
 
-<h2>User Profile</h2>
-<p>Current Display Name: {displayName}</p>
-<p>Current Bio: {bio}</p>
+  <div class="flex justify-center">
+    <div class="border-b-2 border-forest-green w-full "></div>
+  </div>
+
+  <div class="flex flex-row">
+    <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
+    <div class="flex flex-col justify-center ml-10">
+      <p class="text-white font-bold text-4xl">{displayName}</p>
+      <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
+
+      <div class="w-full overflow-y-auto">
+        <p class="text-white w-full">{bio}</p>
+      </div>
+
+    </div>
 
 
+  </div>
+  
+  <div class="flex justify-center w-screen mr-10">
+    <div class="border-b-2 border-forest-green w-full"></div>
+  </div>
 
-<p>Visit <a href="/">Home</a></p>
+</div>
