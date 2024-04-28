@@ -111,7 +111,7 @@
         console.log(usernameError);
         return;
     }
-    city = userCity;
+    let city = userCity;
     const userProfileRef = doc(db, "users", userId); // Adjusted path
     //console.log("user prof ref: " + userProfileRef);
     try {
