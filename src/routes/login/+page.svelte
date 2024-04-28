@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { session } from '$lib/session';
 	import { auth } from '$lib/firebase';
+    import { onMount } from 'svelte';
 	import {
 		GoogleAuthProvider,
 		signInWithPopup,
@@ -55,6 +56,15 @@
 		goto('/register');
 
 	}
+
+    onMount(async () => {
+    session.subscribe(($session) => {
+      if ($session.user) {
+        goto('/');
+      }
+    });
+  });
+
 </script>
 
 <style>

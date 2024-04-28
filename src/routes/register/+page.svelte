@@ -3,6 +3,7 @@
   import { createUserWithEmailAndPassword } from 'firebase/auth';
   import { goto } from '$app/navigation';
   import { session } from '$lib/session';
+  import { onMount } from 'svelte';
   import {
     GoogleAuthProvider,
     signInWithPopup,
@@ -61,6 +62,15 @@
         showError = true;
       });
   }
+
+  onMount(async () => {
+    session.subscribe(($session) => {
+      if ($session.user) {
+        goto('/');
+      }
+    });
+  });
+
 </script>
 
 

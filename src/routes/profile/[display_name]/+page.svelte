@@ -9,10 +9,10 @@
 
 
 	onMount(async () => {
-    console.log("Fetching profile for userId:", $page.params.userId);
-    const userId = $page.params.userId; // Access the dynamic segment
+    console.log("Fetching profile for userId:", $page.params.display_name);
+    const displayName = $page.params.display_name; // Access the dynamic segment
     
-    const docRef = doc(db, "users", userId);
+    const docRef = doc(db, "users", displayName);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
