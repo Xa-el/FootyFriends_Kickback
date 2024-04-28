@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { session } from '$lib/session.js';
 	import { goto } from '$app/navigation';
-	import { doc, getDoc, collection, getDocs, query, orderBy} from 'firebase/firestore';
+	import { doc, getDoc, collection, getDocs, query, orderBy, deleteDoc} from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { writable } from 'svelte/store';
 	import Post from '../../components/Post.svelte';
@@ -27,6 +27,15 @@
 		} else {
 			console.log("No such document!");
 			return null; // Return null if user document doesn't exist
+		}
+	};
+
+	const removePost = async (postId) => {
+		try {
+			await deleteDoc(doc(db, userCity, "feed", "posts", postId));
+			console.log("Post successfully deleted!");
+		} catch (error) {
+			console.error("Error removing post: ", error);
 		}
 	};
 
@@ -81,7 +90,10 @@
 <div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
 	<div class="post-container flex-grow flex flex-col items-center" style="white-space: pre-wrap;">
 		{#each $posts as post}
-			<Post {post} />
+			<div class="post-wrapper">
+				<Post {post} />
+				<button class="remove-button" on:click={() => removePost(post.id)}>X</button>
+			</div>
 		{/each}
 	</div>
 </div>
