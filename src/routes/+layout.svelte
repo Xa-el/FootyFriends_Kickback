@@ -12,6 +12,7 @@
 	let userCity = '';
 	let pfpURL = '';
 	let currentPath = '';
+	let loggedINNN = false;
 	import type { LayoutData } from './$types';
 	export let data: LayoutData;
 
@@ -60,6 +61,7 @@
 		session.subscribe(($session) => {
 			if ($session.user) {
 				userId = $session.user.uid;
+				loggedINNN = true;
 				fetchUserProfile(userId);
 			} else {
 				// User is not logged in, redirect or handle accordingly
@@ -80,6 +82,7 @@
 
 </script>
 
+{#if loggedINNN}
 <div class='bg-side-green w-1/6 border-forest-green border-r-4 fixed left-0 top-0 h-screen'>
 	<!--Big div-->
 	<div>
@@ -259,6 +262,8 @@
 	</div>
 
 </div>
+{/if}
+
 
 <!-- <div class="bg-pink-500 w-1/6 fixed right-0 top-0 h-screen"></div> -->
 
