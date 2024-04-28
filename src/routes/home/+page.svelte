@@ -243,7 +243,12 @@
          position: relative;
          transition: transform 0.5s ease;
      }
-
+    .ball.over {
+         width: 50px;
+         height: 50px;
+         border-radius: 100%;
+         position: relative;
+     }
      .foot {
          width: 50px;
          height: 50px;
@@ -254,11 +259,19 @@
          transform-origin: top right;
          transition: transform 0.15s ease;
      } 
-
+     .foot.over{
+         width: 50px;
+         height: 50px;
+         position: absolute;
+         left: -65px;  /* Position the foot relative to the ball  */
+         bottom: 1px;
+         transform: rotate(5deg);
+         transform-origin: top right;
+         transition: transform 0.15s ease;
+     }
      .foot.kicked {
           transform: rotate(-45deg);
      }
-
 
      .kick {
          transform: translateX(300px) translateY(-100px);
@@ -280,9 +293,9 @@
 
         <button type="button" style="transition-timing-function: ease;" on:click={kickBall} on:click={createPost}>
             <div class="flex flex-row-reverse"> 
-                <div class="ball">
-                    <img src="https://i.ibb.co/MRRcRyr/6702498.png" alt="foot" class="foot {cleatMove ? 'kicked' : ''}">
-                    <img src="https://i.ibb.co/brsLqL9/soccer2.png" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked}>
+                <div class="ball {charCount > 184 ? 'over' : ''}">
+                    <img src="https://i.ibb.co/MRRcRyr/6702498.png" alt="foot" class="foot {cleatMove ? 'kicked' : ''} {charCount > 184 ? 'over' : ''}">
+                    <img src="https://i.ibb.co/brsLqL9/soccer2.png" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked} class="{charCount > 184 ? 'over' : ''}">
                 </div>  
 
                 <div class="w-20"></div>
