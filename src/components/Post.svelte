@@ -12,7 +12,7 @@
      let userCity = ''; 
      //let isLiked = false;
      let isLiked = post.isLiked;
-     let likeIds = writable([]);
+     let ids = [];
 
      const fetchUserProfile = async (userId) => {
           const docRef = doc(db, "users", userId);
@@ -40,20 +40,23 @@
 
    }
 
-    async function fetchLikes(postId) {
-        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
-        const snapshot = await getDocs(likesRef);
-        let ids = [];
-        snapshot.forEach(doc => {
-            console.log("like id: " + doc.id);
-            ids.push(doc.id); // assuming the document ID is the user ID
-        });
-        likeIds.set(ids);
-    }
+     async function fetchLikes(postId) {
+       const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
+       const snapshot = await getDocs(likesRef);
+       snapshot.forEach((doc) => {
+         console.log("like id: " + doc.id);
+         if (!ids.includes(doc.id)) { // Check if ids array does not contain doc.id
+           ids.push(doc.id); // assuming the document ID is the user ID
+           console.log(ids);
+         } else {
+           console.log("ID already exists:", doc.id);
+         }
+       });
+     }
 
 
      let likes = writable(post.likes || 0); // Initialize with the current likes
-    async function likePost(postId, userId) {
+      async function likePost(postId, userId) {
         console.log("user city: " + userCity);
         const postRef = doc(db, userCity, "feed", "posts", postId);
         const postSnap = await getDoc(postRef);
@@ -64,7 +67,8 @@
           }
 
         fetchLikes(postId);
-        console.log("Like Ids: " + likeIds);
+        console.log("Hello");
+        console.log("Like Ids: " + ids);
        
         try {
           if(isLiked == false){
