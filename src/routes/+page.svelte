@@ -3,224 +3,409 @@
     import { onMount } from 'svelte';
     import { session } from '$lib/session.js';
     import { goto } from '$app/navigation';
-    import { doc, getDoc } from 'firebase/firestore';
+    import { setDoc, doc, getDoc, collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore';
     import { db } from '$lib/firebase';
+    import { writable } from 'svelte/store';
+    import Post from '../components/Post.svelte';
+    import Message from '../components/Message.svelte';
+
+    const posts = writable([]);
+    const batchSize = 5; // Number of posts to fetch per batch
+
+    let lastVisiblePost = null; // Reference to the last visible post
+
+    function generateRandomString(length: number): string {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters.charAt(randomIndex);
+        }
+        return result;
+    }
+
+    const randomPostId = generateRandomString(26);
 
     let displayName = '';
     let userId;
+    let profile_url = '';
     let userCity = '';
-    let pfpURL = '';
+    let title = '';
+    let likesPost = 0;
+    let postCaption = writable("");
 
     const fetchUserProfile = async (userId) => {
-        // Assuming a specific doc ID or using a known doc ID here. Adjust as needed.
-        const docRef = doc(db, "users", userId); // Adjusted path
+        const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             displayName = docSnap.data().display_name;
-            pfpURL = docSnap.data().pfpURL;
-            userCity = docSnap.data().City;
-            console.log("Display Name: " + displayName + "PFP URL: " + pfpURL);
+            userCity = docSnap.data().City
+            profile_url = docSnap.data().pfpURL;
+            return userCity; // Return user city for further use
         } else {
             console.log("No such document!");
+            return null; // Return null if user document doesn't exist
         }
     };
 
-    onMount(() => {
-        session.subscribe(($session) => {
+    async function getCurrentTime() {
+        // Get the current date and time in UTC
+        const currentDate = new Date();
+        // Get the current date and time in Eastern Standard Time (EST)
+        const estDateTimeString = currentDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+        // Parse the EST date and time string to get the timestamp
+        const estDateTime = new Date(estDateTimeString);
+        // Return the timestamp
+        return estDateTime.getTime();
+    }
+
+    $: charCount = $postCaption.length;
+    async function createPost() {
+        console.log("post called");
+        if ($postCaption.trim() == "") {
+            console.log("No caption inputted");
+            return;
+        }
+
+        if($postCaption.length > 184){
+            console.log("post too long");
+            return;
+        }
+        const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
+        try {
+            // Using setDoc with merge true to create or update
+            const currentTime = await getCurrentTime();
+            await setDoc(cityPostRef, {
+                likes: likesPost,
+                u_id: userId,
+                time: currentTime,
+                title: title,
+                caption: $postCaption,
+            }, { merge: true });
+
+            console.log("Post created successfully");
+            window.location.reload();
+        } catch (error) {
+            console.error("Error updating profile: ", error);
+        }
+    }
+
+    function handleEnter(event) {
+        if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter key is pressed, ignoring if Shift is held (for new lines)
+            event.preventDefault(); // Prevent the default action to avoid a newline in textarea
+            kickBall();
+            createPost(); // Call the function to create the post
+        }
+    }
+
+    async function loadMorePosts() {
+        if (lastVisiblePost) {
+            const cityDocRef = collection(db, userCity, "feed", "posts");
+            const sortedQuery = query(cityDocRef, orderBy("time", "desc"), startAfter(lastVisiblePost), limit(batchSize)); // Adjust query to start after the last visible post and limit the number of fetched posts
+            const querySnapshot = await getDocs(sortedQuery);
+            const newPosts = [];
+
+            querySnapshot.forEach((doc) => {
+                const postData = doc.data();
+                console.log("Post ID:", doc.id);
+                console.log("Title:", postData.title);
+                console.log("Caption:", postData.caption);
+                console.log("Likes:", postData.likes);
+                console.log("Time:", postData.time);
+                console.log("User ID:", postData.u_id);
+
+                newPosts.push({
+                    id: doc.id,
+                    title: postData.title,
+                    caption: postData.caption,
+                    likes: postData.likes,
+                    time: postData.time,
+                    userId: postData.u_id,
+                });
+
+                lastVisiblePost = doc;
+            });
+
+            posts.update((existingPosts) => [...existingPosts, ...newPosts]); // Append the newly fetched posts to the existing list
+        }
+    }
+
+    onMount(async () => {
+        session.subscribe(async ($session) => {
             if ($session.user) {
                 userId = $session.user.uid;
-                fetchUserProfile(userId);
+                userCity = await fetchUserProfile(userId); // Fetch user profile and get the user's city
+                console.log("User city: " + userCity);
+                if (userCity) { // Check if userCity is available
+                    const cityDocRef = collection(db, userCity, "feed", "posts");
+                    const sortedQuery = query(cityDocRef, orderBy("time", "desc"), limit(batchSize)); // Adjusted query to limit the initial fetch to batchSize
+                    const querySnapshot = await getDocs(sortedQuery);
+                    const loadedPosts = [];
+
+                    querySnapshot.forEach((doc) => {
+                        const postData = doc.data();
+                        console.log("Post ID:", doc.id);
+                        console.log("Title:", postData.title);
+                        console.log("Caption:", postData.caption);
+                        console.log("Likes:", postData.likes);
+                        console.log("Time:", postData.time);
+                        console.log("User ID:", postData.u_id);
+
+                        loadedPosts.push({
+                            id: doc.id,
+                            title: postData.title,
+                            caption: postData.caption,
+                            likes: postData.likes,
+                            time: postData.time,
+                            userId: postData.u_id,
+                        });
+
+                        lastVisiblePost = doc; // Update the reference to the last visible post
+                    });
+
+                    posts.set(loadedPosts);
+                } else {
+                    console.log("No such city document!");
+                }
             } else {
                 // User is not logged in, redirect or handle accordingly
-                pfpURL = 'https://cdn.pfps.gg/pfps/9795-gojo.png'; // Default image source
-                displayName = 'Guest';
-                userCity = 'Unknown';
                 goto('/login');
                 const reloadAfterRedirect = () => {
                     window.location.reload();
                 };
-
                 // Wait for the page to redirect, then reload
                 setTimeout(reloadAfterRedirect, 1000);
             }
         });
     });
 
+    let isKicked = false;
+    let cleatMove = false;
+    function kickBall() {
+        cleatMove = !cleatMove;
+        isKicked = true;
 
+        setTimeout(() => {
+            isKicked = false; // reset after animation
+            cleatMove = false;
+        }, 1000); // match the duration of the CSS animation
+    }
 
+    let showLoadMoreButton = true;
+
+    // Function to determine whether to show the "Load More" button
+    function checkLoadMoreButton() {
+        const currentPosts = $posts; // Get the current list of posts
+        // Show the button if there are more posts to load
+        showLoadMoreButton = currentPosts.length % batchSize === 0 && currentPosts.length > 0;
+    }
+
+    // Function to handle the "Load More" button click
+    async function handleLoadMore() {
+        await loadMorePosts();
+        checkLoadMoreButton(); // Check again if the button should still be shown after loading more posts
+    }
 </script>
 
-<div class='bg-side-green w-1/6 h-screen border-forest-green border-r-4'>
-    <!--Big div-->
-    <div>
-        <!-- Title (top half no buttons) -->
-        <div class = "flex flex-row justify-center items-center mr-4">
-            <!-- logo + name -->
-            <img src="logo.png" alt={"Logo"} class="m-1 size-9">
-            <p class=" text-neon-green text-4xl text-center font-bold">KICKBACK</p>
-        </div>
+<style>
+    .post-container {
+        /*display: grid;*/
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    textarea {
+        resize: none;
 
-        <div>
-            <!-- pfp + name + loc -->
-            <div class="flex flex-col items-center">
-                <!-- Profile Picture -->
-                <img src={pfpURL} alt={"PFP"} class="size-3/10 rounded-full mt-4">
-                
-                <div>
-                    <!-- Username -->
-                    <h2 class="text-white text-center md:text-base lg:text-lg xl:text-2xl font-semibold">{displayName}</h2>
-                    <!-- Location -->
-                    <p class="text-neon-green font-bold text-lg text-center">{userCity}</p>
-                </div>
+    }
+    .input-container {
+        display: flex;
+        align-items: flex-start; /* Align items at the start */
+        position: relative;
+    }
+    .char-count{
+        position: absolute;
+        right: 5px;
+        bottom: 10px;
+    }
+    .char-count.over{
+        color: red;
+    }
+    .submit-button {
+        margin-left: 10px; /* Adjust margin as needed */
+    }
+
+    .ball {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        position: relative;
+        transition: transform 0.5s ease;
+    }
+    .ball.over {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        position: relative;
+    }
+    .foot {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: -65px;  /* Position the foot relative to the ball  */
+        bottom: 1px;
+        transform: rotate(30deg);
+        transform-origin: top right;
+        transition: transform 0.15s ease;
+    }
+    .foot.over{
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: -65px;  /* Position the foot relative to the ball  */
+        bottom: 1px;
+        transform: rotate(5deg);
+        transform-origin: top right;
+        transition: transform 0.15s ease;
+    }
+    .foot.kicked {
+        transform: rotate(-45deg);
+    }
+
+    .kick {
+        transform: translateX(300px) translateY(-100px);
+        transition: transform 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    }
+</style>
+
+
+<div class="w-2/3 bg-forest-green-600 flex flex-col h-2/3 items-center">
+    <div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green ">
+        <img src={profile_url} alt={"PFP"} style="border-width: 3px;" class="mr-2 w-16 h-16 mb-5 rounded-full border-neon-green object-fit">
+        <div class="flex items-center w-5/6 text-2xl">
+            <textarea id="postInput" class="text-neon-green outline-none py-2 flex-grow w-full " bind:value={$postCaption} on:keydown={handleEnter} style="background-color: transparent;" placeholder="Write your post here..."></textarea>
+            <div class="char-count text-xs text-neon-green {charCount > 184 ? 'over' : ''}">
+                {charCount} / 184
             </div>
         </div>
+        <div class="text-center justify-center py-2">
 
-        <div class="flex mt-17 justify-center items-center">
-            <!-- Spacer -->
-            <div class="flex-none w-1/3"></div>
-            
-            <!-- Favorites -->
-            <div class="flex flex-row space-x-9 items-center">
-                <!-- league -->
-                <div class="flex flex-col items-center">
-                    <img src="https://b.fssta.com/uploads/application/soccer/competition-logos/EnglishPremierLeague.png" alt="league" class="w-10 h-10 mt-4 object-cover">
-                    <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">League</p>
-                </div>
-            
-                <!-- club -->
-                <div class="flex flex-col items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png" alt="club" class="w-10 h-10 mt-4 object-cover">
-                    <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">Club</p>
-                </div>
-            
-                <!-- GOAT -->
-                <div class="flex flex-col items-center">
-                    <img src="https://b.fssta.com/uploads/application/soccer/headshots/66617.png" alt="goat" class="w-10 h-10 mt-4 object-cover">
-                    <p class="text-white text-sm md:text-base lg:text-base xl:text-base text-center">GOAT</p>
-                </div>
-            </div>
-            
-            <!-- Spacer -->
-            <div class="flex-none w-1/3"></div>
-        </div>
-          
-        <div class="flex justify-center">
-            <div class="border-b-2 border-forest-green w-17/20 mt-4"></div>
-        </div>
+            <button type="button" style="transition-timing-function: ease;" on:click={kickBall} on:click={createPost}>
+                <div class="flex flex-row-reverse">
+                    <div class="ball {charCount > 184 ? 'over' : ''}">
+                        <img src="https://i.ibb.co/MRRcRyr/6702498.png" alt="foot" class="foot {cleatMove ? 'kicked' : ''} {charCount > 184 ? 'over' : ''}">
+                        <img src="https://i.ibb.co/brsLqL9/soccer2.png" alt="Soccer Ball" style="width: 100%; height: auto;" class:kick={isKicked} class="{charCount > 184 ? 'over' : ''}">
+                    </div>
 
-        <div class="flex mt-17 justify-center items-center">
-            <!-- Spacer -->
-            <div class="flex-none w-1/3"></div>
-            
-            <!-- Buttons -->
-            <div class="flex flex-col items-left mt-4 space-y-4">
-                <!-- Feed -->
-                <button class="justify-start hover:ring-2 hover:ring-forest-green text-white font-semibold py-1 pl-2 pr-36 rounded-full inline-flex items-left">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-forest-green w-6 h-6 mr-2">
-                        <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 0 0 6 21.75a6.721 6.721 0 0 0 3.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 0 1-.814 1.686.75.75 0 0 0 .44 1.223ZM8.25 10.875a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25ZM10.875 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875-1.125a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" clip-rule="evenodd" />
-                      </svg>
-                    <span>Feed</span>
-                </button>
-            
-                <!-- Events -->
-                <button class="justify-start hover:ring-2 hover:ring-forest-green text-white font-semibold py-1 pl-2 pr-34 rounded-full inline-flex items-left">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-forest-green w-6 h-6 mr-2">
-                        <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
-                        <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
-                      </svg>
-                      
-                    <span>Events</span>
-                </button>
-            
-                <!-- Settings -->
-                <button class="justify-start hover:ring-2 hover:ring-forest-green text-white font-semibold py-1 pl-2 pr-34 rounded-full inline-flex items-left">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-forest-green w-6 h-6 mr-2">
-                        <path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clip-rule="evenodd" />
-                      </svg>
-                      
-                    <span>Settings</span>
-                </button>
-            </div>
-            
-            <!-- Spacer -->
-            <div class="flex-none w-1/3"></div>
+                    <div class="w-20"></div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
+    <div class="post-container flex-grow flex flex-col items-center" style="white-space: pre-wrap;">
+        {#each $posts as post}
+            <Post {post} />
+        {/each}
+    </div>
+    {#if showLoadMoreButton}
+        <button on:click={handleLoadMore} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Load More</button>
+    {/if}
+</div>
+
+<div class="bg-side-green flex flex-col w-1/6 fixed right-0 top-0 h-screen border-forest-green border-l-4">
+    <div class="flex flex-col  justify-end items-center h-20 mb-5">
+        <div class="flex flex-row w-4/5 mb-2 justify-between">
+            <p class="font-bold text-neon-green">Messages</p>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="fill-neon-green w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+
         </div>
 
-        <div class="flex justify-center">
-            <div class="border-b-2 border-forest-green w-17/20 mt-4"></div>
+        <input class="w-4/5 placeholder:text-sm pl-2 rounded-lg" type="text" placeholder="Search">
+    </div>
+    <div class="w-full grow overflow-y-auto pt-1">
+        <!-- {#each $posts as post} -->
+        <Message /> <!-- <Message {post} /> -->
+        <!-- {/each} -->
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
         </div>
 
-        <div class="flex flex-col justify-center">
-            <div>
-                <!--Title-->
-                <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">Trending Scores</p>
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <img src="https://i.pinimg.com/originals/56/45/36/56453693d441a300f754c6100daf0761.jpg" class="w-16 h-16 rounded-full">
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">Toji</h1>
+                <p class="w-full text-gray-500 text-sm">Bruh.</p>
             </div>
+        </div>
 
-            <div class="flex flex-row items-center justify-center space-x-8 mt-2">
-                <!--Game 1-->
-                <div class="flex">
-                    <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png" alt="home1" class="w-14 h-14 object-cover">
-                </div>
-
-                <div class="flex flex-col items-center justify-center">
-                    <!--Match Info-->
-                    <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
-                    <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center">5 - 0</p>
-                </div>
-
-                <div class="flex">
-                    <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14 object-cover">
-                </div>
-
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
             </div>
+        </div>
 
-            <div class="flex flex-row items-center justify-center space-x-8 mt-5">
-                <!--Game 2-->
-                <div class="flex">
-                    <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Inter_Miami_CF_logo.svg/1200px-Inter_Miami_CF_logo.svg.png" alt="home1" class="w-14 h-14">
-                </div>
-
-                <div class="flex flex-col items-center justify-center">
-                    <!--Match Info-->
-                    <p class="text-red-600 font-bold text-sm md:text-base lg:text-base xl:text-base text-center">Live</p>
-                    <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center">5 - 0</p>
-                </div>
-
-                <div class="flex">
-                    <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b5/St._Louis_City_SC_logo.svg/1200px-St._Louis_City_SC_logo.svg.png" alt="away1" class="w-14 h-14">
-                </div>
-
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnL3XkrdO2lISMIpl1zPeiWvtM0achJgZz_LVJMAK7gg&s" class="w-16 h-16 rounded-full">
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">Paul</h1>
+                <p class="w-full text-gray-500 text-sm">SILENCE! My name is Paul Atreides, DUKE of Arrakis.</p>
             </div>
+        </div>
 
-            <div class="flex flex-row items-center justify-center space-x-8 mt-5">
-                <!--Game 3-->
-                <div class="flex">
-                    <!--Home-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/1200px-Tottenham_Hotspur.svg.png" alt="home1" class="w-14 h-14">
-                </div>
-
-                <div class="flex flex-col items-center justify-center">
-                    <!--Match Info-->
-                    <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
-                    <p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center">5 - 0</p>
-                </div>
-
-                <div class="flex">
-                    <!--Away-->
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14">
-                </div>
-
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
             </div>
+        </div>
 
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit flex flex-row pl-2 mb-3">
+            <div class="w-16 rounded-full bg-black"></div>
+            <div class="flex flex-col h-full grow pl-2">
+                <h1 class="w-full text-sm text-white">John Smith</h1>
+                <p class="w-full text-gray-500 text-sm">Hey, I think you have cute feet!</p>
+            </div>
         </div>
 
     </div>
 
 </div>
-
-
