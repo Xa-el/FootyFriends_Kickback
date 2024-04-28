@@ -61,14 +61,16 @@
 						console.log("Time:", postData.time);
 						console.log("User ID:", postData.u_id);
 
-						loadedPosts.push({
-							id: doc.id,
-							title: postData.title,
-							caption: postData.caption,
-							likes: postData.likes,
-							time: postData.time,
-							userId: postData.u_id,
-						});
+						if(userId == postData.u_id) {
+							loadedPosts.push({
+								id: doc.id,
+								title: postData.title,
+								caption: postData.caption,
+								likes: postData.likes,
+								time: postData.time,
+								userId: postData.u_id,
+							});
+						}
 					});
 					posts.set(loadedPosts);
 				} else {
