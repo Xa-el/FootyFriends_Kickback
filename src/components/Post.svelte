@@ -10,8 +10,8 @@
      export let post;
 	console.log("Post received:", post);
      let userCity = ''; 
-     let isLiked = false;
-     //let isLiked = post.isLiked;
+     //let isLiked = false;
+     let isLiked = post.isLiked;
 
      const fetchUserProfile = async (userId) => {
           const docRef = doc(db, "users", userId);
@@ -30,20 +30,29 @@
     async function likePost(postId) {
         console.log("user city: " + userCity);
         const postRef = doc(db, userCity, "feed", "posts", postId);
+        const postSnap = await getDoc(postRef);
+          if (postSnap.exists()) {
+               isLiked = postSnap.data().isLiked;
+          } else {
+               console.log("No such document!");
+          }
         try {
           if(isLiked == false){
             await updateDoc(postRef, {
                 likes: increment(1),
                 isLiked: true,
             });
+            isLiked = true;
+            console.log("Is liked: " + isLiked);
             likes.update(n => n + 1);
             console.log("Likes incremented successfully");
           }
-          else{
+          else if(isLiked == true){
              await updateDoc(postRef, {
                 likes: increment(-1),
                 isLiked: false,
             });
+            isLiked = false;
             likes.update(n => n - 1);
             console.log("Likes decremented successfully");              
           }
@@ -58,7 +67,6 @@
 
     function toggleLike() {
         likePost(post.id);
-        isLiked = !isLiked; // Toggle the state
     }
 
 </script>

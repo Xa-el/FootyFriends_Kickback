@@ -34,6 +34,7 @@
     let userCity = '';
     let title = '';
     let likesPost = 0;
+    let isLiked = false;
     let postCaption = writable("");
 
     const fetchUserProfile = async (userId) => {
@@ -84,6 +85,7 @@
                 time: currentTime,
                 title: title,
                 caption: $postCaption,
+                isLiked: isLiked,
             }, { merge: true });
 
             console.log("Post created successfully");
@@ -116,6 +118,7 @@
                 console.log("Likes:", postData.likes);
                 console.log("Time:", postData.time);
                 console.log("User ID:", postData.u_id);
+                console.log("Is Liked: ", postData.isLiked);
 
                 newPosts.push({
                     id: doc.id,
@@ -124,6 +127,7 @@
                     likes: postData.likes,
                     time: postData.time,
                     userId: postData.u_id,
+                    isLiked: postData.isLiked,
                 });
 
                 lastVisiblePost = doc;
