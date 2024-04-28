@@ -87,7 +87,10 @@
     bio = displayBio;
     displayName = userSeenName;
     const isUnique = await isDisplayNameUnique(displayName);
-
+    if(userSeenName.trim() == ""){
+       console.log("Invalid name, only spaces");
+       return;
+    }
     const isValid = await checkImageUrl(pfpURL);
     if(!isUnique){
       showError = true;
