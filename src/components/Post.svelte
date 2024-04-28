@@ -1,6 +1,6 @@
 <!-- Post.svelte -->
 <script lang="ts">
-     import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
+     import { setDoc, doc, collection, getDoc, getDocs, updateDoc, increment, query } from 'firebase/firestore';
      import { db } from '$lib/firebase.js';
      import { onMount } from 'svelte';
      import { writable } from 'svelte/store';     
@@ -12,6 +12,7 @@
      let userCity = ''; 
      //let isLiked = false;
      let isLiked = post.isLiked;
+     let ids = [];
 
      const fetchUserProfile = async (userId) => {
           const docRef = doc(db, "users", userId);
@@ -25,9 +26,37 @@
           }
      }
 
+    async function likeId(postId, userId) {
+        const cityPostRef = doc(db, userCity, "feed", "posts", postId, "likeIds", userId); // Adjusted path
+        try {
+            // Using setDoc with merge true to create or update
+            await setDoc(cityPostRef, {
+                uid: userId,
+            }, { merge: true });
+
+            } catch (error) {
+            console.error("Error incrementing likes: ", error);
+        }
+
+   }
+
+     async function fetchLikes(postId) {
+       const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
+       const snapshot = await getDocs(likesRef);
+       snapshot.forEach((doc) => {
+         console.log("like id: " + doc.id);
+         if (!ids.includes(doc.id)) { // Check if ids array does not contain doc.id
+           ids.push(doc.id); // assuming the document ID is the user ID
+           console.log(ids);
+         } else {
+           console.log("ID already exists:", doc.id);
+         }
+       });
+     }
+
 
      let likes = writable(post.likes || 0); // Initialize with the current likes
-    async function likePost(postId) {
+      async function likePost(postId, userId) {
         console.log("user city: " + userCity);
         const postRef = doc(db, userCity, "feed", "posts", postId);
         const postSnap = await getDoc(postRef);
@@ -36,12 +65,18 @@
           } else {
                console.log("No such document!");
           }
+
+        fetchLikes(postId);
+        console.log("Hello");
+        console.log("Like Ids: " + ids);
+       
         try {
           if(isLiked == false){
             await updateDoc(postRef, {
                 likes: increment(1),
                 isLiked: true,
             });
+            likeId(postId, userId);
             isLiked = true;
             console.log("Is liked: " + isLiked);
             likes.update(n => n + 1);
@@ -66,7 +101,7 @@
      });
 
     function toggleLike() {
-        likePost(post.id);
+        likePost(post.id, post.userId);
     }
 
 </script>
