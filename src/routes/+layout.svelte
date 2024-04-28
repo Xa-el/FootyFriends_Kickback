@@ -2,7 +2,6 @@
 	import "../app.css";
 	import { onMount } from 'svelte';
 	import { session } from '$lib/session.js';
-	import { goto } from '$app/navigation';
 	import { doc, getDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { page } from '$app/stores';
@@ -11,10 +10,10 @@
 	let userId;
 	let userCity = '';
 	let pfpURL = '';
-	let currentPath = '';
-	let loggedINNN = false;
 	import type { LayoutData } from './$types';
+	import { goto } from '$app/navigation';
 	export let data: LayoutData;
+	let loggedINNN = false;
 
 	let loading: boolean = true;
 	let loggedIn: boolean = false;
@@ -38,9 +37,18 @@
 			};
 		});
 
-		if (loggedIn) {
-			// goto('/');
-		}
+		session.subscribe(($session) => {
+			if ($session.user) {
+				userId = $session.user.uid;
+				fetchUserProfile(userId);
+				loggedINNN = true;
+
+			} else {
+				// User is not logged in, redirect or handle accordingly
+				goto('/login');
+
+			}
+		});
 	});
 
 	const fetchUserProfile = async (userId) => {
@@ -56,27 +64,6 @@
 			console.log("No such document!");
 		}
 	};
-
-	onMount(() => {
-		session.subscribe(($session) => {
-			if ($session.user) {
-				userId = $session.user.uid;
-				loggedINNN = true;
-				fetchUserProfile(userId);
-			} else {
-				// User is not logged in, redirect or handle accordingly
-				goto('/login');
-				const reloadAfterRedirect = () => {
-					window.location.reload();
-				};
-
-				// Wait for the page to redirect, then reload
-				setTimeout(reloadAfterRedirect, 1000);
-			}
-		});
-
-		currentPath = window.location.pathname;
-	});
 
 
 
