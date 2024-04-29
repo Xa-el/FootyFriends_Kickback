@@ -8,10 +8,8 @@
      let displayName = '';
      let profile_url = '';
      export let post;
-	console.log("Post received:", post);
-     let userCity = ''; 
-     //let isLiked = false;
-     let isLiked = post.isLiked;
+     let userCity = '';
+     let isLiked = false;
      let ids = [];
 
      const fetchUserProfile = async (userId) => {
@@ -21,6 +19,7 @@
                displayName = docSnap.data().display_name;
                profile_url = docSnap.data().pfpURL;
                userCity = docSnap.data().City;
+            setLikes(post.id);
           } else {
                console.log("No such document!");
           }
@@ -49,32 +48,36 @@
            ids.push(doc.id); // assuming the document ID is the user ID
            console.log(ids);
          } else {
+           ids = ids.filter(id => id !== doc.id);
            console.log("ID already exists:", doc.id);
          }
+       });
+     }
+
+     async function setLikes(postId) {
+       const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
+       const snapshot = await getDocs(likesRef);
+       snapshot.forEach((doc) => {
+         isLiked = doc.id == doc.id;
        });
      }
 
 
      let likes = writable(post.likes || 0); // Initialize with the current likes
       async function likePost(postId, userId) {
-        console.log("user city: " + userCity);
         const postRef = doc(db, userCity, "feed", "posts", postId);
         const postSnap = await getDoc(postRef);
-          if (postSnap.exists()) {
-               isLiked = postSnap.data().isLiked;
-          } else {
-               console.log("No such document!");
+          if (!postSnap.exists()) {
+              console.log("No such document!");
           }
 
-        fetchLikes(postId);
-        console.log("Hello");
+        fetchLikes(post.id);
         console.log("Like Ids: " + ids);
        
         try {
           if(isLiked == false){
             await updateDoc(postRef, {
                 likes: increment(1),
-                isLiked: true,
             });
             likeId(postId, userId);
             isLiked = true;
@@ -85,7 +88,6 @@
           else if(isLiked == true){
              await updateDoc(postRef, {
                 likes: increment(-1),
-                isLiked: false,
             });
             isLiked = false;
             likes.update(n => n - 1);
