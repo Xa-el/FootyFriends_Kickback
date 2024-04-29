@@ -1,6 +1,6 @@
 <!-- Post.svelte -->
 <script lang="ts">
-     import { setDoc, doc, collection, getDoc, getDocs, updateDoc, increment, query } from 'firebase/firestore';
+     import { deleteDoc, setDoc, doc, collection, getDoc, getDocs, updateDoc, increment, query } from 'firebase/firestore';
      import { db } from '$lib/firebase.js';
      import { onMount } from 'svelte';
      import { writable } from 'svelte/store';     
@@ -42,16 +42,30 @@
      async function fetchLikes(postId) {
        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
        const snapshot = await getDocs(likesRef);
+
+       const deletePromises = []; // Array to hold delete promises
+
        snapshot.forEach((doc) => {
          console.log("like id: " + doc.id);
-         if (!ids.includes(doc.id)) { // Check if ids array does not contain doc.id
-           ids.push(doc.id); // assuming the document ID is the user ID
+         if (!ids.includes(doc.id)) {
+           // If the ID does not exist, add it to the array
+           ids.push(doc.id);
            console.log(ids);
          } else {
+           // If the ID already exists, remove it from the array
            ids = ids.filter(id => id !== doc.id);
            console.log("ID already exists:", doc.id);
+           // Construct the reference to the document
+           const docRef = doc(db, userCity, "feed", "posts", postId, "likeIds", doc.id);
+           // Add the delete promise to the array
+           deletePromises.push(deleteDoc(docRef));
          }
        });
+
+       // Wait for all delete promises to resolve
+       await Promise.all(deletePromises);
+
+       // Handle success/failure if necessary
      }
 
      async function setLikes(postId) {
