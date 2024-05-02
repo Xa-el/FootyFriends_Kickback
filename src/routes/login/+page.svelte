@@ -154,7 +154,7 @@
      </div>
 </div>
 
-<div class="flex items-center justify-center overflow-hidden h-[calc(100vh-60px)]">
+<div class="flex items-center justify-center h-[calc(100vh-60px)]">
     <div class="p-4 bg-side-green neonLine">
       <div class="centy">
         <h1 class="text-neon-green text-center font-extrabold text-4xl">Log Into KICKBACK</h1>
@@ -165,7 +165,9 @@
             <br>
             <button class="loginButt text-white font-bold" type="submit">Log In</button>
         </form>
-        <p class="text-neon-green font-bold">Forgot Account?</p>
+        <a href="/login/forgot" on:click|preventDefault={() => goto('/login/forgot')}>
+          <p class="text-neon-green font-bold">Forgot Account?</p>
+        </a>
         <div class="flex justify-center">
             <!-- <div class="border-b-2 border-black w-17/20 mt-4"></div> -->
             <!-- that just doesnt owrk for some reason ^^ -->
