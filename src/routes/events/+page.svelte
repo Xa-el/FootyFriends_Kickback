@@ -2,15 +2,18 @@
 	import { goto } from '$app/navigation';
 	import { session } from '$lib/session';
 	import { onMount } from 'svelte';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
+	import { collection, doc, getDoc, getDocs, orderBy, query, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { writable } from 'svelte/store';
+	import Events from '../../components/Events.svelte';
 
 
 	let userCity = '';
 	let userId;
 	let postCaption = writable("");
 	let title : string;
+	const events = writable([]);
+
 
 	function generateRandomString(length: number): string {
 		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -81,11 +84,45 @@
 
 	onMount(async () => {
 		session.subscribe(async ($session) => {
-			if (!$session.user) {
-				goto('/login');
-			} else {
+			if ($session.user) {
 				userId = $session.user.uid;
-				userCity = await fetchUserProfile(userId);
+				userCity = await fetchUserProfile(userId); // Fetch user profile and get the user's city
+				console.log("User city: " + userCity);
+				if (userCity) { // Check if userCity is available
+					const cityDocRef = collection(db, userCity, "feed", "posts");
+					const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Adjusted query to limit the initial fetch to batchSize
+					const querySnapshot = await getDocs(sortedQuery);
+					const loadedEvents = [];
+
+					querySnapshot.forEach((doc) => {
+						const postData = doc.data();
+						console.log("Post ID:", doc.id);
+						console.log("Title:", postData.title);
+						console.log("Caption:", postData.caption);
+						console.log("Time:", postData.time);
+						console.log("User ID:", postData.u_id);
+
+						loadedEvents.push({
+							id: doc.id,
+							title: postData.title,
+							caption: postData.caption,
+							time: postData.time,
+							userId: postData.u_id,
+						});
+					});
+
+					events.set(loadedEvents);
+				} else {
+					console.log("No such city document!");
+				}
+			} else {
+				// User is not logged in, redirect or handle accordingly
+				goto('/login');
+				const reloadAfterRedirect = () => {
+					window.location.reload();
+				};
+				// Wait for the page to redirect, then reload
+				setTimeout(reloadAfterRedirect, 1000);
 			}
 		});
 	});
