@@ -65,25 +65,26 @@
 			let awayTeamImg = teamImages[awayTeamKey];
 			let homeTeamSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(match.homeTeam.name)}`;
         	let awayTeamSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(match.awayTeam.name)}`;
+        	let gameUrl = `https://www.google.com/search?q=${encodeURIComponent(match.homeTeam.name + " " + match.awayTeam.name + " " + match.utcDate.split('T')[0])}`;
 
-
+ 
 			matchElement.innerHTML = `
 			<div class="flex flex-row items-center justify-center space-x-8 mt-2 bg-side-green">
 				<!--Game 1-->
 				<div class="flex">
 					<!--Home-->
-					<img onclick="location.href='${homeTeamSearchUrl}';" src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="location.href='${homeTeamSearchUrl}';" src=${homeTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
-				<div class="flex flex-col items-center justify-center">
+				<div class="flex flex-col items-center justify-center ">
 					<!--Match Info-->
-					<p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
-                    <p>${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+					<p onclick="location.href='${gameUrl}';" class="cursor-pointer text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
+                    <p onclick="location.href='${gameUrl}';" class="cursor-pointer">${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
 				</div>
 
 				<div class="flex">
 					<!--Away-->
-					<img onclick="location.href='${awayTeamSearchUrl}';" src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="location.href='${awayTeamSearchUrl}';" src=${awayTeamImg} alt="away1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 			</div>
