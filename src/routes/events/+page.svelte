@@ -1,38 +1,46 @@
 <!-- SettingsPage.svelte -->
 <script lang="ts">
-	import { auth } from '$lib/firebase';
-	import { updatePassword } from 'firebase/auth';
 	import { goto } from '$app/navigation';
 	import { session } from '$lib/session';
 	import { onMount } from 'svelte';
+	import { doc, setDoc } from 'firebase/firestore';
+	import { db } from '$lib/firebase';
 
-	let newPassword: string = '';
-	let confirmPassword: string = '';
-	let errorMessage: string = '';
-	let showError: boolean = false;
 
-	async function handleChangePassword() {
-		if (newPassword !== confirmPassword) {
-			errorMessage = "Passwords do not match.";
-			showError = true;
+
+	async function createPost() {
+		console.log("post called");
+		if ($postCaption.trim() == "") {
+			console.log("No caption inputted");
 			return;
 		}
 
-		const user = auth.currentUser;
+		if($postCaption.length > 184){
+			console.log("post too long");
+			return;
+		}
+		const cityPostRef = doc(db, userCity, "feed", "posts", randomPostId); // Adjusted path
 		try {
-			await updatePassword(user, newPassword);
-			errorMessage = "Password updated successfully.";
-			showError = true;
+			// Using setDoc with merge true to create or update
+			const currentTime = await getCurrentTime();
+			await setDoc(cityPostRef, {
+				likes: likesPost,
+				u_id: userId,
+				time: currentTime,
+				title: title,
+				caption: $postCaption,
+				isLiked: isLiked,
+			}, { merge: true });
+
+			console.log("Post created successfully");
+			window.location.reload();
 		} catch (error) {
-			errorMessage = error.message;
-			showError = true;
+			console.error("Error updating profile: ", error);
 		}
 	}
 
-	function closeErrorMessage() {
-		showError = false;
-	}
 
+	
 	onMount(() => {
 		session.subscribe(($session) => {
 			if (!$session.user) {
