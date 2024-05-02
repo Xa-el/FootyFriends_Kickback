@@ -1,4 +1,3 @@
-<!-- Post.svelte -->
 <script lang="ts">
 	import { doc,getDoc} from 'firebase/firestore';
 	import { db } from '$lib/firebase.js';
