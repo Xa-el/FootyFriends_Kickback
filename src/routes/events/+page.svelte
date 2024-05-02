@@ -48,7 +48,6 @@
 	}
 
 	$: charCount = $postCaption.length;
-
 	async function createEvent() {
 		let eventID = generateRandomString(26);
 		const cityPostRef = doc(db, userCity, "events", eventID); // Adjusted path
