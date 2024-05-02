@@ -119,7 +119,46 @@
     "Brighton & Hove Albion FC",
     "Brentford FC",
     "West Ham United FC",
-    "AFC Bournemouth"
+    "AFC Bournemouth",
+    "Athletic Club",
+    "Club Atlético de Madrid",
+    "CA Osasuna",
+    "FC Barcelona",
+    "Getafe CF",
+    "Granada CF",
+    "Real Madrid CF",
+    "Rayo Vallecano de Madrid",
+    "RCD Mallorca",
+    "Real Betis Balompié",
+    "Real Sociedad de Fútbol",
+    "Villarreal CF",
+    "Valencia CF",
+    "Deportivo Alavés",
+    "Cádiz CF",
+    "UD Almería",
+    "UD Las Palmas",
+    "Girona FC",
+    "RC Celta de Vigo",
+    "Sevilla FC",
+    // Adding German clubs
+    "1. FC Köln",
+    "TSG 1899 Hoffenheim",
+    "Bayer 04 Leverkusen",
+    "Borussia Dortmund",
+    "FC Bayern München",
+    "VfB Stuttgart",
+    "VfL Wolfsburg",
+    "SV Werder Bremen",
+    "1. FSV Mainz 05",
+    "FC Augsburg",
+    "SC Freiburg",
+    "Borussia Mönchengladbach",
+    "Eintracht Frankfurt",
+    "1. FC Union Berlin",
+    "VfL Bochum 1848",
+    "1. FC Heidenheim 1846",
+    "SV Darmstadt 98",
+    "RB Leipzig"
   ];
 
   let cityIds = [
@@ -142,8 +181,48 @@
     397,   // Brighton & Hove Albion FC
     402,   // Brentford FC
     563,   // West Ham United FC
-    1044   // AFC Bournemouth
+    1044,  // AFC Bournemouth
+    77,    // Athletic Club
+    78,    // Club Atlético de Madrid
+    79,    // CA Osasuna
+    81,    // FC Barcelona
+    82,    // Getafe CF
+    83,    // Granada CF
+    86,    // Real Madrid CF
+    87,    // Rayo Vallecano de Madrid
+    89,    // RCD Mallorca
+    90,    // Real Betis Balompié
+    92,    // Real Sociedad de Fútbol
+    94,    // Villarreal CF
+    95,    // Valencia CF
+    263,   // Deportivo Alavés
+    264,   // Cádiz CF
+    267,   // UD Almería
+    275,   // UD Las Palmas
+    298,   // Girona FC
+    558,   // RC Celta de Vigo
+    559,   // Sevilla FC
+    // Adding German clubs' IDs
+    1,     // 1. FC Köln
+    2,     // TSG 1899 Hoffenheim
+    3,     // Bayer 04 Leverkusen
+    4,     // Borussia Dortmund
+    5,     // FC Bayern München
+    10,    // VfB Stuttgart
+    11,    // VfL Wolfsburg
+    12,    // SV Werder Bremen
+    15,    // 1. FSV Mainz 05
+    16,    // FC Augsburg
+    17,     // SC Freiburg
+    18,     // Borussia Mönchengladbach
+    19,     // Eintracht Frankfurt
+    28,     // 1. FC Union Berlin
+    36,    // VfL Bochum 1848
+    44,    // 1. FC Heidenheim 1846
+    55,    // SV Darmstadt 98
+    721,    // RB Leipzig
   ];
+
 
   let showDropdown = writable(false);
   let search = writable('');
@@ -207,7 +286,31 @@
         BrentfordFC:'https://i.ibb.co/2NhwgSs/brentford.jpg',
         AstonVillaFC : 'https://i.ibb.co/6wWPG9M/astonvilla.jpg',
         // Add all other teams following the same format
-    };
+        AthleticClub: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Club_Athletic_Bilbao_logo.svg/1200px-Club_Athletic_Bilbao_logo.svg.png',
+        ClubAtléticodeMadrid: 'https://cdn-icons-png.flaticon.com/256/824/824743.png',
+        CAOsasuna: 'https://cdn-icons-png.flaticon.com/256/824/824743.png',
+        FCBarcelona: 'https://iconsportsgroup.com/cdn/shop/collections/BARCA_600x600_crop_center.jpg?v=1658962939',
+        GetafeCF: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/46/Getafe_logo.svg/800px-Getafe_logo.svg.png',
+        GranadaCF: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDRfjVAh42YpfutxjqFJ9Bg_gdQBsfhGk53m4xu77xFQ&s',
+        RealMadridCF: 'https://cdn-icons-png.flaticon.com/512/1273/1273751.png',
+        RayoVallecanodeMadrid: 'https://play-lh.googleusercontent.com/XIWZvIMXY0BOBUyoBJcTv1OrfTuUKEJnDirLiMGXg_dm8OcyGG9geEk-8gEXWVJ-GkZ8=w240-h480-rw',
+        RCDMallorca: 'https://icons.iconarchive.com/icons/giannis-zographos/spanish-football-club/256/Real-Mallorca-icon.png',
+        RealBetisBalompié: 'https://pbs.twimg.com/profile_images/1701871282676002816/2eRWtgqY_400x400.jpg',
+        RealSociedaddeFútbol: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiMStTcrS3QSGSxuMxzrKUdfBeCtwWTA9GiWfOhnea7g&s',
+        VillarrealCF: 'https://cdn-icons-png.freepik.com/512/824/824742.png',
+        ValenciaCF: 'ValenciaCF',
+        DeportivoAlavés: 'https://www.shutterstock.com/image-illustration/deportivo-alaves-logo-white-background-600nw-2403765529.jpg',
+        CádizCF: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7IWKv6jr0nAwKbS6cFFQBvpL78ymDhRtLk0YqCRG5dA&s',
+        UDAlmería: 'https://play-lh.googleusercontent.com/x2rniKO6rdXbgQoIBS1H11JhVJ5ZN5yzUu15OvQ3cPLaBNZ55cwWv-tOmahzqU4A92U',
+        UDLasPalmas: 'https://icons.iconarchive.com/icons/giannis-zographos/spanish-football-club/256/UD-Las-Palmas-icon.png',
+        GironaFC: 'https://blogger.googleusercontent.com/img/a/AVvXsEhBNuPr0XuTCP-FQObn-DVgutyxaKaLQewYqHW5K4Jq2V6RsSX2UID9vm3St72-cQSMRqKiBJhfsWA3e7OMaQCQNilXv8H7M3-55kekelBm5RBq1YUX5jeVN-OjBMw7obPTD5YRyQbBiZfOUneoMQlvk_pMp7tMKMSh4-AcpNB3ceuO8IHNaDoDrB10-Q=s1000',
+        RCCeltadeVigo: 'https://cdn.fans48.com/celta-de-vigo/celta-de-vigo-logo-256x256.png',
+        SevillaFC: 'https://cdn-icons-png.flaticon.com/512/1385/1385019.png',
+        Bayer04Leverkusen: 'https://play-lh.googleusercontent.com/YW4ONr-DBRMYy6NAWkg3qbDFhfW0tvdRhQsafQxEiTmxvpr9GeUPVudRwsqhZkFDksU',
+        FCBayernMünchen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/1200px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png',
+        BorussiaDortmund: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/1200px-Borussia_Dortmund_logo.svg.png',
+
+  };
 
 
 	async function getRecentMatches(choiceId) {

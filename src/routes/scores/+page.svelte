@@ -2,7 +2,7 @@
 	const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
 	let teamId = 0;
 	// Example: URL for Premier League teams. Replace '2021' with the desired competition ID.
-	const teamsUrl = `https://corsproxy.io/?${encodeURIComponent('http://api.football-data.org/v2/competitions/2021/teams')}`;
+	const teamsUrl = `https://corsproxy.io/?${encodeURIComponent('http://api.football-data.org/v2/competitions/2002/teams')}`;
     // const matchesUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/teams/${teamId}/matches`)}`;
 
 	let teamsData;
@@ -15,21 +15,21 @@
 		}
 	};
 
-	// async function getTeams() {
-	// 	try {
-	// 		const response = await fetch(teamsUrl, options);
-	// 		const data = await response.json();
-	// 		const simpleTeamsData = data.teams.map(team => ({ id: team.id, name: team.name }));
-	// 		teamsData = data.teams;
-	// 		console.log("Teams fetched:");
-	// 		console.log(teamsData);
-	// 		console.log(simpleTeamsData);
+	async function getTeams() {
+		try {
+			const response = await fetch(teamsUrl, options);
+			const data = await response.json();
+			const simpleTeamsData = data.teams.map(team => ({ id: team.id, name: team.name }));
+			teamsData = data.teams;
+			console.log("Teams fetched:");
+			// console.log(teamsData);
+			console.log(simpleTeamsData);
 
-	// 		displayTeams();
-	// 	} catch (error) {
-	// 		console.error('Failed to fetch teams:', error);
-	// 	}
-	// }
+			displayTeams();
+		} catch (error) {
+			console.error('Failed to fetch teams:', error);
+		}
+	}
 
 	let teamMatches;
 
@@ -49,7 +49,7 @@
 			teamMatches = filteredMatches.slice(-3);
 			console.log("Last three matches:", teamMatches);
 
-			const matchesContainer = document.getElementById('matches-container');
+			const matchesContainer = document.getElementById('hi-container');
 			if (!matchesContainer) return;
 			matchesContainer.innerHTML = ''; // Clear previous entries
 
@@ -90,8 +90,8 @@
 	}
 
 
-	// getTeams();
-	getRecentMatches(); // You might want to call this function after confirming the team ID or from within the getTeams if dynamically setting team ID
+	getTeams();
+	// getRecentMatches(); // You might want to call this function after confirming the team ID or from within the getTeams if dynamically setting team ID
 </script>
 
 
@@ -102,6 +102,6 @@
 		</head>
 		<body>
 			<h1>Premier League Matches</h1>
-			<div id="matches-container" class="text-white"></div>
+			<div id="hi-container" class="text-white"></div>
 		</body>
 </html>
