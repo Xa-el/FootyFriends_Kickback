@@ -2,27 +2,32 @@
 	const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
 	const plUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED&ts=${Date.now()}`)}`;
 
-     let wolves = 'https://i.ibb.co/92htgDQ/wolves.jpg'
-     let westham = 'https://i.ibb.co/Ns6w2f3/westham.jpg'
-     let spurs = 'https://i.ibb.co/hyhWqX4/tottenham.jpg'
-     let sheffield = 'https://i.ibb.co/zQZMZY1/sheffield.jpg'
-     let nottingham = 'https://i.ibb.co/d2Qhy5R/nottingham.jpg'
-     let newcastle = 'https://i.ibb.co/BLG3b3r/newcastle.jpg'
-     let manu = 'https://i.ibb.co/FhxthPg/manunited.jpg'
-     let mancity = 'https://i.ibb.co/7Y0P6x1/manchestercity.jpg'
-     let luton = 'https://i.ibb.co/xD87z64/lutontown.jpg'
-     let liverpool = 'https://i.ibb.co/thWYZMy/liverpool.jpg'
-     let fulham = 'https://i.ibb.co/k6zZwwt/fulham.jpg'
-     let everton = 'https://i.ibb.co/fQWzc3Z/everton.jpg'
-     let crystalPalace = 'https://i.ibb.co/PWTsMpK/crystalpalace.jpg'
-     let chelsea = 'https://i.ibb.co/YNw18cs/chelsea.jpg'
-     let burnley = 'https://i.ibb.co/T05FXkt/burnley.jpg'
-     let brighton = 'https://i.ibb.co/5nQKnVP/brighton.jpg'
-     let brentford = 'https://i.ibb.co/2NhwgSs/brentford.jpg'
-     let villa = 'https://i.ibb.co/6wWPG9M/astonvilla.jpg'
-     let arsenal = 'https://i.ibb.co/zmBMXR9/arsenal.jpg'
-     let bournemouth = 'https://i.ibb.co/dpmM1XG/bournemouth.jpg'
 
+
+
+	const teamImages = {
+        TottenhamHotspurFC: 'https://i.ibb.co/hyhWqX4/tottenham.jpg',
+        NottinghamForestFC: 'https://i.ibb.co/d2Qhy5R/nottingham.jpg',
+        ManchesterCityFC: 'https://i.ibb.co/7Y0P6x1/manchestercity.jpg',
+        BrightonNHoveAlbionFC: 'https://i.ibb.co/5nQKnVP/brighton.jpg',
+        ArsenalFC: 'https://i.ibb.co/zmBMXR9/arsenal.jpg',
+        AFCBournemouth: 'https://i.ibb.co/dpmM1XG/bournemouth.jpg',
+		wolves:'https://i.ibb.co/92htgDQ/wolves.jpg',
+		westham:'https://i.ibb.co/Ns6w2f3/westham.jpg',
+		sheffield:'https://i.ibb.co/zQZMZY1/sheffield.jpg',
+		newcastle:'https://i.ibb.co/BLG3b3r/newcastle.jpg',
+		manu:'https://i.ibb.co/FhxthPg/manunited.jpg',
+		luton:'https://i.ibb.co/xD87z64/lutontown.jpg',
+		liverpool:'https://i.ibb.co/thWYZMy/liverpool.jpg',
+		fulham:'https://i.ibb.co/k6zZwwt/fulham.jpg',
+		everton:'https://i.ibb.co/fQWzc3Z/everton.jpg',
+		crystalPalace:'https://i.ibb.co/PWTsMpK/crystalpalace.jpg',
+		chelsea:'https://i.ibb.co/YNw18cs/chelsea.jpg',
+		burnley:'https://i.ibb.co/T05FXkt/burnley.jpg',
+		brentford:'https://i.ibb.co/2NhwgSs/brentford.jpg',
+		villa : 'https://i.ibb.co/6wWPG9M/astonvilla.jpg',
+        // Add all other teams following the same format
+    };
 
 
 
@@ -47,16 +52,24 @@
 		}
 	}
 
+	let homeTeam = '';
+	let awayTeam = '';
+
 	function displayMatches() {
 		const matchesContainer = document.getElementById('matches-container');
 		last3plmatches.reverse().forEach(match => {
 			const matchElement = document.createElement('div');
+			let homeTeamKey = match.homeTeam.name.replace(/\s+/g, '').replace(/&/g, 'N');
+			let awayTeamKey = match.awayTeam.name.replace(/\s+/g, '').replace(/&/g, 'N');
+			let homeTeamImg = teamImages[homeTeamKey];
+			let awayTeamImg = teamImages[awayTeamKey];
+
 			matchElement.innerHTML = `
 			<div class="flex flex-row items-center justify-center space-x-8 mt-2 bg-side-green">
 				<!--Game 1-->
 				<div class="flex">
 					<!--Home-->
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png" alt="home1" class="w-14 h-14 object-cover">
+					<img src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full">
 				</div>
 
 				<div class="flex flex-col items-center justify-center">
@@ -67,7 +80,7 @@
 
 				<div class="flex">
 					<!--Away-->
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14 object-cover">
+					<img src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full">
 				</div>
 
 			</div>
