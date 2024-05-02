@@ -22,7 +22,7 @@
                displayName = docSnap.data().display_name;
                profile_url = docSnap.data().pfpURL;
                userCity = docSnap.data().City;
-               setLikes(post.id);
+               setLikes(post.id, new_ID);
           } else {
                console.log("No such document!");
           }
@@ -75,7 +75,10 @@
        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
        const snapshot = await getDocs(likesRef);
        snapshot.forEach((doc) => {
-         isLiked = doc.id == new_ID;
+         if(new_ID == doc.id) {
+           isLiked = true;
+           console.log(isLiked);
+         }
        });
      }
 
