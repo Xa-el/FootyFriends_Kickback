@@ -19,11 +19,20 @@
                displayName = docSnap.data().display_name;
                profile_url = docSnap.data().pfpURL;
                userCity = docSnap.data().City;
-            setLikes(post.id);
+               setLikes(post.id);
           } else {
                console.log("No such document!");
           }
      }
+
+     const removeLike = async (postId,likeId) => {
+       try {
+         await deleteDoc(doc(db, userCity, "feed", "posts", postId, "likeIds", likeId));
+         console.log("Like successfully deleted!");
+       } catch (error) {
+         console.error("Error removing post: ", error);
+       }
+     };
 
     async function likeId(postId, userId) {
         const cityPostRef = doc(db, userCity, "feed", "posts", postId, "likeIds", userId); // Adjusted path
@@ -43,8 +52,6 @@
        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
        const snapshot = await getDocs(likesRef);
 
-       const deletePromises = []; // Array to hold delete promises
-
        snapshot.forEach((doc) => {
          console.log("like id: " + doc.id);
          if (!ids.includes(doc.id)) {
@@ -55,17 +62,8 @@
            // If the ID already exists, remove it from the array
            ids = ids.filter(id => id !== doc.id);
            console.log("ID already exists:", doc.id);
-           // Construct the reference to the document
-           const docRef = doc(db, userCity, "feed", "posts", postId, "likeIds", doc.id);
-           // Add the delete promise to the array
-           deletePromises.push(deleteDoc(docRef));
          }
        });
-
-       // Wait for all delete promises to resolve
-       await Promise.all(deletePromises);
-
-       // Handle success/failure if necessary
      }
 
      async function setLikes(postId) {
@@ -104,6 +102,7 @@
                 likes: increment(-1),
             });
             isLiked = false;
+            removeLike(postId, userId);
             likes.update(n => n - 1);
             console.log("Likes decremented successfully");              
           }
