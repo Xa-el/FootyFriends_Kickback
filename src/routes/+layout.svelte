@@ -12,6 +12,7 @@
 	let pfpURL = '';
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
+	import { resolveRoute } from "$app/paths";
 	export let data: LayoutData;
 	let loggedINNN = false;
 
@@ -69,7 +70,7 @@
 
 </script>
 
-{#if loggedINNN}
+{#if loggedINNN && !$page.url.pathname.includes('/register/')}
 <div class='bg-side-green w-1/6 border-forest-green border-r-4 fixed left-0 top-0 h-screen'>
 	<!--Big div-->
 	<div>
