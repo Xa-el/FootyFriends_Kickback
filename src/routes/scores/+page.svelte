@@ -25,7 +25,7 @@
 
 	function displayMatches() {
 		const matchesContainer = document.getElementById('matches-container');
-		last3plmatches.forEach(match => {
+		last3plmatches.reverse().forEach(match => {
 			const matchElement = document.createElement('div');
 			matchElement.innerHTML = `
                     <p>Date: ${match.utcDate}</p>

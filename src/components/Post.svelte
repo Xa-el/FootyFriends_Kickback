@@ -3,12 +3,15 @@
      import { deleteDoc, setDoc, doc, collection, getDoc, getDocs, updateDoc, increment, query } from 'firebase/firestore';
      import { db } from '$lib/firebase.js';
      import { onMount } from 'svelte';
-     import { writable } from 'svelte/store';     
+     import { writable } from 'svelte/store';
+     import { session } from '$lib/session';
+     import { goto } from '$app/navigation';
 
      let displayName = '';
      let profile_url = '';
      export let post;
      let userCity = '';
+     let new_ID;
      let isLiked = false;
      let ids = [];
 
@@ -25,6 +28,8 @@
           }
      }
 
+
+
      const removeLike = async (postId,likeId) => {
        try {
          await deleteDoc(doc(db, userCity, "feed", "posts", postId, "likeIds", likeId));
@@ -34,12 +39,12 @@
        }
      };
 
-    async function likeId(postId, userId) {
-        const cityPostRef = doc(db, userCity, "feed", "posts", postId, "likeIds", userId); // Adjusted path
+    async function likeId(postId, new_ID) {
+        const cityPostRef = doc(db, userCity, "feed", "posts", postId, "likeIds", new_ID); // Adjusted path
         try {
             // Using setDoc with merge true to create or update
             await setDoc(cityPostRef, {
-                uid: userId,
+                uid: new_ID,
             }, { merge: true });
 
             } catch (error) {
@@ -66,11 +71,11 @@
        });
      }
 
-     async function setLikes(postId) {
+     async function setLikes(postId, new_ID) {
        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
        const snapshot = await getDocs(likesRef);
        snapshot.forEach((doc) => {
-         isLiked = doc.id == doc.id;
+         isLiked = doc.id == new_ID;
        });
      }
 
@@ -91,7 +96,7 @@
             await updateDoc(postRef, {
                 likes: increment(1),
             });
-            likeId(postId, userId);
+            likeId(postId, new_ID);
             isLiked = true;
             console.log("Is liked: " + isLiked);
             likes.update(n => n + 1);
@@ -102,7 +107,7 @@
                 likes: increment(-1),
             });
             isLiked = false;
-            removeLike(postId, userId);
+            removeLike(postId, new_ID);
             likes.update(n => n - 1);
             console.log("Likes decremented successfully");              
           }
@@ -112,7 +117,15 @@
     }
 
      onMount(() => {
-          fetchUserProfile(post.userId);
+       fetchUserProfile(post.userId);
+       session.subscribe(($session) => {
+         if ($session.user) {
+           new_ID = $session.user.uid;
+         } else {
+           // User is not logged in, redirect or handle accordingly
+           goto('/login');
+         }
+       });
      });
 
     function toggleLike() {
