@@ -154,7 +154,7 @@
      </div>
 </div>
 
-<div class="flex items-center justify-center overflow-hidden h-[calc(100vh-60px)]">
+<div class="flex items-center justify-center h-[calc(100vh-60px)]">
     <div class="p-4 bg-side-green neonLine">
       <div class="centy">
         <h1 class="text-neon-green text-center font-extrabold text-4xl">Log Into KICKBACK</h1>
