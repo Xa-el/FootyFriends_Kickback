@@ -139,7 +139,7 @@
 
 <div class="text-white w-5/6 max-w-5/6 flex flex-row">
      <div class="h-full w-fit flex flex-col items-center min-w-24">
-          <img src={profile_url} class="radi w-16 h-16 rounded-full border-neon-green">
+          <img on:click={() => goto(`/profile/${displayName}`)} src={profile_url} class="radi w-16 h-16 rounded-full border-neon-green">
           <div class="flex flex-col items-center mt-2">
             <button on:click={toggleLike} class="hover:animate-pulse"> 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class:fill-forest-green={isLiked} class:fill-dark-green={!isLiked} class="stroke-forest-green w-6 h-6">
