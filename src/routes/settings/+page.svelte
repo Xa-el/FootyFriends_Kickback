@@ -53,15 +53,15 @@
 	<div class="flex items-center justify-center grow">
 		<div class="border-b-2 border-neon-green pt-5 pr-8 pl-8 w-4/6">
 
-			<div class="p-4 bg-side-green neonLine mb-3">
-				<div class="centy">
+			<div class="rounded-md p-4 bg-side-green neonLine mb-3 border-2 border-neon-green">
+				<div class="">
 					<h1 class="mb-5 text-neon-green text-center font-extrabold text-4xl">Change Password</h1>
 					<form on:submit|preventDefault={handleChangePassword}>
 						<input bind:value={newPassword} type="password" placeholder="New Password" class="m-2 inputButton" />
 						<br>
 						<input bind:value={confirmPassword} type="password" placeholder="Confirm Password" class="m-2 inputButton" />
 						<br>
-						<button type="submit" class="loginButt text-white font-bold">Change Password</button>
+						<button type="submit" class="loginButt text-white font-bold justify-center items-center">Change Password</button>
 					</form>
 					<div class="mt-2.5 text-center">
 						<p class="text-neon-green font-bold">Forgot your password?</p>
@@ -102,3 +102,28 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.inputButton{
+		outline: 2px solid #6A863D;
+		border-radius: 5px;
+		background: #002615;
+		color: white;
+		border: none;
+		width: 375px; /* Sets the width of the button */
+		height: 50px; /* Sets the height of the button */
+		font-size: 18px; /* Adjust this based on your preference */
+		padding: 0 15px; /* Horizontal padding, vertical padding is not necessary due to height setting */
+		text-align: left;
+		line-height: 50px; /* This helps center the text vertically */
+	}
+
+	.loginButt{
+		border: none;
+		border-radius: 5px;
+		width: 230px;
+		height: 50px;
+		background: #002615;
+		font-size: 25px;
+  	}
+</style>
