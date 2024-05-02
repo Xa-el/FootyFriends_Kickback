@@ -63,13 +63,16 @@
 			let awayTeamKey = match.awayTeam.name.replace(/\s+/g, '').replace(/&/g, 'N');
 			let homeTeamImg = teamImages[homeTeamKey];
 			let awayTeamImg = teamImages[awayTeamKey];
+			let homeTeamSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(match.homeTeam.name)}`;
+        	let awayTeamSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(match.awayTeam.name)}`;
+
 
 			matchElement.innerHTML = `
 			<div class="flex flex-row items-center justify-center space-x-8 mt-2 bg-side-green">
 				<!--Game 1-->
 				<div class="flex">
 					<!--Home-->
-					<img src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="location.href='${homeTeamSearchUrl}';" src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 				<div class="flex flex-col items-center justify-center">
@@ -80,7 +83,7 @@
 
 				<div class="flex">
 					<!--Away-->
-					<img src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="location.href='${awayTeamSearchUrl}';" src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 			</div>
