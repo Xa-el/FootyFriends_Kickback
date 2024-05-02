@@ -52,36 +52,36 @@
       if ($session.user) {
         userId = $session.user.uid;
         await fetchUserProfile(userId); // Fetch user profile and get the user's city
-        if (userCity) { // Check if userCity is available
-          const cityDocRef = collection(db, userCity, "feed", "posts");
-          const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Adjusted query to limit the initial fetch to batchSize
-          const querySnapshot = await getDocs(sortedQuery);
-          const loadedPosts = [];
+        // if (userCity) { // Check if userCity is available
+        //   const cityDocRef = collection(db, userCity, "feed", "posts");
+        //   const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Adjusted query to limit the initial fetch to batchSize
+        //   const querySnapshot = await getDocs(sortedQuery);
+        //   const loadedPosts = [];
 
-          querySnapshot.forEach((doc) => {
-            const postData = doc.data();
-            console.log("Post ID:", doc.id);
-            console.log("Title:", postData.title);
-            console.log("Caption:", postData.caption);
-            console.log("Likes:", postData.likes);
-            console.log("Time:", postData.time);
-            console.log("User ID:", postData.u_id);
+        //   querySnapshot.forEach((doc) => {
+        //     const postData = doc.data();
+        //     console.log("Post ID:", doc.id);
+        //     console.log("Title:", postData.title);
+        //     console.log("Caption:", postData.caption);
+        //     console.log("Likes:", postData.likes);
+        //     console.log("Time:", postData.time);
+        //     console.log("User ID:", postData.u_id);
 
-            if(userId == postData.u_id) {
-              loadedPosts.push({
-                id: doc.id,
-                title: postData.title,
-                caption: postData.caption,
-                likes: postData.likes,
-                time: postData.time,
-                userId: postData.u_id,
-              });
-            }
-          });
-          posts.set(loadedPosts);
-        } else {
-          console.log("No such city document!");
-        }
+        //     if(userId == postData.u_id) {
+        //       loadedPosts.push({
+        //         id: doc.id,
+        //         title: postData.title,
+        //         caption: postData.caption,
+        //         likes: postData.likes,
+        //         time: postData.time,
+        //         userId: postData.u_id,
+        //       });
+        //     }
+        //   });
+        //   posts.set(loadedPosts);
+        // } else {
+        //   console.log("No such city document!");
+        // }
       } else {
         // User is not logged in, redirect or handle accordingly
         goto('/login');
@@ -93,6 +93,8 @@
       }
     });
   });
+
+
 
   let choice = "";  // This can be set dynamically as needed
   let choiceId = -1;  // Default to -1 or any sentinel value indicating "not found"
@@ -182,6 +184,32 @@
   
 	let teamMatches;
 
+
+	const teamImages = {
+        TottenhamHotspurFC: 'https://i.ibb.co/hyhWqX4/tottenham.jpg',
+        NottinghamForestFC: 'https://i.ibb.co/d2Qhy5R/nottingham.jpg',
+        ManchesterCityFC: 'https://i.ibb.co/7Y0P6x1/manchestercity.jpg',
+        BrightonNHoveAlbionFC: 'https://i.ibb.co/5nQKnVP/brighton.jpg',
+        ArsenalFC: 'https://i.ibb.co/zmBMXR9/arsenal.jpg',
+        AFCBournemouth: 'https://i.ibb.co/dpmM1XG/bournemouth.jpg',
+        WolverhamptonWanderersFC:'https://i.ibb.co/92htgDQ/wolves.jpg',
+        WestHamUnitedFC:'https://i.ibb.co/Ns6w2f3/westham.jpg',
+        SheffieldUnitedFC:'https://i.ibb.co/zQZMZY1/sheffield.jpg',
+        NewcastleUnitedFC:'https://i.ibb.co/BLG3b3r/newcastle.jpg',
+        ManchesterUnitedFC:'https://i.ibb.co/FhxthPg/manunited.jpg',
+        LutonTownFC:'https://i.ibb.co/xD87z64/lutontown.jpg',
+        LiverpoolFC:'https://i.ibb.co/thWYZMy/liverpool.jpg',
+        FulhamFC:'https://i.ibb.co/k6zZwwt/fulham.jpg',
+        EvertonFC:'https://i.ibb.co/fQWzc3Z/everton.jpg',
+        CrystalPalaceFC:'https://i.ibb.co/PWTsMpK/crystalpalace.jpg',
+        ChelseaFC:'https://i.ibb.co/YNw18cs/chelsea.jpg',
+        BurnleyFC:'https://i.ibb.co/T05FXkt/burnley.jpg',
+        BrentfordFC:'https://i.ibb.co/2NhwgSs/brentford.jpg',
+        AstonVillaFC : 'https://i.ibb.co/6wWPG9M/astonvilla.jpg',
+        // Add all other teams following the same format
+    };
+
+
 	async function getRecentMatches(choiceId) {
 		try {
 			const teamId = choiceId; // Ensure teamId is defined if not globally available
@@ -204,9 +232,22 @@
 
 			teamMatches.reverse().forEach(match => {
 				const matchElement = document.createElement('div');
+        let homeTeamKey = match.homeTeam.name.replace(/\s+/g, '').replace(/&/g, 'N');
+        let awayTeamKey = match.awayTeam.name.replace(/\s+/g, '').replace(/&/g, 'N');
+        let homeTeamImg = teamImages[homeTeamKey];
+        let awayTeamImg = teamImages[awayTeamKey];
+
 				matchElement.innerHTML = `
-					<p>Home Team: ${match.homeTeam.name}</p>
-					<p>Away Team: ${match.awayTeam.name}</p>
+          <div class="flex">
+            <!--Home-->
+            <img src=${homeTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+            <p>Home Team: ${match.homeTeam.name}</p>
+          </div>
+          <div class="flex">
+            <!--Away-->
+            <img src=${awayTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+            <p>Away Team: ${match.awayTeam.name}</p>
+          </div>
 					<p>Score: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
 					<hr>
 				`;
@@ -277,7 +318,7 @@
       <div class=" border-b-2 border-forest-green w-full ">
         <div class="flex items-center justify-center overflow-hidden grow">
         {#if $isVisible} <!-- This checks if isVisible is true -->
-          <div id="searched-container" class="text-white bg-side-green border border-neon-green rounded-lg pt-5 pb-5 pr-8 pl-8 w-2/6">
+          <div id="searched-container" class="text-white bg-side-green border border-neon-green rounded-lg pt-5 pb-5 pr-8 pl-8 w-2/6 mb-4">
           </div>
         {/if}
         </div>
