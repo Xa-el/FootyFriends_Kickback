@@ -58,16 +58,26 @@
       <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
 
       <div class="w-full overflow-y-auto">
-        <p class="text-white w-full">{bio}</p>
+        <p class="text-white w-full text-xl">{bio}</p>
       </div>
 
+      
     </div>
 
 
   </div>
   
-  <div class="flex justify-center w-screen mr-10">
-    <div class="border-b-2 border-forest-green w-full"></div>
+  <div class="flex items-center justify-center mt-48">
+      <div class=" border-b-2 border-forest-green w-full "></div>
   </div>
 
+  <div class="flex w-full justify-center">
+    <div class="mr-16">
+      <p class="font-bold text-2xl text-neon-green">Posts</p>
+    </div>
+
+    <div class="ml-16">
+      <p class="font-bold text-2xl text-neon-green">Likes</p>
+    </div>
+  </div>
 </div>
