@@ -53,7 +53,7 @@
 	$: charCount = $postCaption.length;
 	async function createEvent() {
 		let eventID = generateRandomString(26);
-		const cityPostRef = doc(db, userCity, "events", eventID); // Adjusted path
+		const cityPostRef = doc(db, userCity, "cityevents", "event", eventID); // Adjusted path
 		if ($postCaption.trim() == "") {
 			console.log("No caption inputted");
 			return;
@@ -63,6 +63,7 @@
 			console.log("post too long");
 			return;
 		}
+		console.log(userCity);
 		try {
 			// Using setDoc with merge true to create or update
 			const currentTime = await getCurrentTime();
@@ -89,7 +90,7 @@
 				userCity = await fetchUserProfile(userId); // Fetch user profile and get the user's city
 				console.log("User city: " + userCity);
 				if (userCity) { // Check if userCity is available
-					const cityDocRef = collection(db, userCity, "feed", "posts");
+					const cityDocRef = collection(db, userCity, "cityevents", "event");
 					const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Adjusted query to limit the initial fetch to batchSize
 					const querySnapshot = await getDocs(sortedQuery);
 					const loadedEvents = [];
@@ -134,7 +135,7 @@
 	<div class="flex justify-center">
 		<div class="border-b-2 border-forest-green w-full"></div>
 	</div>
-</div>
+
 	<!-- Form for creating event -->
 	<div class="input-container h-full mt-5 mb-5 w-5/6 border-b-2 border-b-forest-green">
 		<div class="flex items-center w-5/6 text-2xl">
@@ -147,18 +148,20 @@
 			</div>
 		</div>
 		<div class="text-center justify-center py-2">
-			<button type="button" style="transition-timing-function: ease;" on:click={createEvent}>
+			<button class="text-white" type="button" style="transition-timing-function: ease;" on:click={createEvent}>
 				Create Event
 			</button>
 		</div>
 	</div>
-
-	<!-- Existing events display -->
 	<div class="w-full">
-		{#each events as event}
+		{#each $events as event}
 			<Events {event} />
 		{/each}
 	</div>
+</div>
+
+	<!-- Existing events display -->
+
 
 <div class="flex items-center justify-center mt-48">
 	<div class=" border-b-2 border-forest-green w-full "></div>
