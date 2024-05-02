@@ -165,7 +165,9 @@
             <br>
             <button class="loginButt text-white font-bold" type="submit">Log In</button>
         </form>
-        <p class="text-neon-green font-bold">Forgot Account?</p>
+        <a href="/login/forgot" on:click|preventDefault={() => goto('/login/forgot')}>
+          <p class="text-neon-green font-bold">Forgot Account?</p>
+        </a>
         <div class="flex justify-center">
             <!-- <div class="border-b-2 border-black w-17/20 mt-4"></div> -->
             <!-- that just doesnt owrk for some reason ^^ -->
