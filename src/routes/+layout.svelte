@@ -5,6 +5,8 @@
 	import { doc, getDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { page } from '$app/stores';
+    import Scores from '../components/Scores.svelte';
+
 
 	let displayName = '';
 	let userId;
@@ -179,31 +181,14 @@
 			<div class="border-b-2 border-forest-green w-17/20 mt-4"></div>
 		</div>
 
-		<div class="flex flex-col justify-center">
+		<div class="flex flex-col justify-center bg-side-green">
 			<div>
 				<!--Title-->
 				<p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">Trending Scores</p>
 			</div>
 
-			<div class="flex flex-row items-center justify-center space-x-8 mt-2">
-				<!--Game 1-->
-				<div class="flex">
-					<!--Home-->
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png" alt="home1" class="w-14 h-14 object-cover">
-				</div>
+			<Scores class="bg-side-green"/>
 
-				<div class="flex flex-col items-center justify-center">
-					<!--Match Info-->
-					<p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
-					<p class="text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center">5 - 0</p>
-				</div>
-
-				<div class="flex">
-					<!--Away-->
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" alt="away1" class="w-14 h-14 object-cover">
-				</div>
-
-			</div>
 
 			<div class="flex flex-row items-center justify-center space-x-8 mt-5">
 				<!--Game 2-->
