@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { doc,getDoc} from 'firebase/firestore';
-	import { db } from '$lib/firebase.js';
-	import { onMount } from 'svelte';
-	import { session } from '$lib/session';
-	import { goto } from '$app/navigation';
+	import { deleteDoc, setDoc, doc, collection, getDoc, getDocs, updateDoc, increment} from 'firebase/firestore';
+import { db } from '$lib/firebase.js';
+import { onMount } from 'svelte';
+import { writable } from 'svelte/store';
+import { session } from '$lib/session';
+import { goto } from '$app/navigation';
 
 	let displayName = '';
 	let profile_url = '';
@@ -13,12 +14,17 @@
 
 
 	const fetchUserProfile = async (userId) => {
+		console.log("Hello1 " + userId);
 		const docRef = doc(db, "users", userId);
+		console.log("Hello2 ");
+		console.log(docRef);
 		const docSnap = await getDoc(docRef);
+		console.log("Hello3");
 		if (docSnap.exists()) {
 			displayName = docSnap.data().display_name;
 			profile_url = docSnap.data().pfpURL;
 			userCity = docSnap.data().City;
+			console.log("display name: " + displayName);
 		} else {
 			console.log("No such document!");
 		}
@@ -26,14 +32,6 @@
 
 	onMount(() => {
 		fetchUserProfile(event.userId);
-		session.subscribe(($session) => {
-			if ($session.user) {
-				new_ID = $session.user.uid;
-			} else {
-				// User is not logged in, redirect or handle accordingly
-				goto('/login');
-			}
-		});
 	});
 
 </script>

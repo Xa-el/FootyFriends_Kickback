@@ -152,16 +152,15 @@
 				Create Event
 			</button>
 		</div>
-	</div>
-	<div class="w-full">
-		{#each $events as event}
-			<Events {event} />
-		{/each}
+		<div class="w-full">
+			{#each $events as event}
+				<Events {event} />
+			{/each}
+		</div>
 	</div>
 </div>
 
 	<!-- Existing events display -->
-
 
 <div class="flex items-center justify-center mt-48">
 	<div class=" border-b-2 border-forest-green w-full "></div>
