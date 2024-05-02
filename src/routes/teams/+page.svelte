@@ -9,12 +9,23 @@
 
   import "../../app.css";
 
+  let isVisible = writable(false); // This will control the visibility of the searched-container
+
   let bio = '';
   let displayName = '';
   let userId;
   let pfpURL = '';
   let userCity = '';
   const posts = writable([]);
+	const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
+
+	const options = {
+		method: 'GET',
+		headers: {
+			'X-Auth-Token': apiKey,
+			'Cache-Control': 'no-cache'  // Instructs to bypass the cache
+		}
+	};
 
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
@@ -83,7 +94,55 @@
     });
   });
 
-  let cities = ['Gainesville, FL', 'Miami, FL', 'Orlando, FL', 'Tampa, FL', 'Jacksonville, FL'];
+  let choice = "";  // This can be set dynamically as needed
+  let choiceId = -1;  // Default to -1 or any sentinel value indicating "not found"
+
+  let cities = [
+    "Arsenal FC",
+    "Aston Villa FC",
+    "Chelsea FC",
+    "Everton FC",
+    "Fulham FC",
+    "Liverpool FC",
+    "Manchester City FC",
+    "Manchester United FC",
+    "Newcastle United FC",
+    "Tottenham Hotspur FC",
+    "Wolverhampton Wanderers FC",
+    "Burnley FC",
+    "Nottingham Forest FC",
+    "Crystal Palace FC",
+    "Sheffield United FC",
+    "Luton Town FC",
+    "Brighton & Hove Albion FC",
+    "Brentford FC",
+    "West Ham United FC",
+    "AFC Bournemouth"
+  ];
+
+  let cityIds = [
+    57,    // Arsenal FC
+    58,    // Aston Villa FC
+    61,    // Chelsea FC
+    62,    // Everton FC
+    63,    // Fulham FC
+    64,    // Liverpool FC
+    65,    // Manchester City FC
+    66,    // Manchester United FC
+    67,    // Newcastle United FC
+    73,    // Tottenham Hotspur FC
+    76,    // Wolverhampton Wanderers FC
+    328,   // Burnley FC
+    351,   // Nottingham Forest FC
+    354,   // Crystal Palace FC
+    356,   // Sheffield United FC
+    389,   // Luton Town FC
+    397,   // Brighton & Hove Albion FC
+    402,   // Brentford FC
+    563,   // West Ham United FC
+    1044   // AFC Bournemouth
+  ];
+
   let showDropdown = writable(false);
   let search = writable('');
 
@@ -98,8 +157,20 @@
 
   function selectCity(city: string) {
     search.set(city);
-    userCity = city;
+
+
+    if (cities.includes(city)) {
+        let index = cities.indexOf(city);
+        choiceId = cityIds[index];
+    }
+
+    // userCity = city;
     showDropdown.set(false);
+    isVisible.set(true); // Set this to true when a city is selected
+
+    console.log("clicked team: " + city);
+    console.log("You picked team id with " + choiceId);  // This will log 57 if choice is "Arsenal FC"
+    getRecentMatches(choiceId);
   }
 
   function checkHideDropdown(event: any) {
@@ -108,8 +179,49 @@
       showDropdown.set(false);
     }
   }
-
   
+	let teamMatches;
+
+	async function getRecentMatches(choiceId) {
+		try {
+			const teamId = choiceId; // Ensure teamId is defined if not globally available
+			const matchesUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/teams/${teamId}/matches`)}`;
+			const response = await fetch(matchesUrl, options);
+			const data = await response.json();
+			console.log("Recent matches fetched:");
+			
+			// Filter out matches where status is 'SCHEDULED'
+			const filteredMatches = data.matches.filter(match => match.status !== 'SCHEDULED');
+			// console.log(filteredMatches); // Log filtered matches for debugging
+
+			// Use only the last three matches after filtering
+			teamMatches = filteredMatches.slice(-3);
+			console.log("Last three matches:", teamMatches);
+
+			const matchesContainer = document.getElementById('searched-container');
+			if (!matchesContainer) return;
+			matchesContainer.innerHTML = ''; // Clear previous entries
+
+			teamMatches.reverse().forEach(match => {
+				const matchElement = document.createElement('div');
+				matchElement.innerHTML = `
+					<p>Home Team: ${match.homeTeam.name}</p>
+					<p>Away Team: ${match.awayTeam.name}</p>
+					<p>Score: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+					<hr>
+				`;
+				matchesContainer.appendChild(matchElement);
+			});        
+		} catch (error) {
+			console.error('Failed to fetch matches:', error);
+		}
+	}
+
+  function hideContainer() {
+    isVisible.set(false);
+  }
+  
+  hideContainer();
 </script>
 
 <div class="w-5/6 h-full ml-80 fixed">
@@ -161,9 +273,17 @@
 
   </div>
   
-  <div class="flex items-center justify-center mt-48">
-      <div class=" border-b-2 border-forest-green w-full "></div>
+  <div class="flex items-center justify-center mt-8">
+      <div class=" border-b-2 border-forest-green w-full ">
+        <div class="flex items-center justify-center overflow-hidden grow">
+        {#if $isVisible} <!-- This checks if isVisible is true -->
+          <div id="searched-container" class="text-white bg-side-green border border-neon-green rounded-lg pt-5 pb-5 pr-8 pl-8 w-2/6">
+          </div>
+        {/if}
+        </div>
+      </div>
   </div>
+
 </div>
 
 <style>
