@@ -77,7 +77,7 @@
 	<!--Big div-->
 	<div>
 		<!-- Title (top half no buttons) -->
-		<div class = "flex flex-row justify-center items-center mr-4">
+		<div on:click={() => goto('/')} class = "flex flex-row justify-center items-center mr-4">
 			<!-- logo + name -->
 			<img src="https://res.cloudinary.com/dong0qhly/image/upload/v1714286832/xxmwovwxikcaceoyzcev.png" alt={"Logo"} class="m-1 size-9">
 			<p class=" text-neon-green text-4xl text-center font-bold">KICKBACK</p>
