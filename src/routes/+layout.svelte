@@ -87,7 +87,7 @@
 			<!-- pfp + name + loc -->
 			<div class="flex flex-col items-center">
 				<!-- Profile Picture -->
-				<img src={pfpURL} alt={"PFP"} class="w-20 h-20 object-fit rounded-full mt-4">
+				<img on:click={() => goto(`/profile/${displayName}`)} src={pfpURL} alt={"PFP"} class="w-20 h-20 object-fit rounded-full mt-4">
 
 				<div>
 					<!-- Username -->
