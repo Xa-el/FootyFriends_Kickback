@@ -12,7 +12,7 @@
     const posts = writable([]);
     const batchSize = 5; // Number of posts to fetch per batch
 
-
+    let displayName : string;
     let lastVisiblePost = null; // Reference to the last visible post
 
     function generateRandomString(length: number): string {
@@ -28,7 +28,6 @@
 
     const randomPostId = generateRandomString(26);
 
-    let displayName = '';
     let userId;
     let profile_url = '';
     let userCity = '';
