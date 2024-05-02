@@ -108,6 +108,8 @@
       showDropdown.set(false);
     }
   }
+
+  
 </script>
 
 <div class="w-5/6 h-full ml-80 fixed">
@@ -117,32 +119,34 @@
     <div class="border-b-2 border-forest-green w-full "></div>
   </div>
 
-  <div class="flex flex-row">
-    <div class="flex flex-row items-center w-full justify-between">
-      <p class="font-bold text-neon-green">City:</p>
+  <div class="flex items-center justify-center grow">
+    <div class="border-b-2 border-neon-green pt-5 pr-8 pl-8 w-4/6">
+      <div class="flex flex-row items-center w-full justify-between">
+        <p class="font-bold text-neon-green text-2xl ml-16">Search Teams:</p>
 
-      <input
-      class="inputButton w-3/5 border"
-      type="text"
-      id="city_input"
-      placeholder="Type to search..."
-      bind:value={$search}
-      on:focus={() => showDropdown.set(true)}
-      />
+        <input
+        class="inputButton w-3/5 border"
+        type="text"
+        id="city_input"
+        placeholder="Type to search..."
+        bind:value={$search}
+        on:focus={() => showDropdown.set(true)}
+        />
+      </div>
+      <div class="relative mb-11 w-full flex flex-col items-end">
+        {#if $search.length > 0 && $filteredCities.length > 0 && $showDropdown}
+          <div class="absolute z-10 w-3/5 border bg-side-green rounded-lg">
+            {#each $filteredCities as city}
+              <button class="p-2 text-neon-green bg-forest-green w-full hover:cursor-pointer hover:bg-green-700 text-left" on:click={() => {
+                selectCity(city);
+                showDropdown.set(false);
+              }}>{city}</button>
+            {/each}
+          </div>
+        {/if}
+      </div>
     </div>
-    <div class="relative mb-11 w-full flex flex-col items-end">
-      {#if $search.length > 0 && $filteredCities.length > 0 && $showDropdown}
-        <div class="absolute z-10 w-3/5 border bg-side-green rounded-lg">
-          {#each $filteredCities as city}
-            <button class="p-2 text-neon-green bg-forest-green w-full hover:cursor-pointer hover:bg-green-700 text-left" on:click={() => {
-              selectCity(city);
-              showDropdown.set(false);
-            }}>{city}</button>
-          {/each}
-        </div>
-      {/if}
-    </div>
-    <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
+    <!-- <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
     <div class="flex flex-col justify-center ml-10">
       <p class="text-white font-bold text-4xl">{displayName}</p>
       <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
@@ -152,7 +156,7 @@
       </div>
 
       
-    </div>
+    </div> -->
 
 
   </div>
