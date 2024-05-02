@@ -1,6 +1,6 @@
 <!-- Post.svelte -->
 <script lang="ts">
-     import { deleteDoc, setDoc, doc, collection, getDoc, getDocs, updateDoc, increment, query } from 'firebase/firestore';
+     import { deleteDoc, setDoc, doc, collection, getDoc, getDocs, updateDoc, increment} from 'firebase/firestore';
      import { db } from '$lib/firebase.js';
      import { onMount } from 'svelte';
      import { writable } from 'svelte/store';
