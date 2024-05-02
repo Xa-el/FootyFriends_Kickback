@@ -33,6 +33,7 @@
 	const removePost = async (postId) => {
 		try {
 			await deleteDoc(doc(db, userCity, "feed", "posts", postId));
+			await deleteDoc(doc(db, userCity, "feed", "posts", postId, "likeIds"));
 			console.log("Post successfully deleted!");
 		} catch (error) {
 			console.error("Error removing post: ", error);
