@@ -1,114 +1,53 @@
 <script lang="ts">
-const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
-const plUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const italyUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/SA/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const laLigaUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PD/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const farmersUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/FL1/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const blUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/BL1/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const clUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/CL/matches?status=FINISHED&ts=${Date.now()}`)}`;
-const livePLUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=LIVE&ts=${Date.now()}`)}`;
+	const apiKey = import.meta.env.VITE_FOOTBALL_KEY;
+	const plUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED&ts=${Date.now()}`)}`;
 
+	let last3plmatches;
 
+	const options = {
+		method: 'GET',
+		headers: {
+			'X-Auth-Token': apiKey,
+			'Cache-Control': 'no-cache'  // Instructs to bypass the cache
+		}
+	};
 
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-Auth-Token': apiKey,
-            'Cache-Control': 'no-cache'  // Instructs to bypass the cache
-        }
-    };
+	async function getRecentMatches() {
+		try {
+			const response = await fetch(plUrl, options);
+			const data = await response.json();
+			last3plmatches = data.matches.slice(-3);
+			displayMatches();
+		} catch (error) {
+			console.error('Failed to fetch data:', error);
+		}
+	}
 
-    async function getRecentMatches() {
-        try {
-            const response = await fetch(plUrl, options);
-            //this gets the data in json form I think
-            const data = await response.json();
-            const last10plmatches = data.matches.slice(-10); //basically array length - 10 is how to think about this
-            console.log("prems");
-            console.log(last10plmatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-        } catch (error) {
-            console.error('Failed to fetch data:', error);
-        }
-    }
-    async function getMatches() {
-        try {
-            const italyResponse = await fetch(italyUrl, options);
-            const spainResponse = await fetch(laLigaUrl, options);
-            const franceResponse = await fetch(farmersUrl, options);
-            const germanyResponse = await fetch(blUrl, options);
-            const CLResponse = await fetch(clUrl, options);
-            const livePLResponse = await fetch(livePLUrl, options);
-
-            //this gets the data in json form I think
-            const italyData = await italyResponse.json();
-            const spainData = await spainResponse.json();
-            const franceData = await franceResponse.json();
-            const germanyData = await germanyResponse.json();
-            const CLData = await CLResponse.json();
-            const livePLData = await livePLResponse.json();
-
-
-            const italyMatches = italyData.matches.slice(-10); //basically array length - 10 is how to think about this
-            console.log("italy");
-            console.log(italyMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-            const spainMatches = spainData.matches.slice(-10); 
-            console.log("spain");
-            console.log(spainMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-            const franceMatches = franceData.matches.slice(-10); 
-            console.log("france");
-            console.log(franceMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-            const germanyMatches = germanyData.matches.slice(-10);          
-            console.log("germany");
-            console.log(germanyMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-            const CLMatches = CLData.matches.slice(-10); //basically array length - 10 is how to think about this
-            console.log("Champions League");
-            console.log(CLMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-            const livePLMatches = livePLData.matches.slice(-10); //basically array length - 10 is how to think about this
-            console.log("Prems Live");
-            console.log(livePLMatches.map(match => ({
-                date: match.utcDate,  
-                homeTeam: match.homeTeam.name,
-                awayTeam: match.awayTeam.name,
-                score: `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`
-            })));
-
-        } catch (error) {
-            console.error('Failed to fetch data:', error);
-        }
-    }
-    getRecentMatches();
-    getMatches();
+	function displayMatches() {
+		const matchesContainer = document.getElementById('matches-container');
+		last3plmatches.forEach(match => {
+			const matchElement = document.createElement('div');
+			matchElement.innerHTML = `
+                    <p>Date: ${match.utcDate}</p>
+                    <p>Home Team: ${match.homeTeam.name}</p>
+                    <p>Away Team: ${match.awayTeam.name}</p>
+                    <p>Score: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+                    <hr>
+                `;
+			matchesContainer.appendChild(matchElement);
+		});
+	}
+	getRecentMatches();
 </script>
 
-<h1>Welcome to Bum Page</h1>
 
+
+<html lang="en">
+		<head>
+			<title>Premier League Matches</title>
+		</head>
+		<body>
+			<h1>Premier League Matches</h1>
+			<div id="matches-container" class="text-white"></div>
+		</body>
+</html>
