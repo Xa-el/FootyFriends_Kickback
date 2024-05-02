@@ -28,7 +28,6 @@
 
     const randomPostId = generateRandomString(26);
 
-    let displayName = '';
     let userId;
     let profile_url = '';
     let userCity = '';
