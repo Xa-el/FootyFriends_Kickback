@@ -71,11 +71,11 @@
        });
      }
 
-     async function setLikes(postId) {
+     async function setLikes(postId, new_ID) {
        const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
        const snapshot = await getDocs(likesRef);
        snapshot.forEach((doc) => {
-         isLiked = doc.id == doc.id;
+         isLiked = doc.id == new_ID;
        });
      }
 
