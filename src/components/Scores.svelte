@@ -73,18 +73,18 @@
 				<!--Game 1-->
 				<div class="flex">
 					<!--Home-->
-					<img onclick="location.href='${homeTeamSearchUrl}';" src=${homeTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="window.open('${homeTeamSearchUrl}', '_blank');" src=${homeTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 				<div class="flex flex-col items-center justify-center ">
 					<!--Match Info-->
-					<p onclick="location.href='${gameUrl}';" class="cursor-pointer text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
-                    <p onclick="location.href='${gameUrl}';" class="cursor-pointer">${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+					<p onclick="window.open('${gameUrl}', '_blank');" class="cursor-pointer text-white font-bold text-sm md:text-base lg:text-base xl:text-base text-center mt-4">VS</p>
+                    <p onclick="window.open('${gameUrl}', '_blank');" class="cursor-pointer">${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
 				</div>
 
 				<div class="flex">
 					<!--Away-->
-					<img onclick="location.href='${awayTeamSearchUrl}';" src=${awayTeamImg} alt="away1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
+					<img onclick="window.open('${awayTeamSearchUrl}', '_blank');" src=${awayTeamImg} alt="away1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 			</div>
