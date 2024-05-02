@@ -178,7 +178,7 @@
 </div>
 
 
-<div class="flex items-center justify-center overflow-hidden h-[calc(100vh-60px)]">
+<div class="flex items-center justify-center h-[calc(100vh-60px)]">
   <div>
     {#if showError}
       <div class="p-4 bg-side-green neonLine-Error mb-8">

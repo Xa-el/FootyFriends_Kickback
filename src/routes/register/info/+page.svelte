@@ -87,10 +87,15 @@
     bio = displayBio;
     displayName = userSeenName;
     const isUnique = await isDisplayNameUnique(displayName);
-    if(userSeenName.trim() == ""){
-       console.log("Invalid name, only spaces");
-       return;
+    const invalidCharsPattern = /[^a-zA-Z0-9-_]/; // This regex matches any character that is not alphanumeric, underscore, or dash
+    userSeenName = userSeenName.trim();
+    if (userSeenName === "" || invalidCharsPattern.test(userSeenName)) {
+      console.log("Invalid name; it is either empty or contains special characters.");
+      usernameError = "Display Name is invalid! It must not contain special characters like #, !, spaces, etc.";
+      showError = true; // Assuming you have a way to show this error in your UI
+      return;
     }
+          
     const isValid = await checkImageUrl(pfpURL);
     if(!isUnique){
       showError = true;
