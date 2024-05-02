@@ -14,7 +14,13 @@
   let userId;
   let pfpURL = '';
   let userCity = '';
+  let postHistory = true;
+  let likeHistory = false;
+  const loadedLikes = [];
+
+
   const posts = writable([]);
+  const likes = writable([]);
 
   // Fetch user profile information
   const fetchUserProfile = async (userId) => {
@@ -33,6 +39,25 @@
     }
   };
 
+  async function inputLikedPost(postId, userID, postData) {
+       const likesRef = collection(db, userCity, "feed", "posts", postId, "likeIds");
+       const snapshot = await getDocs(likesRef);
+       snapshot.forEach((doc) => {
+        console.log("userId" + userID);
+        console.log("postID: " + postId);
+         if(userID == doc.id) {
+          loadedLikes.push({
+                  id: doc.id,
+                  title: postData.title,
+                  caption: postData.caption,
+                  likes: postData.likes,
+                  time: postData.time,  
+                  userId: postData.u_id,
+              });
+         }
+       });
+}
+
 
 
   // On component mount, fetch the user profile
@@ -45,6 +70,7 @@
           const cityDocRef = collection(db, userCity, "feed", "posts");
           const sortedQuery = query(cityDocRef, orderBy("time", "desc")); // Adjusted query to limit the initial fetch to batchSize
           const querySnapshot = await getDocs(sortedQuery);
+
           const loadedPosts = [];
 
           querySnapshot.forEach((doc) => {
@@ -62,12 +88,17 @@
                 title: postData.title,
                 caption: postData.caption,
                 likes: postData.likes,
-                time: postData.time,
+                time: postData.time,  
                 userId: postData.u_id,
               });
             }
-          });
+
+            
+            inputLikedPost(doc.id, userId, postData);
+
+        });
           posts.set(loadedPosts);
+          likes.set(loadedLikes);
         } else {
           console.log("No such city document!");
         }
@@ -101,9 +132,7 @@
         <p class="text-white w-full text-xl">{bio}</p>
       </div>
 
-      
     </div>
-
 
   </div>
   
@@ -113,20 +142,27 @@
 
   <div class="flex w-full justify-center">
     <div class="mr-16">
-      <p class="font-bold text-2xl text-neon-green">Posts</p>
-      <div class="w-2/3 h-screen bg-forest-green-500 flex flex-col">
-        <div class="post-container flex-grow flex flex-col items-center" style="white-space: pre-wrap;">
-          {#each $posts as post}
-            <div class="post-wrapper">
-              <Post {post} />
-            </div>
-          {/each}
-        </div>
-      </div>
+    <button on:click={() => { postHistory = true; likeHistory = false }}  class="font-bold text-2xl text-neon-green">Posts</button>
     </div>
-
     <div class="ml-16">
-      <p class="font-bold text-2xl text-neon-green">Likes</p>
+      <button on:click={() => { postHistory = false; likeHistory = true }} class="font-bold text-2xl text-neon-green">Likes</button>
     </div>
   </div>
+
+  {#if postHistory}
+  <div class="post-container flex-grow flex flex-col items-center overflow-y-auto h-1/2" style="white-space: pre-wrap;">
+      {#each $posts as post}
+          <Post {post} />
+      {/each}
+  </div>
+  {/if}
+
+  {#if likeHistory}
+  <div class="post-container flex-grow flex flex-col items-center overflow-y-auto h-1/2" style="white-space: pre-wrap;">
+      {#each $likes as post}
+          <Post {post} />
+      {/each}
+  </div>
+  {/if}
+
 </div>
