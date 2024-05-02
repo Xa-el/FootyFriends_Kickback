@@ -298,7 +298,7 @@
         RealBetisBalompié: 'https://pbs.twimg.com/profile_images/1701871282676002816/2eRWtgqY_400x400.jpg',
         RealSociedaddeFútbol: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiMStTcrS3QSGSxuMxzrKUdfBeCtwWTA9GiWfOhnea7g&s',
         VillarrealCF: 'https://cdn-icons-png.freepik.com/512/824/824742.png',
-        ValenciaCF: 'ValenciaCF',
+        ValenciaCF: 'https://static.vecteezy.com/system/resources/previews/027/011/574/original/valencia-club-symbol-logo-la-liga-spain-football-abstract-design-illustration-with-red-background-free-vector.jpg',
         DeportivoAlavés: 'https://www.shutterstock.com/image-illustration/deportivo-alaves-logo-white-background-600nw-2403765529.jpg',
         CádizCF: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7IWKv6jr0nAwKbS6cFFQBvpL78ymDhRtLk0YqCRG5dA&s',
         UDAlmería: 'https://play-lh.googleusercontent.com/x2rniKO6rdXbgQoIBS1H11JhVJ5ZN5yzUu15OvQ3cPLaBNZ55cwWv-tOmahzqU4A92U',
