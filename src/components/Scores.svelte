@@ -69,7 +69,7 @@
 				<!--Game 1-->
 				<div class="flex">
 					<!--Home-->
-					<img src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full">
+					<img src=${homeTeamImg} alt="home1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 				<div class="flex flex-col items-center justify-center">
@@ -80,7 +80,7 @@
 
 				<div class="flex">
 					<!--Away-->
-					<img src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full">
+					<img src=${awayTeamImg} alt="away1" class="w-14 h-14 object-cover rounded-full border-4 border-neon-green">
 				</div>
 
 			</div>
