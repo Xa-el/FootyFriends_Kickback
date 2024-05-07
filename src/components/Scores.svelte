@@ -3,8 +3,6 @@
 	const plUrl = `https://corsproxy.io/?${encodeURIComponent(`http://api.football-data.org/v2/competitions/PL/matches?status=FINISHED&ts=${Date.now()}`)}`;
 
 
-
-
 	const teamImages = {
         TottenhamHotspurFC: 'https://i.ibb.co/hyhWqX4/tottenham.jpg',
         NottinghamForestFC: 'https://i.ibb.co/d2Qhy5R/nottingham.jpg',
@@ -12,23 +10,21 @@
         BrightonNHoveAlbionFC: 'https://i.ibb.co/5nQKnVP/brighton.jpg',
         ArsenalFC: 'https://i.ibb.co/zmBMXR9/arsenal.jpg',
         AFCBournemouth: 'https://i.ibb.co/dpmM1XG/bournemouth.jpg',
-		wolves:'https://i.ibb.co/92htgDQ/wolves.jpg',
-		westham:'https://i.ibb.co/Ns6w2f3/westham.jpg',
-		sheffield:'https://i.ibb.co/zQZMZY1/sheffield.jpg',
-		newcastle:'https://i.ibb.co/BLG3b3r/newcastle.jpg',
-		manu:'https://i.ibb.co/FhxthPg/manunited.jpg',
-		luton:'https://i.ibb.co/xD87z64/lutontown.jpg',
-		liverpool:'https://i.ibb.co/thWYZMy/liverpool.jpg',
-		fulham:'https://i.ibb.co/k6zZwwt/fulham.jpg',
-		everton:'https://i.ibb.co/fQWzc3Z/everton.jpg',
-		crystalPalace:'https://i.ibb.co/PWTsMpK/crystalpalace.jpg',
-		chelsea:'https://i.ibb.co/YNw18cs/chelsea.jpg',
-		burnley:'https://i.ibb.co/T05FXkt/burnley.jpg',
-		brentford:'https://i.ibb.co/2NhwgSs/brentford.jpg',
-		villa : 'https://i.ibb.co/6wWPG9M/astonvilla.jpg',
-        // Add all other teams following the same format
-    };
-
+        WolverhamptonWanderersFC:'https://i.ibb.co/92htgDQ/wolves.jpg',
+        WestHamUnitedFC:'https://i.ibb.co/Ns6w2f3/westham.jpg',
+        SheffieldUnitedFC:'https://i.ibb.co/zQZMZY1/sheffield.jpg',
+        NewcastleUnitedFC:'https://i.ibb.co/BLG3b3r/newcastle.jpg',
+        ManchesterUnitedFC:'https://i.ibb.co/FhxthPg/manunited.jpg',
+        LutonTownFC:'https://i.ibb.co/xD87z64/lutontown.jpg',
+        LiverpoolFC:'https://i.ibb.co/thWYZMy/liverpool.jpg',
+        FulhamFC:'https://i.ibb.co/k6zZwwt/fulham.jpg',
+        EvertonFC:'https://i.ibb.co/fQWzc3Z/everton.jpg',
+        CrystalPalaceFC:'https://i.ibb.co/PWTsMpK/crystalpalace.jpg',
+        ChelseaFC:'https://i.ibb.co/YNw18cs/chelsea.jpg',
+        BurnleyFC:'https://i.ibb.co/T05FXkt/burnley.jpg',
+        BrentfordFC:'https://i.ibb.co/2NhwgSs/brentford.jpg',
+        AstonVillaFC : 'https://i.ibb.co/6wWPG9M/astonvilla.jpg',
+     };
 
 
 	let last3plmatches;
