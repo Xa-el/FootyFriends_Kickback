@@ -341,19 +341,22 @@
         let awayTeamImg = teamImages[awayTeamKey];
         let gameUrl = `https://www.google.com/search?q=${encodeURIComponent(match.homeTeam.name + " " + match.awayTeam.name + " " + match.utcDate.split('T')[0])}`;
 
-				matchElement.innerHTML = `
-          <div class="flex">
+		matchElement.innerHTML = `
+          <div class="flex items-center mb-2">
             <!--Home-->
             <img src=${homeTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
-            <p>Home Team: ${match.homeTeam.name}</p>
+            <p class="ml-2">Home Team: ${match.homeTeam.name}</p>
           </div>
-          <div class="flex">
+          <div class="flex items-center">
             <!--Away-->
             <img src=${awayTeamImg} alt="home1" class="cursor-pointer w-14 h-14 object-cover rounded-full border-4 border-neon-green">
-            <p>Away Team: ${match.awayTeam.name}</p>
+            <p class="ml-2">Away Team: ${match.awayTeam.name}</p>
           </div>
+
+          <div class="flex justify-center items-center">
           <p onclick="window.open('${gameUrl}', '_blank');" class="cursor-pointer">Score: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
-					<hr>
+          </div>
+		<hr class="mb-2">
 				`;
 				matchesContainer.appendChild(matchElement);
 			});        
