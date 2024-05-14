@@ -126,7 +126,7 @@
     </svg>
   </button>
   
-  <div class="flex flex-row max-w-5/6">
+  <div class="flex flex-row">
     <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
     <div class="flex flex-col justify-center ml-10">
       <p class="text-white font-bold text-4xl">{displayName}</p>
@@ -148,10 +148,10 @@
 
   <div class="flex w-full justify-center">
     <div class="mr-16">
-    <button on:click={() => { postHistory = true; likeHistory = false }}  class="font-bold text-2xl text-neon-green">Posts</button>
+    <button on:click={() => { postHistory = true; likeHistory = false }}  class="font-bold text-2xl text-neon-green hover:underline hover:underline-offset-8 decoration-2">Posts</button>
     </div>
     <div class="ml-16">
-      <button on:click={() => { postHistory = false; likeHistory = true }} class="font-bold text-2xl text-neon-green">Likes</button>
+      <button on:click={() => { postHistory = false; likeHistory = true }} class="font-bold text-2xl text-neon-green hover:underline hover:underline-offset-8 decoration-2">Likes</button>
     </div>
   </div>
 

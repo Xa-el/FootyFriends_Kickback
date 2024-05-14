@@ -208,9 +208,9 @@ try {
         {/if}
       </div>
 
-      <div class="w-4/6 pt-2 fixed">
+      <div class="w-4/6 pt-2 fixed max-w-3xl">
         <input
-        class="inputButton w-full border-2 border-forest-green bg-side-green rounded-lg placeholder-white text-white text-xl pl-3 pt-2 pb-4 outline-none focus:border-forest-green"
+        class="inputButton w-full border-2 border-forest-green bg-side-green rounded-lg placeholder-white text-white text-xl pl-3 pt-2 pb-4 outline-none focus:border-forest-green flex-grow grow pt-1 h-full break-words placeholder:text-gray-500"
         type="text"
         bind:value={displayBio}
         placeholder= {bio}

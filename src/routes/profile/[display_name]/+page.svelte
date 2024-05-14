@@ -109,9 +109,11 @@
       <p class="text-white font-bold text-4xl">{displayName}</p>
       <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
 
-      <div class="w-full overflow-y-auto">
-        <p class="text-white w-full text-xl">{bio}</p>
-      </div>
+     <div class="max-w-3xl flex flex-col h-full w-full overflow-hidden">
+          <div class="flex-grow grow pt-1">
+               <p class="text-white text-xl max-w-full h-full break-words">{bio}</p>
+          </div>
+     </div>
 
     </div>
 
