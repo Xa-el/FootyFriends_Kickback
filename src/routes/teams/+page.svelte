@@ -406,17 +406,6 @@
         {/if}
       </div>
     </div>
-    <!-- <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
-    <div class="flex flex-col justify-center ml-10">
-      <p class="text-white font-bold text-4xl">{displayName}</p>
-      <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
-
-      <div class="w-full overflow-y-auto">
-        <p class="text-white w-full text-xl">{bio}</p>
-      </div>
-
-      
-    </div> -->
 
   </div>
   
@@ -424,7 +413,7 @@
       <div class=" border-b-2 border-forest-green w-full ">
         <div class="flex items-center justify-center overflow-y-auto grow h-full">
         {#if $isVisible} <!-- This checks if isVisible is true -->
-          <div id="searched-container" class="overflow-y-auto text-white bg-side-green border border-neon-green rounded-lg pt-5 pb-5 pr-8 pl-8 w-2/6 mb-4">
+          <div id="searched-container" class="overflow-auto text-white bg-side-green border border-neon-green rounded-lg pt-5 pb-5 pr-8 pl-8 w-2/6 mb-4" style="height: 325px;">
           </div>
         {/if}
         </div>
