@@ -113,7 +113,7 @@
   });
 </script>
 
-<div class="w-5/6 h-full ml-80 fixed">
+<div class="w-5/6 h-full max-w-5/6 ml-80 fixed">
   <h2 class="text-neon-green font-bold text-3xl mt-5 ">Profile</h2>
 
   <div class="flex justify-center">
@@ -126,15 +126,17 @@
     </svg>
   </button>
   
-  <div class="flex flex-row">
+  <div class="flex flex-row max-w-5/6">
     <img src="{pfpURL}" alt={"PFP"} class="w-48 h-48 object-fit rounded-full mt-8">
     <div class="flex flex-col justify-center ml-10">
       <p class="text-white font-bold text-4xl">{displayName}</p>
       <p class="text-white font-bold text-2xl"><span class="text-neon-green">City:</span> {userCity}</p>
 
-      <div class="w-full overflow-y-auto">
-        <p class="text-white w-full text-xl">{bio}</p>
-      </div>
+     <div class="max-w-3xl flex flex-col h-full w-full overflow-hidden">
+          <div class="flex-grow grow pt-1">
+               <p class="text-white text-xl max-w-full h-full break-words">{bio}</p>
+          </div>
+     </div>
 
     </div>
 
